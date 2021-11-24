@@ -47,7 +47,6 @@ func sendHanamiRequest(requestType string, path string, jsonBody string) (bool, 
 
         // make new request with new token
         token = os.Getenv("HANAMI_TOKEN")
-        fmt.Println("#################### token: " + token);
 
         return sendRequest(requestType, token, path, jsonBody)
     }
@@ -113,24 +112,32 @@ func sendRequest(requestType string, token string, path string, jsonBody string)
         return false, "err"
     }
 
+    var resp *http.Response
+    var reqBody = strings.NewReader(jsonBody)
+
     // check if https or not
 	if strings.Contains(address, "https") {
 		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 
+    completePath := fmt.Sprintf("%s:%d/%s&token=%s", address, port, path, token)
+
     // send get-request
-    /*if requestType == "get" {
-        resp, err := http.Get(fmt.Sprintf("%s:%d/%s", address, port, path))
+    if requestType == "get" {
+        req, _ := http.NewRequest(http.MethodGet, completePath, reqBody)
+        resp, err = http.DefaultClient.Do(req)
     }
 
     if requestType == "post" {    
-        resp, err := http.Post(fmt.Sprintf("%s:%d/%s", address, port, path), 
+        resp, err = http.Post(completePath, 
                               "application/json",
-                              strings.NewReader(jsonBody))
-    }*/
-    completePath := fmt.Sprintf("%s:%d/%s&token=%s", address, port, path, token)
-    resp, err := http.Get(completePath)
+                              reqBody)
+    }
 
+    if requestType == "delete" {  
+        req, _ := http.NewRequest(http.MethodDelete, completePath, reqBody)
+        resp, err = http.DefaultClient.Do(req)
+    }
 
     // check result
     if err != nil {
