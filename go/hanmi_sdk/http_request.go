@@ -12,15 +12,19 @@ import (
 )
 
 func SendGet_Request(path string) (bool, string) {
-    return sendHanamiRequest("get", path, "")
+    return sendHanamiRequest("GET", path, "")
 }
 
 func SendPost_Request(path string, jsonBody string) (bool, string) {
-    return sendHanamiRequest("post", path, jsonBody)
+    return sendHanamiRequest("POST", path, jsonBody)
+}
+
+func SendPut_Request(path string, jsonBody string) (bool, string) {
+    return sendHanamiRequest("PUT", path, jsonBody)
 }
 
 func SendDelete_Request(path string) (bool, string) {
-    return sendHanamiRequest("delete", path, "")
+    return sendHanamiRequest("DELETE", path, "")
 }
 
 func sendHanamiRequest(requestType string, path string, jsonBody string) (bool, string){
@@ -112,32 +116,20 @@ func sendRequest(requestType string, token string, path string, jsonBody string)
         return false, "err"
     }
 
-    var resp *http.Response
-    var reqBody = strings.NewReader(jsonBody)
-
     // check if https or not
 	if strings.Contains(address, "https") {
 		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	}
 
+    // build uri
+    var reqBody = strings.NewReader(jsonBody)
     completePath := fmt.Sprintf("%s:%d/%s&token=%s", address, port, path, token)
-
-    // send get-request
-    if requestType == "get" {
-        req, _ := http.NewRequest(http.MethodGet, completePath, reqBody)
-        resp, err = http.DefaultClient.Do(req)
+    req, err := http.NewRequest(requestType, completePath, reqBody)
+    if err != nil {
+        panic(err)
     }
 
-    if requestType == "post" {    
-        resp, err = http.Post(completePath, 
-                              "application/json",
-                              reqBody)
-    }
-
-    if requestType == "delete" {  
-        req, _ := http.NewRequest(http.MethodDelete, completePath, reqBody)
-        resp, err = http.DefaultClient.Do(req)
-    }
+    resp, err := http.DefaultClient.Do(req)
 
     // check result
     if err != nil {
@@ -153,6 +145,5 @@ func sendRequest(requestType string, token string, path string, jsonBody string)
     bodyString := string(bodyBytes)
 
     var ok = resp.StatusCode == http.StatusOK
-
     return ok, bodyString
 }
