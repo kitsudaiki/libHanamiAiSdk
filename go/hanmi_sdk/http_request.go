@@ -11,23 +11,23 @@ import (
     "encoding/json"
 )
 
-func SendGet_Request(path string) (bool, string) {
-    return sendHanamiRequest("GET", path, "")
+func SendGet_Request(path string, vars string) (bool, string) {
+    return sendHanamiRequest("GET", path, vars, "")
 }
 
-func SendPost_Request(path string, jsonBody string) (bool, string) {
-    return sendHanamiRequest("POST", path, jsonBody)
+func SendPost_Request(path string, vars string, jsonBody string) (bool, string) {
+    return sendHanamiRequest("POST", path, vars, jsonBody)
 }
 
-func SendPut_Request(path string, jsonBody string) (bool, string) {
-    return sendHanamiRequest("PUT", path, jsonBody)
+func SendPut_Request(path string, vars string, jsonBody string) (bool, string) {
+    return sendHanamiRequest("PUT", path, vars, jsonBody)
 }
 
-func SendDelete_Request(path string) (bool, string) {
-    return sendHanamiRequest("DELETE", path, "")
+func SendDelete_Request(path string, vars string) (bool, string) {
+    return sendHanamiRequest("DELETE", path, vars, "")
 }
 
-func sendHanamiRequest(requestType string, path string, jsonBody string) (bool, string){
+func sendHanamiRequest(requestType string, path string, vars string, jsonBody string) (bool, string){
     var token = os.Getenv("HANAMI_TOKEN")
 
     // request token, if no one exist within the environment-variables
@@ -40,7 +40,7 @@ func sendHanamiRequest(requestType string, path string, jsonBody string) (bool, 
     
     // make request
     token = os.Getenv("HANAMI_TOKEN")
-    success, content := sendRequest(requestType, token, path, jsonBody)
+    success, content := sendRequest(requestType, token, path, vars, jsonBody)
 
     // hande expired token
     if success && content == "Token is expired" {
@@ -52,7 +52,7 @@ func sendHanamiRequest(requestType string, path string, jsonBody string) (bool, 
         // make new request with new token
         token = os.Getenv("HANAMI_TOKEN")
 
-        return sendRequest(requestType, token, path, jsonBody)
+        return sendRequest(requestType, token, path, vars, jsonBody)
     }
 
     return success, content
@@ -108,7 +108,7 @@ func requestToken() bool {
     return true
 }
 
-func sendRequest(requestType string, token string, path string, jsonBody string) (bool, string) {
+func sendRequest(requestType string, token string, path string, vars string, jsonBody string) (bool, string) {
     // read environment-variables
 	var address = os.Getenv("HANAMI_ADDRESS")
 	port, err := strconv.Atoi(os.Getenv("HANAMI_PORT"))
@@ -123,7 +123,8 @@ func sendRequest(requestType string, token string, path string, jsonBody string)
 
     // build uri
     var reqBody = strings.NewReader(jsonBody)
-    completePath := fmt.Sprintf("%s:%d/%s&token=%s", address, port, path, token)
+    completePath := fmt.Sprintf("%s:%d/%s?token=%s%s", address, port, path, token, vars)
+    // fmt.Printf("completePath: "+ completePath)
     req, err := http.NewRequest(requestType, completePath, reqBody)
     if err != nil {
         panic(err)
@@ -143,6 +144,8 @@ func sendRequest(requestType string, token string, path string, jsonBody string)
         return false, ""
     }
     bodyString := string(bodyBytes)
+
+    // fmt.Printf("bodyString: " + bodyString + "\n")
 
     var ok = resp.StatusCode == http.StatusOK
     return ok, bodyString
