@@ -71,37 +71,17 @@ func parseJson(input string) map[string]interface{} {
 }
 
 func requestToken() bool {
-    // read environment-variables
     var user = os.Getenv("HANAMI_USER")
 	var pw = os.Getenv("HANAMI_PW")
-	var address = os.Getenv("HANAMI_ADDRESS")
-	port, err := strconv.Atoi(os.Getenv("HANAMI_PORT"))
-    if err != nil {
-        return false
-    }
-
-    // check if https or not
-	if strings.Contains(address, "https") {
-		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-	}
 
     path := fmt.Sprintf("control/misaka/token?user_name=%s&pw=%s", user, pw)
-    resp, err := http.Get(fmt.Sprintf("%s:%d/%s", address, port, path))
 
-    // check result
-    if err != nil {
-        panic(err)
-    }
-    defer resp.Body.Close()
-
-    // read data from response and convert into string
-    bodyBytes, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
+    success, content := sendGenericRequest("GET", path, "")
+    if success == false {
         return false
     }
-    bodyString := string(bodyBytes)
 
-    outputMap := parseJson(bodyString)
+    outputMap := parseJson(content)
     token := outputMap["token"].(string)
     os.Setenv("HANAMI_TOKEN", token)
 
@@ -109,6 +89,11 @@ func requestToken() bool {
 }
 
 func sendRequest(requestType string, token string, path string, vars string, jsonBody string) (bool, string) {
+    completePath := fmt.Sprintf("%s?token=%s%s", path, token, vars)
+    return sendGenericRequest(requestType, completePath, jsonBody)
+}
+
+func sendGenericRequest(requestType string, path string, jsonBody string) (bool, string) {
     // read environment-variables
 	var address = os.Getenv("HANAMI_ADDRESS")
 	port, err := strconv.Atoi(os.Getenv("HANAMI_PORT"))
@@ -123,8 +108,8 @@ func sendRequest(requestType string, token string, path string, vars string, jso
 
     // build uri
     var reqBody = strings.NewReader(jsonBody)
-    completePath := fmt.Sprintf("%s:%d/%s?token=%s%s", address, port, path, token, vars)
     // fmt.Printf("completePath: "+ completePath)
+    completePath := fmt.Sprintf("%s:%d/%s", address, port, path)
     req, err := http.NewRequest(requestType, completePath, reqBody)
     if err != nil {
         panic(err)
