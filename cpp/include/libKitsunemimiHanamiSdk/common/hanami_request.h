@@ -1,5 +1,5 @@
-#ifndef REQUEST_H
-#define REQUEST_H
+#ifndef HANAMI_REQUEST_H
+#define HANAMI_REQUEST_H
 
 #include <cstdlib>
 #include <iostream>
@@ -49,10 +49,10 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
-class Request
+class HanamiRequest
 {
 public:
-    Request();
+    HanamiRequest();
 
     bool init(const std::string &host = "",
               const std::string &port = "",
@@ -108,4 +108,4 @@ private:
 }  // namespace Hanami
 }  // namespace Kitsunemimi
 
-#endif // REQUEST_H
+#endif // HANAMI_REQUEST_H

@@ -67,9 +67,11 @@ INCLUDEPATH += $$PWD \
                $$PWD/../include
 
 HEADERS += \
-    request.h
+    ../include/libKitsunemimiHanamiSdk/actions/user.h \
+    ../include/libKitsunemimiHanamiSdk/common/hanami_request.h
 
 SOURCES += \
-    request.cpp
+    actions/user.cpp \
+    common/hanami_request.cpp
 
 

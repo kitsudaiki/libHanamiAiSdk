@@ -20,7 +20,7 @@
  *      limitations under the License.
  */
 
-#include "request.h"
+#include <libKitsunemimiHanamiSdk/common/hanami_request.h>
 
 #include <libKitsunemimiJson/json_item.h>
 
@@ -29,7 +29,7 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
-Request::Request() {}
+HanamiRequest::HanamiRequest() {}
 
 /**
  * @brief init request-object
@@ -43,7 +43,7 @@ Request::Request() {}
  * @return false, if host or port ar missing in variables and venv, else true
  */
 bool
-Request::init(const std::string &host,
+HanamiRequest::init(const std::string &host,
               const std::string &port,
               const std::string &user,
               const std::string &pw,
@@ -92,7 +92,7 @@ Request::init(const std::string &host,
  * @return false, if something went wrong while sending or token-request failed, else true
  */
 bool
-Request::sendGetRequest(std::string &response,
+HanamiRequest::sendGetRequest(std::string &response,
                         const std::string &path,
                         const std::string &vars,
                         ErrorContainer &error)
@@ -110,7 +110,7 @@ Request::sendGetRequest(std::string &response,
  * @return false, if something went wrong while sending or token-request failed, else true
  */
 bool
-Request::sendPostRequest(std::string &response,
+HanamiRequest::sendPostRequest(std::string &response,
                          const std::string &path,
                          const std::string &vars,
                          const std::string &body,
@@ -129,7 +129,7 @@ Request::sendPostRequest(std::string &response,
  * @return false, if something went wrong while sending or token-request failed, else true
  */
 bool
-Request::sendPutRequest(std::string &response,
+HanamiRequest::sendPutRequest(std::string &response,
                         const std::string &path,
                         const std::string &vars,
                         const std::string &body,
@@ -148,7 +148,7 @@ Request::sendPutRequest(std::string &response,
  * @return false, if something went wrong while sending or token-request failed, else true
  */
 bool
-Request::sendDeleteRequest(std::string &response,
+HanamiRequest::sendDeleteRequest(std::string &response,
                            const std::string &path,
                            const std::string &vars,
                            ErrorContainer &error)
@@ -165,7 +165,7 @@ Request::sendDeleteRequest(std::string &response,
  * @return false, if varibale is not set, else true
  */
 bool
-Request::getEnvVar(std::string &content,
+HanamiRequest::getEnvVar(std::string &content,
                    const std::string &key) const
 {
     char* val = getenv(key.c_str());
@@ -185,7 +185,7 @@ Request::getEnvVar(std::string &content,
  * @return false, if something failed, else true
  */
 bool
-Request::requestToken(ErrorContainer &error)
+HanamiRequest::requestToken(ErrorContainer &error)
 {
     // get user for access
     if(m_user == "")
@@ -204,7 +204,7 @@ Request::requestToken(ErrorContainer &error)
     }
 
     // build request-path
-    std::string path = "control/misaka/token?user_name=";
+    std::string path = "/control/misaka/token?user_name=";
     path.append(m_user);
     path.append("&pw=");
     path.append(m_pw);
@@ -249,13 +249,13 @@ Request::requestToken(ErrorContainer &error)
  * @return false, if something went wrong while sending or token-request failed, else true
  */
 bool
-Request::makeRequest(std::string &response,
-                     const http::verb type,
-                     const std::string &path,
-                     const std::string &vars,
-                     const std::string &jsonBody,
-                     ErrorContainer &error)
-{
+HanamiRequest::makeRequest(std::string &response,
+                           const http::verb type,
+                           const std::string &path,
+                           const std::string &vars,
+                           const std::string &jsonBody,
+                           ErrorContainer &error)
+    {
     // get token if necessary
     if(m_token == "")
     {
@@ -265,9 +265,9 @@ Request::makeRequest(std::string &response,
     }
 
     // build real request-path with the ntoken
-    std::string target = path + "?token=" + m_token;
+    std::string target = path;
     if(vars != "") {
-        target.append("&" + vars);
+        target.append("?" + vars);
     }
 
     // send request
@@ -284,7 +284,10 @@ Request::makeRequest(std::string &response,
         }
 
         // build new request-path with the new token
-        target = path + "?token=" + m_token;
+        target = path;
+        if(m_token != "") {
+            target += "?token=" + m_token;
+        }
         if(vars != "") {
             target.append("&" + vars);
         }
@@ -310,11 +313,11 @@ Request::makeRequest(std::string &response,
  * @return false, if something went wrong while sending, else true
  */
 bool
-Request::makeRequest(std::string &response,
-                     const http::verb type,
-                     const std::string &target,
-                     const std::string &jsonBody,
-                     ErrorContainer &error)
+HanamiRequest::makeRequest(std::string &response,
+                           const http::verb type,
+                           const std::string &target,
+                           const std::string &jsonBody,
+                           ErrorContainer &error)
 {
     try
     {
@@ -349,6 +352,9 @@ Request::makeRequest(std::string &response,
         http::request<http::string_body> req{type, target, version};
         req.set(http::field::host, m_host);
         req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+        if(m_token != "") {
+            req.set("X-Auth-Token", m_token);
+        }
         if(jsonBody.size() > 0) {
            req.body() = jsonBody;
         }
@@ -358,7 +364,6 @@ Request::makeRequest(std::string &response,
         beast::flat_buffer buffer;
         http::response<http::string_body> res;
         http::read(stream, buffer, res);
-        std::cout << res << std::endl;
         response = res.body().c_str();
 
         // Gracefully close the stream
