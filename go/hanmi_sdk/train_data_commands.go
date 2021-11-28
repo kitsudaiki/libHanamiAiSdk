@@ -1,5 +1,5 @@
 /**
- * @file        user_commands.go
+ * @file        train_data_commands.go
   *
  * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
  *
@@ -26,21 +26,26 @@ import (
     "fmt"
 )
 
-func CreateUser_Request(user_name string, pw string, is_admin string, groups string) (bool, string) {
-	jsonBody := fmt.Sprintf("{user_name:%s,pw:%s,is_admin:%s,groups:%s}", user_name, pw, is_admin, groups)
-	path := "control/misaka/create_user"
+func UploadTrainData_Request(name string, dataType string, data string) (bool, string) {
+	jsonBody := fmt.Sprintf("{name:%s,type:%s,data:%s}", name, dataType, data)
+	path := "control/sagiri/train_data"
 	vars := ""
     return SendPost_Request(path, vars, jsonBody)
 }
 
-func GetUser_Request(user_name string) (bool, string) {
-	path := "control/misaka/user"
-	vars := fmt.Sprintf("user_name=%s", user_name)
+func GetTrainData_Request(data_uuid string, with_data bool) (bool, string) {
+	path := "control/sagiri/train_data"
+	vars := fmt.Sprintf("uuid=%s", data_uuid)
+	if with_data {
+		vars += "&with_data=true"
+	} else {
+		vars += "&with_data=false"
+	}
     return SendGet_Request(path, vars)
 }
 
-func ListUser_Request() (bool, string) {
-	path := fmt.Sprintf("control/misaka/users")
+func ListTrainData_Request() (bool, string) {
+	path := fmt.Sprintf("control/sagiri/train_datas")
 	vars := ""
     return SendGet_Request(path, vars)
 }

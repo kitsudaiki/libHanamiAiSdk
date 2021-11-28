@@ -1,4 +1,26 @@
-package http_request
+/**
+ * @file        http_request.go
+  *
+ * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
+ *
+ * @copyright   Apache License Version 2.0
+ *
+ *      Copyright 2021 Tobias Anker
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ */
+
+ package http_request
 
 import (
     "fmt"
@@ -27,6 +49,7 @@ func SendDelete_Request(path string, vars string) (bool, string) {
     return sendHanamiRequest("DELETE", path, vars, "")
 }
 
+
 func sendHanamiRequest(requestType string, path string, vars string, jsonBody string) (bool, string){
     var token = os.Getenv("HANAMI_TOKEN")
 
@@ -34,7 +57,7 @@ func sendHanamiRequest(requestType string, path string, vars string, jsonBody st
     if token == "" {
         success := requestToken()
         if success == false {
-            return false, ""
+            return false, "ACCESS DENIED!"
         }
     }
     
@@ -46,7 +69,7 @@ func sendHanamiRequest(requestType string, path string, vars string, jsonBody st
     if success && content == "Token is expired" {
         success := requestToken()
         if success == false {
-            return false, ""
+            return false, "ACCESS DENIED!"
         }
 
         // make new request with new token
@@ -70,13 +93,14 @@ func parseJson(input string) map[string]interface{} {
     return outputMap
 }
 
+
 func requestToken() bool {
     var user = os.Getenv("HANAMI_USER")
 	var pw = os.Getenv("HANAMI_PW")
 
     path := fmt.Sprintf("control/misaka/token?user_name=%s&pw=%s", user, pw)
 
-    success, content := sendGenericRequest("GET", path, "")
+    success, content := sendGenericRequest("GET", "", path, "")
     if success == false {
         return false
     }
@@ -89,11 +113,16 @@ func requestToken() bool {
 }
 
 func sendRequest(requestType string, token string, path string, vars string, jsonBody string) (bool, string) {
-    completePath := fmt.Sprintf("%s?token=%s%s", path, token, vars)
-    return sendGenericRequest(requestType, completePath, jsonBody)
+    completePath := path
+    if vars != "" {
+        completePath += fmt.Sprintf("?%s", vars)
+    }
+    
+    return sendGenericRequest(requestType, token, completePath, jsonBody)
 }
 
-func sendGenericRequest(requestType string, path string, jsonBody string) (bool, string) {
+
+func sendGenericRequest(requestType string, token string, path string, jsonBody string) (bool, string) {
     // read environment-variables
 	var address = os.Getenv("HANAMI_ADDRESS")
 	port, err := strconv.Atoi(os.Getenv("HANAMI_PORT"))
@@ -115,6 +144,9 @@ func sendGenericRequest(requestType string, path string, jsonBody string) (bool,
         panic(err)
     }
 
+    if token != "" {
+        req.Header.Set("X-Auth-Token", token)
+    }
     resp, err := http.DefaultClient.Do(req)
 
     // check result
