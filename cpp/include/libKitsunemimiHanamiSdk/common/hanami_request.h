@@ -1,21 +1,3 @@
-#ifndef HANAMI_REQUEST_H
-#define HANAMI_REQUEST_H
-
-#include <cstdlib>
-#include <iostream>
-#include <string>
-
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/ssl.hpp>
-#include <boost/beast/version.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/ssl/error.hpp>
-#include <boost/asio/ssl/stream.hpp>
-
-namespace beast = boost::beast; // from <boost/beast.hpp>
-namespace http = beast::http;   // from <boost/beast/http.hpp>
 /**
  * @file        request.h
  *
@@ -37,6 +19,25 @@ namespace http = beast::http;   // from <boost/beast/http.hpp>
  *      See the License for the specific language governing permissions and
  *      limitations under the License.
  */
+
+#ifndef HANAMI_REQUEST_H
+#define HANAMI_REQUEST_H
+
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+#include <boost/beast/core.hpp>
+#include <boost/beast/http.hpp>
+#include <boost/beast/ssl.hpp>
+#include <boost/beast/version.hpp>
+#include <boost/asio/connect.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ssl/error.hpp>
+#include <boost/asio/ssl/stream.hpp>
+
+namespace beast = boost::beast; // from <boost/beast.hpp>
+namespace http = beast::http;   // from <boost/beast/http.hpp>
 
 namespace net = boost::asio;    // from <boost/asio.hpp>
 namespace ssl = net::ssl;       // from <boost/asio/ssl.hpp>

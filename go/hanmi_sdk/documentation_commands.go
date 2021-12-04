@@ -22,25 +22,9 @@
 
 package http_request
 
-import (
-    "fmt"
-)
-
-func CreateUser_Request(user_name string, pw string, is_admin string, groups string) (bool, string) {
-	jsonBody := fmt.Sprintf("{user_name:%s,pw:%s,is_admin:%s,groups:%s}", user_name, pw, is_admin, groups)
-	path := "control/misaka/create_user"
+func GetRestApiDocumentation_Request() (bool, string) {
+	path := "control/misaka/documentation/api/rest"
 	vars := ""
-    return SendPost_Request(path, vars, jsonBody)
+	return SendGet_Request(path, vars)
 }
-
-func GetUser_Request(user_name string) (bool, string) {
-	path := "control/misaka/user"
-	vars := fmt.Sprintf("user_name=%s", user_name)
-    return SendGet_Request(path, vars)
-}
-
-func ListUser_Request() (bool, string) {
-	path := fmt.Sprintf("control/misaka/users")
-	vars := ""
-    return SendGet_Request(path, vars)
-}
+ 
