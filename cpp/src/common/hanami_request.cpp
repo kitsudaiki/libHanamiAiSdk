@@ -29,7 +29,24 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
+Kitsunemimi::Hanami::HanamiRequest* HanamiRequest::m_instance = nullptr;
+
 HanamiRequest::HanamiRequest() {}
+
+/**
+ * @brief static methode to get instance of the interface
+ *
+ * @return pointer to the static instance
+ */
+HanamiRequest*
+HanamiRequest::getInstance()
+{
+    if(m_instance == nullptr) {
+        m_instance = new HanamiRequest();
+    }
+
+    return m_instance;
+}
 
 /**
  * @brief init request-object
@@ -42,12 +59,13 @@ HanamiRequest::HanamiRequest() {}
  *
  * @return false, if host or port ar missing in variables and venv, else true
  */
+
 bool
 HanamiRequest::init(const std::string &host,
-              const std::string &port,
-              const std::string &user,
-              const std::string &pw,
-              const std::string &cacert)
+                    const std::string &port,
+                    const std::string &user,
+                    const std::string &pw,
+                    const std::string &cacert)
 {
     m_host = host;
     m_port = port;
@@ -84,6 +102,7 @@ HanamiRequest::init(const std::string &host,
 
 /**
  * @brief Request::sendGetRequest
+ *
  * @param response reference for response-output
  * @param path path to call
  * @param vars variables as string for the request-path
@@ -93,20 +112,22 @@ HanamiRequest::init(const std::string &host,
  */
 bool
 HanamiRequest::sendGetRequest(std::string &response,
-                        const std::string &path,
-                        const std::string &vars,
-                        ErrorContainer &error)
+                              const std::string &path,
+                              const std::string &vars,
+                              ErrorContainer &error)
 {
     return makeRequest(response, http::verb::get, path, vars, "", error);
 }
 
 /**
  * @brief Request::sendPostRequest
+ *
  * @param response reference for response-output
  * @param path path to call
  * @param vars variables as string for the request-path
  * @param body json-body as string
  * @param error reference for error-output
+ *
  * @return false, if something went wrong while sending or token-request failed, else true
  */
 bool
@@ -121,25 +142,28 @@ HanamiRequest::sendPostRequest(std::string &response,
 
 /**
  * @brief Request::sendPutRequest
+ *
  * @param response reference for response-output
  * @param path path to call
  * @param vars variables as string for the request-path
  * @param body json-body as string
  * @param error reference for error-output
+ *
  * @return false, if something went wrong while sending or token-request failed, else true
  */
 bool
 HanamiRequest::sendPutRequest(std::string &response,
-                        const std::string &path,
-                        const std::string &vars,
-                        const std::string &body,
-                        ErrorContainer &error)
+                              const std::string &path,
+                              const std::string &vars,
+                              const std::string &body,
+                              ErrorContainer &error)
 {
     return makeRequest(response, http::verb::put, path, vars, body, error);
 }
 
 /**
  * @brief Request::sendDeleteRequest
+ *
  * @param response reference for response-output
  * @param path path to call
  * @param vars variables as string for the request-path
@@ -149,9 +173,9 @@ HanamiRequest::sendPutRequest(std::string &response,
  */
 bool
 HanamiRequest::sendDeleteRequest(std::string &response,
-                           const std::string &path,
-                           const std::string &vars,
-                           ErrorContainer &error)
+                                 const std::string &path,
+                                 const std::string &vars,
+                                 ErrorContainer &error)
 {
     return makeRequest(response, http::verb::delete_, path, vars, "", error);
 }
@@ -211,7 +235,7 @@ HanamiRequest::requestToken(ErrorContainer &error)
 
     // make token-request
     std::string response;
-    if(makeRequest(response, http::verb::get, path, "", error) == false)
+    if(makeSingleRequest(response, http::verb::get, path, "", error) != 200)
     {
         error.addMeesage("failed to request token");
         return false;
@@ -271,7 +295,7 @@ HanamiRequest::makeRequest(std::string &response,
     }
 
     // send request
-    if(makeRequest(response, type, target, jsonBody, error) == false) {
+    if(makeSingleRequest(response, type, target, jsonBody, error) != 200) {
         return false;
     }
 
@@ -293,7 +317,7 @@ HanamiRequest::makeRequest(std::string &response,
         }
 
         // try request again
-        if(makeRequest(response, type, target, jsonBody, error) == false) {
+        if(makeSingleRequest(response, type, target, jsonBody, error) != 200) {
             return false;
         }
     }
@@ -312,13 +336,15 @@ HanamiRequest::makeRequest(std::string &response,
  *
  * @return false, if something went wrong while sending, else true
  */
-bool
-HanamiRequest::makeRequest(std::string &response,
-                           const http::verb type,
-                           const std::string &target,
-                           const std::string &jsonBody,
-                           ErrorContainer &error)
+uint16_t
+HanamiRequest::makeSingleRequest(std::string &response,
+                                 const http::verb type,
+                                 const std::string &target,
+                                 const std::string &jsonBody,
+                                 ErrorContainer &error)
 {
+    u_int16_t statusCode = 0;
+
     try
     {
         int version = 11;
@@ -348,16 +374,26 @@ HanamiRequest::makeRequest(std::string &response,
         beast::get_lowest_layer(stream).connect(results);
         stream.handshake(ssl::stream_base::client);
 
-        // run request
+        // create request
         http::request<http::string_body> req{type, target, version};
         req.set(http::field::host, m_host);
         req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
+        // add token
         if(m_token != "") {
             req.set("X-Auth-Token", m_token);
         }
-        if(jsonBody.size() > 0) {
+
+        // add body
+        if(jsonBody.size() > 0)
+        {
            req.body() = jsonBody;
+           req.set(http::field::content_type, "application/json");
+           req.set(http::field::content_length, jsonBody.size());
+           req.prepare_payload();
         }
+
+        // run request
         http::write(stream, req);
 
         // receive response
@@ -365,6 +401,10 @@ HanamiRequest::makeRequest(std::string &response,
         http::response<http::string_body> res;
         http::read(stream, buffer, res);
         response = res.body().c_str();
+        statusCode = res.result_int();
+        if(statusCode != 200) {
+            error.addMeesage(response);
+        }
 
         // Gracefully close the stream
         beast::error_code ec;
@@ -376,19 +416,20 @@ HanamiRequest::makeRequest(std::string &response,
             //        boost-asio-ssl-async-shutdown-always-finishes-with-an-error
             ec = {};
         }
-        if(ec) {
+        if(ec)
+        {
             error.addMeesage("failed to close http-connection");
-            return false;
+            return statusCode;
         }
     }
     catch(std::exception const& e)
     {
         error.addMeesage("Error while making http-request: "
                          + std::string(e.what()));
-        return false;
+        return statusCode;
     }
 
-    return true;
+    return statusCode;
 }
 
 }  // namespace Hanami

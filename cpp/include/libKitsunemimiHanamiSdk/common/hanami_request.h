@@ -53,7 +53,7 @@ namespace Hanami
 class HanamiRequest
 {
 public:
-    HanamiRequest();
+    static HanamiRequest* getInstance();
 
     bool init(const std::string &host = "",
               const std::string &port = "",
@@ -83,6 +83,9 @@ public:
                            const std::string &vars,
                            ErrorContainer &error);
 private:
+    HanamiRequest();
+    static HanamiRequest* m_instance;
+
     std::string m_host = "";
     std::string m_port = "";
     std::string m_cacert = "";
@@ -97,11 +100,11 @@ private:
                      const std::string &vars,
                      const std::string &jsonBody,
                      ErrorContainer &error);
-    bool makeRequest(std::string &response,
-                     const http::verb type,
-                     const std::string &target,
-                     const std::string &jsonBody,
-                     ErrorContainer &error);
+    uint16_t makeSingleRequest(std::string &response,
+                               const http::verb type,
+                               const std::string &target,
+                               const std::string &jsonBody,
+                               ErrorContainer &error);
     bool getEnvVar(std::string &content,
                    const std::string &key) const;
 };
