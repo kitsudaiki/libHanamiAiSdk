@@ -27,22 +27,25 @@ import (
 )
 
 func RunLearn_Request(number_of_inputs_per_cycle string, number_of_outputs_per_cycle string, number_of_cycles string, cluster_uuid string, inputs string, label string) (bool, string) {
-	jsonBody := fmt.Sprintf("{number_of_inputs_per_cycle:%s ,number_of_outputs_per_cycle:%s ,number_of_cycles:%s, ,cluster_uuid:%s ,inputs:%s, ,label:%s}", number_of_inputs_per_cycle, 
-							             number_of_outputs_per_cycle, 
-										 number_of_cycles, 
-										 cluster_uuid, 
-										 inputs, 
-										 label)
 	path := "control/kyouko/io"
 	vars := ""
+	jsonBody := fmt.Sprintf("{\"number_of_inputs_per_cycle\":%s, \"number_of_outputs_per_cycle\":%s, \"number_of_cycles\":%s, \"cluster_uuid\":\"%s\", \"inputs\":\"%s\", \"label\":\"%s\"}", 
+	                        number_of_inputs_per_cycle, 
+							number_of_outputs_per_cycle, 
+							number_of_cycles, 
+							cluster_uuid, 
+							inputs, 
+							label)
     return SendPost_Request(path, vars, jsonBody)
 }
 
 func RunAsk_Request(number_of_inputs_per_cycle string, number_of_cycles string, cluster_uuid string, inputs string) (bool, string) {
-	vars := fmt.Sprintf("{number_of_inputs_per_cycle:%s ,number_of_cycles:%s, ,cluster_uuid:%s ,inputs:%s}", number_of_inputs_per_cycle, 
-										number_of_cycles, 
-										cluster_uuid, 
-										inputs)
 	path := "control/kyouko/io"
-    return SendGet_Request(path, vars)
+	vars := ""
+	jsonBody := fmt.Sprintf("{\"number_of_inputs_per_cycle\":%s, \"number_of_cycles\":%s, \"cluster_uuid\":\"%s\", \"inputs\":\"%s\"}", 
+	                        number_of_inputs_per_cycle, 
+				    		number_of_cycles, 
+					    	cluster_uuid, 
+					    	inputs)
+	return SendPost_Request(path, vars, jsonBody)
 }

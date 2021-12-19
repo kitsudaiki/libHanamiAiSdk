@@ -144,12 +144,13 @@ func sendGenericRequest(requestType string, token string, path string, jsonBody 
         panic(err)
     }
 
+    // add token to header
     if token != "" {
         req.Header.Set("X-Auth-Token", token)
     }
-    resp, err := http.DefaultClient.Do(req)
 
-    // check result
+    // run request
+    resp, err := http.DefaultClient.Do(req)
     if err != nil {
         panic(err)
     }

@@ -27,9 +27,9 @@ import (
 )
 
 func UploadTrainData_Request(name string, dataType string, data string) (bool, string) {
-	jsonBody := fmt.Sprintf("{name:%s,type:%s,data:%s}", name, dataType, data)
 	path := "control/sagiri/train_data"
 	vars := ""
+	jsonBody := fmt.Sprintf("{\"name\":%s,\"type\":%s,\"data\":%s}", name, dataType, data)
     return SendPost_Request(path, vars, jsonBody)
 }
 

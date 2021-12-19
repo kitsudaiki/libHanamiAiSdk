@@ -1,5 +1,5 @@
 /**
- * @file        cluster_commands.go
+ * @file        train_data_commands.go
   *
  * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
  *
@@ -23,12 +23,10 @@
  package http_request
 
 import (
-    "fmt"
 )
 
-func CreateCluster_Request(data string) (bool, string) {
-	jsonBody := fmt.Sprintf("{\"data\":\"%s\"}", data)
-	path := "control/kyouko/cluster"
+func GetThreadMapping_Request() (bool, string) {
+	path := "control/azuki/threading"
 	vars := ""
-    return SendPost_Request(path, vars, jsonBody)
+    return SendGet_Request(path, vars)
 }
