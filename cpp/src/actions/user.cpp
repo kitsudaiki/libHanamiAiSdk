@@ -26,7 +26,7 @@ createUser(std::string &result,
            ErrorContainer &error)
 {
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/user";
+    const std::string path = "/control/misaka/v1/user";
     const std::string vars = "";
     const std::string jsonBody = "{\"user_name\":\""
                                  + userName
@@ -56,7 +56,7 @@ getUser(std::string &result,
         ErrorContainer &error)
 {
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/user";
+    const std::string path = "/control/misaka/v1/user";
     const std::string vars = "user_name=" + userName;
 
     return request->sendGetRequest(result, path, vars, error);
@@ -73,7 +73,7 @@ listUser(std::string &result,
          ErrorContainer &error)
 {
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/user/all";
+    const std::string path = "/control/misaka/v1/user/all";
 
     return request->sendGetRequest(result, path, "", error);
 }
@@ -91,7 +91,7 @@ deleteUser(std::string &result,
            ErrorContainer &error)
 {
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/user";
+    const std::string path = "/control/misaka/v1/user";
     const std::string vars = "user_name=" + userName;
 
     return request->sendDeleteRequest(result, path, vars, error);

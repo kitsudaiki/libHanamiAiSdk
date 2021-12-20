@@ -23,7 +23,7 @@
 package http_request
 
 func GetRestApiDocumentation_Request() (bool, string) {
-	path := "control/misaka/documentation/api/rest"
+	path := "control/misaka/v1/documentation/api/rest"
 	vars := ""
 	return SendGet_Request(path, vars)
 }

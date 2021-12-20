@@ -228,7 +228,7 @@ HanamiRequest::requestToken(ErrorContainer &error)
     }
 
     // build request-path
-    std::string path = "/control/misaka/token?user_name=";
+    std::string path = "/control/misaka/v1/token?user_name=";
     path.append(m_user);
     path.append("&pw=");
     path.append(m_pw);
@@ -373,6 +373,8 @@ HanamiRequest::makeSingleRequest(std::string &response,
         const auto results = resolver.resolve(m_host, m_port);
         beast::get_lowest_layer(stream).connect(results);
         stream.handshake(ssl::stream_base::client);
+
+        LOG_DEBUG("send http-request to '" + target + "'");
 
         // create request
         http::request<http::string_body> req{type, target, version};
