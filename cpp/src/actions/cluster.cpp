@@ -12,9 +12,9 @@ createCluster(std::string &result,
               ErrorContainer &error)
 {
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/cluster/generate";
+    const std::string path = "/control/kyouko/v1/cluster";
     const std::string vars = "";
-    const std::string jsonBody = "{\"cluster_name\":\""
+    const std::string jsonBody = "{\"name\":\""
                                  + clusterName
                                  + "\",\"template_uuid\":\""
                                  + templateUuid
@@ -30,7 +30,7 @@ getCluster(std::string &result,
 {
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/cluster";
-    const std::string vars = "cluster_name=" + clusterName;
+    const std::string vars = "name=" + clusterName;
 
     return request->sendGetRequest(result, path, vars, error);
 }
@@ -52,7 +52,7 @@ deleteCluster(std::string &result,
 {
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/cluster";
-    const std::string vars = "cluster_name=" + clusterName;
+    const std::string vars = "name=" + clusterName;
 
     return request->sendDeleteRequest(result, path, vars, error);
 }
