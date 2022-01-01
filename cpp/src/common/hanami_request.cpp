@@ -228,7 +228,7 @@ HanamiRequest::requestToken(ErrorContainer &error)
     }
 
     // build request-path
-    std::string path = "/control/misaka/v1/token?user_name=";
+    std::string path = "/control/misaka/v1/token?name=";
     path.append(m_user);
     path.append("&pw=");
     path.append(m_pw);

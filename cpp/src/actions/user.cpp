@@ -28,15 +28,15 @@ createUser(std::string &result,
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaka/v1/user";
     const std::string vars = "";
-    const std::string jsonBody = "{\"user_name\":\""
+    const std::string jsonBody = "{\"name\":\""
                                  + userName
                                  + "\",\"pw\":\""
                                  + password
                                  + "\",\"is_admin\":"
                                  + (isAdmin ? "true" : "false") +
-                                 + ",\"user_roles\":\""
+                                 + ",\"roles\":\""
                                  + roles
-                                 + "\",\"user_projects\":\""
+                                 + "\",\"projects\":\""
                                  + projects
                                  + "\"}";
 
@@ -57,7 +57,7 @@ getUser(std::string &result,
 {
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaka/v1/user";
-    const std::string vars = "user_name=" + userName;
+    const std::string vars = "name=" + userName;
 
     return request->sendGetRequest(result, path, vars, error);
 }
@@ -92,7 +92,7 @@ deleteUser(std::string &result,
 {
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaka/v1/user";
-    const std::string vars = "user_name=" + userName;
+    const std::string vars = "name=" + userName;
 
     return request->sendDeleteRequest(result, path, vars, error);
 }

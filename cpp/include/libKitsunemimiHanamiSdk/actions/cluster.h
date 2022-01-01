@@ -9,11 +9,10 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
-bool createClusterGenerate(std::string &result,
-                           const std::string &clusterName,
-                           const uint32_t numberOfInputs,
-                           const uint32_t numberOfOutputs,
-                           ErrorContainer &error);
+bool createCluster(std::string &result,
+                   const std::string &clusterName,
+                   const std::string &templateUuid,
+                   ErrorContainer &error);
 
 bool getCluster(std::string &result,
                 const std::string &clusterName,
