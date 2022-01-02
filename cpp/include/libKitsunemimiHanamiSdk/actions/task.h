@@ -11,20 +11,21 @@ namespace Hanami
 
 bool createLearnTask(std::string &result,
                      const std::string &clusterUuid,
-                     const std::string &inputs,
-                     const std::string &labels,
+                     const std::string &inputsUuid,
+                     const std::string &labelsUuid,
                      const std::string &type,
                      ErrorContainer &error);
 
 bool createRequestTask(std::string &result,
                        const std::string &clusterUuid,
-                       const std::string &inputs,
+                       const std::string &inputsUuid,
                        const std::string &type,
                        ErrorContainer &error);
 
 bool getTask(std::string &result,
              const std::string &taskUuid,
              const std::string &clusterUuid,
+             const bool withResult,
              ErrorContainer &error);
 
 bool listTask(std::string &result,

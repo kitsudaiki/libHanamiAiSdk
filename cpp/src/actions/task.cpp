@@ -8,8 +8,8 @@ namespace Hanami
 bool
 createLearnTask(std::string &result,
                 const std::string &clusterUuid,
-                const std::string &inputs,
-                const std::string &labels,
+                const std::string &inputsUuid,
+                const std::string &labelsUuid,
                 const std::string &type,
                 ErrorContainer &error)
 {
@@ -18,10 +18,10 @@ createLearnTask(std::string &result,
     const std::string vars = "";
     const std::string jsonBody = "{\"cluster_uuid\":\""
                                  + clusterUuid
-                                 + "\",\"inputs\":\""
-                                 + inputs
-                                 + "\",\"labels\":\""
-                                 + labels
+                                 + "\",\"input_data_uuid\":\""
+                                 + inputsUuid
+                                 + "\",\"label_data_uuid\":\""
+                                 + labelsUuid
                                  + "\",\"type\":\""
                                  + type
                                  + "\"}";
@@ -32,7 +32,7 @@ createLearnTask(std::string &result,
 bool
 createRequestTask(std::string &result,
                   const std::string &clusterUuid,
-                  const std::string &inputs,
+                  const std::string &inputsUuid,
                   const std::string &type,
                   ErrorContainer &error)
 {
@@ -41,8 +41,8 @@ createRequestTask(std::string &result,
     const std::string vars = "";
     const std::string jsonBody = "{\"cluster_uuid\":\""
                                  + clusterUuid
-                                 + "\",\"inputs\":\""
-                                 + inputs
+                                 + "\",\"input_data_uuid\":\""
+                                 + inputsUuid
                                  + "\",\"type\":\""
                                  + type
                                  + "\"}";
@@ -54,11 +54,16 @@ bool
 getTask(std::string &result,
         const std::string &taskUuid,
         const std::string &clusterUuid,
+        const bool withResult,
         ErrorContainer &error)
 {
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/task";
-    const std::string vars = "uuid=" + taskUuid + "&cluster_uuid=" + clusterUuid;
+    std::string vars = "uuid=" + taskUuid + "&cluster_uuid=" + clusterUuid;
+
+    if(withResult) {
+        vars.append("&with_result=true");
+    }
 
     return request->sendGetRequest(result, path, vars, error);
 }

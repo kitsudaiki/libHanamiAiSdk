@@ -1,5 +1,5 @@
-#ifndef CLUSTER_H
-#define CLUSTER_H
+#ifndef TRAIN_DATA_H
+#define TRAIN_DATA_H
 
 #include <libKitsunemimiCommon/logger.h>
 #include <libKitsunemimiHanamiSdk/common/hanami_request.h>
@@ -29,4 +29,4 @@ bool deleteTrainData(std::string &result,
 }
 }
 
-#endif // CLUSTER_H
+#endif // TRAIN_DATA_H
