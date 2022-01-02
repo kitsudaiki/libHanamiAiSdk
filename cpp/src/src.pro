@@ -68,13 +68,17 @@ INCLUDEPATH += $$PWD \
 
 HEADERS += \
     ../include/libKitsunemimiHanamiSdk/actions/cluster.h \
+    ../include/libKitsunemimiHanamiSdk/actions/task.h \
     ../include/libKitsunemimiHanamiSdk/actions/template.h \
+    ../include/libKitsunemimiHanamiSdk/actions/train_data.h \
     ../include/libKitsunemimiHanamiSdk/actions/user.h \
     ../include/libKitsunemimiHanamiSdk/common/hanami_request.h
 
 SOURCES += \
     actions/cluster.cpp \
+    actions/task.cpp \
     actions/template.cpp \
+    actions/train_data.cpp \
     actions/user.cpp \
     common/hanami_request.cpp
 
