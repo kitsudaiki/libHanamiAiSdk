@@ -8,11 +8,6 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
-/**
- * @brief getFileSize
- * @param filePath
- * @return
- */
 long
 getFileSize(const std::string &filePath)
 {
@@ -20,15 +15,6 @@ getFileSize(const std::string &filePath)
     return in.tellg();
 }
 
-/**
- * @brief createTrainData
- * @param result
- * @param dataName
- * @param dataType
- * @param dataSize
- * @param error
- * @return
- */
 bool
 createTrainData(std::string &result,
                 const std::string &dataName,
@@ -51,15 +37,6 @@ createTrainData(std::string &result,
     return true;
 }
 
-/**
- * @brief sendDataBlock
- * @param result
- * @param uuid
- * @param position
- * @param data
- * @param error
- * @return
- */
 bool
 sendDataBlock(std::string &result,
               const std::string &uuid,
@@ -81,15 +58,6 @@ sendDataBlock(std::string &result,
     return true;
 }
 
-/**
- * @brief uploadTrainData
- * @param result
- * @param dataName
- * @param dataType
- * @param localFilePath
- * @param error
- * @return
- */
 bool
 uploadTrainData(std::string &result,
                 const std::string &dataName,
@@ -114,7 +82,8 @@ uploadTrainData(std::string &result,
     const std::string uuid = jsonItem.get("uuid").getString();
 
     uint64_t i = 0;
-    uint64_t segmentSize = 24 * 4096;
+    const uint64_t numberOfSegmentsPerSent = 128;
+    uint64_t segmentSize = numberOfSegmentsPerSent * 4096;
     do
     {
         if(dataSize - i < segmentSize) {
@@ -122,7 +91,7 @@ uploadTrainData(std::string &result,
         }
 
         std::string base64Segment;
-        DataBuffer segment(24);
+        DataBuffer segment(numberOfSegmentsPerSent);
         segment.usedBufferSize = segmentSize;
         if(requestInputFile.readSegment(segment, i, segmentSize) == false) {
             return false;
