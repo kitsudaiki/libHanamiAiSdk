@@ -1,0 +1,17 @@
+# Changelog
+
+## [0.1.0] - 2022-01-09
+
+### Added
+- basic version with:
+    - go:
+        - user-handling
+        - request and download rest-api-docu
+
+    - cpp:
+        - user-handing
+        - upload train-data
+        - handling templates
+        - handling clusters
+        - create learn- and requests-tasks
+
