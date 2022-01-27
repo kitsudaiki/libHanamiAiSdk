@@ -47,6 +47,10 @@ using tcp = net::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
 namespace Kitsunemimi
 {
+namespace Sakura {
+class Session;
+class SessionController;
+}
 namespace Hanami
 {
 
@@ -60,6 +64,9 @@ public:
               const std::string &user = "",
               const std::string &pw = "",
               const std::string &cacert = "");
+
+    Sakura::Session* createSakuraSession(const std::string &target,
+                                         ErrorContainer &error);
 
     bool sendGetRequest(std::string &response,
                         const std::string &path,
@@ -85,6 +92,8 @@ public:
 private:
     HanamiRequest();
     static HanamiRequest* m_instance;
+
+    Sakura::SessionController* m_sessionController = nullptr;
 
     std::string m_host = "";
     std::string m_port = "";

@@ -22,12 +22,39 @@
 
 #include <libKitsunemimiHanamiSdk/common/hanami_request.h>
 
+#include <libKitsunemimiSakuraNetwork/session_controller.h>
+#include <libKitsunemimiSakuraNetwork/session.h>
+
 #include <libKitsunemimiJson/json_item.h>
 
 namespace Kitsunemimi
 {
 namespace Hanami
 {
+/**
+ * @brief errorCallback
+ */
+void errorCallback(Kitsunemimi::Sakura::Session*,
+                   const uint8_t,
+                   const std::string message)
+{
+    std::cout<<"ERROR: "<<message<<std::endl;
+}
+
+/**
+ * @brief sessionCreateCallback
+ * @param session
+ * @param sessionIdentifier
+ */
+void sessionCreateCallback(Kitsunemimi::Sakura::Session* ,
+                           const std::string )
+{
+}
+
+void sessionCloseCallback(Kitsunemimi::Sakura::Session*,
+                          const std::string)
+{
+}
 
 Kitsunemimi::Hanami::HanamiRequest* HanamiRequest::m_instance = nullptr;
 
@@ -74,19 +101,17 @@ HanamiRequest::init(const std::string &host,
     m_pw = pw;
 
     // get host-address
-    if(m_host == "")
+    if(m_host == ""
+        && getEnvVar(m_host, "HANAMI_ADDRESS") == false)
     {
-        if(getEnvVar(m_host, "HANAMI_ADDRESS") == false) {
-            return false;
-        }
+        return false;
     }
 
     // get target-port
-    if(m_port == "")
+    if(m_port == ""
+        && getEnvVar(m_port, "HANAMI_PORT") == false)
     {
-        if(getEnvVar(m_port, "HANAMI_PORT") == false) {
-            return false;
-        }
+        return false;
     }
 
     // ge ca-cert
@@ -98,6 +123,57 @@ HanamiRequest::init(const std::string &host,
     getEnvVar(m_token, "HANAMI_TOKEN");
 
     return true;
+}
+
+/**
+ * @brief HanamiRequest::createSakuraSession
+ * @param target
+ * @return
+ */
+Sakura::Session*
+HanamiRequest::createSakuraSession(const std::string &target,
+                                   Kitsunemimi::ErrorContainer &error)
+{
+    if(m_sessionController == nullptr)
+    {
+        m_sessionController = new Sakura::SessionController(&sessionCreateCallback,
+                                                            &sessionCloseCallback,
+                                                            &errorCallback);
+    }
+
+    const std::string sessionId = "asdfasdfasdf";
+
+    // create tls-connection to the torii
+    const int port = std::stoi(m_port);
+    Sakura::Session* session = m_sessionController->startTcpSession(m_host,
+                                                                       port + 1,
+
+                                                                       sessionId,
+                                                                       sessionId,
+                                                                       error);
+
+    if(session == nullptr) {
+        return nullptr;
+    }
+
+    // build request to forward session
+    const std::string path = "/control/torii/v1/forward_session";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"source_name\":\""
+                                 + sessionId
+                                 + "\",\"target_name\":\""
+                                 + target
+                                 + "\"}";
+
+    // send request to forward session
+    std::string result;
+    if(sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        session->closeSession(error);
+        return nullptr;
+    }
+
+    return session;
 }
 
 /**
@@ -132,10 +208,10 @@ HanamiRequest::sendGetRequest(std::string &response,
  */
 bool
 HanamiRequest::sendPostRequest(std::string &response,
-                         const std::string &path,
-                         const std::string &vars,
-                         const std::string &body,
-                         ErrorContainer &error)
+                               const std::string &path,
+                               const std::string &vars,
+                               const std::string &body,
+                               ErrorContainer &error)
 {
     return makeRequest(response, http::verb::post, path, vars, body, error);
 }
@@ -212,19 +288,17 @@ bool
 HanamiRequest::requestToken(ErrorContainer &error)
 {
     // get user for access
-    if(m_user == "")
+    if(m_user == ""
+        && getEnvVar(m_user, "HANAMI_USER") == false)
     {
-        if(getEnvVar(m_user, "HANAMI_USER") == false) {
-            return false;
-        }
+        return false;
     }
 
     // get password for access
-    if(m_pw == "")
+    if(m_pw == ""
+        && getEnvVar(m_pw, "HANAMI_PW") == false)
     {
-        if(getEnvVar(m_pw, "HANAMI_PW") == false) {
-            return false;
-        }
+        return false;
     }
 
     // build request-path
