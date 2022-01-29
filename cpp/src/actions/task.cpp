@@ -32,9 +32,7 @@ namespace Hanami
  *
  * @param result reference for response-message
  * @param clusterUuid uuid of the cluster, which should execute the task
- * @param inputsUuid uuid of the input-file on server
- * @param labelsUuid uuid of the label-file on server
- * @param type type of the data
+ * @param dataSetUuid uuid of the data-set-file on server
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -42,9 +40,7 @@ namespace Hanami
 bool
 createLearnTask(std::string &result,
                 const std::string &clusterUuid,
-                const std::string &inputsUuid,
-                const std::string &labelsUuid,
-                const std::string &type,
+                const std::string &dataSetUuid,
                 ErrorContainer &error)
 {
     // create request
@@ -53,12 +49,8 @@ createLearnTask(std::string &result,
     const std::string vars = "";
     const std::string jsonBody = "{\"cluster_uuid\":\""
                                  + clusterUuid
-                                 + "\",\"input_data_uuid\":\""
-                                 + inputsUuid
-                                 + "\",\"label_data_uuid\":\""
-                                 + labelsUuid
-                                 + "\",\"type\":\""
-                                 + type
+                                 + "\",\"data_set_uuid\":\""
+                                 + dataSetUuid
                                  + "\"}";
 
     // send request
@@ -70,8 +62,7 @@ createLearnTask(std::string &result,
  *
  * @param result reference for response-message
  * @param clusterUuid uuid of the cluster, which should execute the task
- * @param inputsUuid uuid of the input-file on server
- * @param type type of the data
+ * @param dataSetUuid uuid of the data-set-file on server
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -79,8 +70,7 @@ createLearnTask(std::string &result,
 bool
 createRequestTask(std::string &result,
                   const std::string &clusterUuid,
-                  const std::string &inputsUuid,
-                  const std::string &type,
+                  const std::string &dataSetUuid,
                   ErrorContainer &error)
 {
     // create request
@@ -89,10 +79,8 @@ createRequestTask(std::string &result,
     const std::string vars = "";
     const std::string jsonBody = "{\"cluster_uuid\":\""
                                  + clusterUuid
-                                 + "\",\"input_data_uuid\":\""
-                                 + inputsUuid
-                                 + "\",\"type\":\""
-                                 + type
+                                 + "\",\"data_set_uuid\":\""
+                                 + dataSetUuid
                                  + "\"}";
 
     // send request
