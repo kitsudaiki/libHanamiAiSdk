@@ -20,24 +20,39 @@ LIBS += -L../../libKitsunemimiCrypto/src/debug -lKitsunemimiCrypto
 LIBS += -L../../libKitsunemimiCrypto/src/release -lKitsunemimiCrypto
 INCLUDEPATH += ../../../libKitsunemimiCrypto/include
 
-LIBS += -lssl -lcryptopp
+LIBS += -L../../libKitsunemimiNetwork/src -lKitsunemimiNetwork
+LIBS += -L../../libKitsunemimiNetwork/src/debug -lKitsunemimiNetwork
+LIBS += -L../../libKitsunemimiNetwork/src/release -lKitsunemimiNetwork
+INCLUDEPATH += ../../../libKitsunemimiNetwork/include
+
+LIBS += -L../../libKitsunemimiSakuraNetwork/src -lKitsunemimiSakuraNetwork
+LIBS += -L../../libKitsunemimiSakuraNetwork/src/debug -lKitsunemimiSakuraNetwork
+LIBS += -L../../libKitsunemimiSakuraNetwork/src/release -lKitsunemimiSakuraNetwork
+INCLUDEPATH += ../../../libKitsunemimiSakuraNetwork/include
+
+LIBS += -L../../libKitsunemimiHanamiCommon/src -lKitsunemimiHanamiCommon
+LIBS += -L../../libKitsunemimiHanamiCommon/src/debug -lKitsunemimiHanamiCommon
+LIBS += -L../../libKitsunemimiHanamiCommon/src/release -lKitsunemimiHanamiCommon
+INCLUDEPATH += ../../../libKitsunemimiHanamiCommon/include
+
+LIBS += -lssl -lcryptopp -lcrypt
 
 INCLUDEPATH += $$PWD \
                $$PWD/../include
 
 HEADERS += \
     ../include/libKitsunemimiHanamiSdk/actions/cluster.h \
+    ../include/libKitsunemimiHanamiSdk/actions/data_set.h \
     ../include/libKitsunemimiHanamiSdk/actions/task.h \
     ../include/libKitsunemimiHanamiSdk/actions/template.h \
-    ../include/libKitsunemimiHanamiSdk/actions/train_data.h \
     ../include/libKitsunemimiHanamiSdk/actions/user.h \
     ../include/libKitsunemimiHanamiSdk/common/hanami_request.h
 
 SOURCES += \
     actions/cluster.cpp \
+    actions/data_set.cpp \
     actions/task.cpp \
     actions/template.cpp \
-    actions/train_data.cpp \
     actions/user.cpp \
     common/hanami_request.cpp
 

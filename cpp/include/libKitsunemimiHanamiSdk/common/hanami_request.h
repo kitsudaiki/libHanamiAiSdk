@@ -20,8 +20,8 @@
  *      limitations under the License.
  */
 
-#ifndef HANAMI_REQUEST_H
-#define HANAMI_REQUEST_H
+#ifndef KITSUNEMIMI_HANAMISDK_HANAMI_REQUEST_H
+#define KITSUNEMIMI_HANAMISDK_HANAMI_REQUEST_H
 
 #include <cstdlib>
 #include <iostream>
@@ -47,6 +47,10 @@ using tcp = net::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
 namespace Kitsunemimi
 {
+namespace Sakura {
+class Session;
+class SessionController;
+}
 namespace Hanami
 {
 
@@ -54,12 +58,16 @@ class HanamiRequest
 {
 public:
     static HanamiRequest* getInstance();
+    ~HanamiRequest();
 
     bool init(const std::string &host = "",
               const std::string &port = "",
               const std::string &user = "",
               const std::string &pw = "",
               const std::string &cacert = "");
+
+    Sakura::Session* createSakuraSession(const std::string &target,
+                                         ErrorContainer &error);
 
     bool sendGetRequest(std::string &response,
                         const std::string &path,
@@ -86,6 +94,8 @@ private:
     HanamiRequest();
     static HanamiRequest* m_instance;
 
+    Sakura::SessionController* m_sessionController = nullptr;
+
     std::string m_host = "";
     std::string m_port = "";
     std::string m_cacert = "";
@@ -109,7 +119,7 @@ private:
                    const std::string &key) const;
 };
 
-}  // namespace Hanami
-}  // namespace Kitsunemimi
+} // namespace Hanami
+} // namespace Kitsunemimi
 
-#endif // HANAMI_REQUEST_H
+#endif // KITSUNEMIMI_HANAMISDK_HANAMI_REQUEST_H
