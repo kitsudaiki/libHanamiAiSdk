@@ -25,6 +25,8 @@
 #include <libKitsunemimiSakuraNetwork/session_controller.h>
 #include <libKitsunemimiSakuraNetwork/session.h>
 
+#include <libKitsunemimiHanamiCommon/uuid.h>
+
 #include <libKitsunemimiJson/json_item.h>
 
 namespace Kitsunemimi
@@ -41,23 +43,15 @@ void errorCallback(Kitsunemimi::Sakura::Session*,
     std::cout<<"ERROR: "<<message<<std::endl;
 }
 
-/**
- * @brief sessionCreateCallback
- * @param session
- * @param sessionIdentifier
- */
-void sessionCreateCallback(Kitsunemimi::Sakura::Session* ,
-                           const std::string )
-{
-}
-
-void sessionCloseCallback(Kitsunemimi::Sakura::Session*,
-                          const std::string)
-{
-}
+// empty callbacks
+void sessionCreateCallback(Kitsunemimi::Sakura::Session*, const std::string) {}
+void sessionCloseCallback(Kitsunemimi::Sakura::Session*, const std::string) {}
 
 Kitsunemimi::Hanami::HanamiRequest* HanamiRequest::m_instance = nullptr;
 
+/**
+ * @brief constructor
+ */
 HanamiRequest::HanamiRequest() {}
 
 /**
@@ -76,6 +70,16 @@ HanamiRequest::getInstance()
 }
 
 /**
+ * @brief destructor
+ */
+HanamiRequest::~HanamiRequest()
+{
+    if(m_sessionController != nullptr) {
+        delete m_sessionController;
+    }
+}
+
+/**
  * @brief init request-object
  *
  * @param host target-host-address
@@ -86,7 +90,6 @@ HanamiRequest::getInstance()
  *
  * @return false, if host or port ar missing in variables and venv, else true
  */
-
 bool
 HanamiRequest::init(const std::string &host,
                     const std::string &port,
@@ -126,14 +129,18 @@ HanamiRequest::init(const std::string &host,
 }
 
 /**
- * @brief HanamiRequest::createSakuraSession
- * @param target
- * @return
+ * @brief create a sakura-session to a specific component on server-side
+ *
+ * @param target name of the target-component on server-side
+ * @param error reference for error-output
+ *
+ * @return pointer to session, which forwards to the requested component if successful, else nullptr
  */
 Sakura::Session*
 HanamiRequest::createSakuraSession(const std::string &target,
                                    Kitsunemimi::ErrorContainer &error)
 {
+    // init new session-container-isntance if not already done
     if(m_sessionController == nullptr)
     {
         m_sessionController = new Sakura::SessionController(&sessionCreateCallback,
@@ -141,16 +148,15 @@ HanamiRequest::createSakuraSession(const std::string &target,
                                                             &errorCallback);
     }
 
-    const std::string sessionId = "asdfasdfasdf";
+    const std::string sessionId = generateUuid().toString();
 
     // create tls-connection to the torii
     const int port = std::stoi(m_port);
     Sakura::Session* session = m_sessionController->startTcpSession(m_host,
-                                                                       port + 1,
-
-                                                                       sessionId,
-                                                                       sessionId,
-                                                                       error);
+                                                                    port + 1,
+                                                                    sessionId,
+                                                                    sessionId,
+                                                                    error);
 
     if(session == nullptr) {
         return nullptr;
@@ -159,10 +165,8 @@ HanamiRequest::createSakuraSession(const std::string &target,
     // build request to forward session
     const std::string path = "/control/torii/v1/forward_session";
     const std::string vars = "";
-    const std::string jsonBody = "{\"source_name\":\""
-                                 + sessionId
-                                 + "\",\"target_name\":\""
-                                 + target
+    const std::string jsonBody = "{\"source_name\":\"" + sessionId
+                                 + "\",\"target_name\":\"" + target
                                  + "\"}";
 
     // send request to forward session
@@ -508,5 +512,5 @@ HanamiRequest::makeSingleRequest(std::string &response,
     return statusCode;
 }
 
-}  // namespace Hanami
-}  // namespace Kitsunemimi
+} // namespace Hanami
+} // namespace Kitsunemimi

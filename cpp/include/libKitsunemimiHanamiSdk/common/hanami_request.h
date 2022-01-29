@@ -20,8 +20,8 @@
  *      limitations under the License.
  */
 
-#ifndef HANAMI_REQUEST_H
-#define HANAMI_REQUEST_H
+#ifndef KITSUNEMIMI_HANAMISDK_HANAMI_REQUEST_H
+#define KITSUNEMIMI_HANAMISDK_HANAMI_REQUEST_H
 
 #include <cstdlib>
 #include <iostream>
@@ -58,6 +58,7 @@ class HanamiRequest
 {
 public:
     static HanamiRequest* getInstance();
+    ~HanamiRequest();
 
     bool init(const std::string &host = "",
               const std::string &port = "",
@@ -118,7 +119,7 @@ private:
                    const std::string &key) const;
 };
 
-}  // namespace Hanami
-}  // namespace Kitsunemimi
+} // namespace Hanami
+} // namespace Kitsunemimi
 
-#endif // HANAMI_REQUEST_H
+#endif // KITSUNEMIMI_HANAMISDK_HANAMI_REQUEST_H
