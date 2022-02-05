@@ -33,8 +33,7 @@ namespace Hanami
 
 bool createTemplate(std::string &result,
                     const std::string &templateName,
-                    const uint32_t numberOfInputs,
-                    const uint32_t numberOfOutputs,
+                    const std::string &dataSetUuid,
                     ErrorContainer &error);
 
 bool getTemplate(std::string &result,
