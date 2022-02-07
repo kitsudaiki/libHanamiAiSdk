@@ -44,7 +44,6 @@ bool createRequestTask(std::string &result,
 bool getTask(std::string &result,
              const std::string &taskUuid,
              const std::string &clusterUuid,
-             const bool withResult,
              ErrorContainer &error);
 
 bool listTask(std::string &result,

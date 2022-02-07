@@ -93,7 +93,6 @@ createRequestTask(std::string &result,
  * @param result reference for response-message
  * @param taskUuid uuid of the requested task
  * @param clusterUuid uuid of the cluster, where the task belongs to
- * @param withResult set to trus, if also result should be returned in case that the task is finish
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -102,18 +101,12 @@ bool
 getTask(std::string &result,
         const std::string &taskUuid,
         const std::string &clusterUuid,
-        const bool withResult,
         ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/task";
     std::string vars = "uuid=" + taskUuid + "&cluster_uuid=" + clusterUuid;
-
-    // in case the result of the task should be retruned as well
-    if(withResult) {
-        vars.append("&with_result=true");
-    }
 
     // send request
     return request->sendGetRequest(result, path, vars, error);

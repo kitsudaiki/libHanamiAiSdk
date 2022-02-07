@@ -24,6 +24,7 @@
 
 #include <libKitsunemimiCrypto/common.h>
 #include <libKitsunemimiJson/json_item.h>
+#include <libKitsunemimiCommon/common_items/data_items.h>
 
 #include <libKitsunemimiSakuraNetwork/session_controller.h>
 #include <libKitsunemimiSakuraNetwork/session.h>
@@ -243,6 +244,37 @@ uploadMnistData(std::string &result,
     session->closeSession(error);
     // wait a second for the cleaner-thread to fully close the session
     sleep(1);
+
+    return true;
+}
+
+/**
+ * @brief check values against a data-set to get correctness
+ *
+ * @param result reference for response-message
+ * @param resultUuid uuid of the result-set to compare
+ * @param dataUuid uuid of the data-set to compare to
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+checkDataset(std::string &result,
+             const std::string &resultUuid,
+             const std::string &dataUuid,
+             ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/sagiri/v1/data_set/check";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"data_set_uuid\":\"" + dataUuid + "\""
+                                 ",\"result_uuid\":\"" + resultUuid + "\"}";
+
+    // send request
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false) {
+        return false;
+    }
 
     return true;
 }
