@@ -31,6 +31,11 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
+bool uploadCsvData(std::string &result,
+                   const std::string &dataSetName,
+                   const std::string &inputFilePath,
+                   ErrorContainer &error);
+
 bool uploadMnistData(std::string &result,
                      const std::string &dataSetName,
                      const std::string &inputFilePath,

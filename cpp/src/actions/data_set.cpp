@@ -49,6 +49,68 @@ getFileSize(const std::string &filePath)
 }
 
 /**
+ * @brief initialize a new csv-dataset in sagiri
+ *
+ * @param result reference for response-message
+ * @param dataSetName name for the new data-set
+ * @param inputDataSize size of the file with the input-data
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+createCsvDataSet(std::string &result,
+                 const std::string &dataSetName,
+                 const uint64_t inputDataSize,
+                 ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/sagiri/v1/csv/data_set";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"name\":\""    + dataSetName + "\""
+                                 ",\"input_data_size\":" + std::to_string(inputDataSize) + "}";
+
+    // send request
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * @brief finalize data-set
+ *
+ * @param result reference for response-message
+ * @param uuid uuid to identify the data-set
+ * @param inputUuid uuid to identify the temporary file with the input-data on server-side
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+finalizeCsvDataSet(std::string &result,
+                   const std::string &uuid,
+                   const std::string &inputUuid,
+                   ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/sagiri/v1/csv/data_set";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"uuid\":\""    + uuid + "\""
+                                 ",\"uuid_input_file\":\"" + inputUuid + "\"}";
+
+    // send request
+    if(request->sendPutRequest(result, path, vars, jsonBody, error) == false) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * @brief initialize a new mnist-dataset in sagiri
  *
  * @param result reference for response-message
@@ -175,6 +237,70 @@ sendFile(Sakura::Session* session,
 
     delete[] sendBuffer;
     return success;
+}
+
+/**
+ * @brief upload new csv-data-set to sagiri
+ *
+ * @param result reference for response-message
+ * @param dataSetName name for the new data-set
+ * @param inputFilePath path to file with the inputs
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+uploadCsvData(std::string &result,
+              const std::string &dataSetName,
+              const std::string &inputFilePath,
+              ErrorContainer &error)
+{
+    // init new mnist-data-set
+    if(createCsvDataSet(result,
+                        dataSetName,
+                        getFileSize(inputFilePath),
+                        error) == false)
+    {
+        return false;
+    }
+
+    // parse output to get the uuid
+    Kitsunemimi::Json::JsonItem jsonItem;
+    if(jsonItem.parse(result, error) == false)
+    {
+        LOG_ERROR(error);
+        return false;
+    }
+
+    // get ids from inital reponse to identify the file-transfer
+    const std::string uuid = jsonItem.get("uuid").getString();
+    const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
+
+    HanamiRequest* request = HanamiRequest::getInstance();
+    Sakura::Session* session = request->createSakuraSession("sagiri", error);
+    if(session == nullptr)
+    {
+        LOG_ERROR(error);
+        return false;
+    }
+
+    // send files
+    if(sendFile(session, inputUuid, inputFilePath, error) == false) {
+        return false;
+    }
+
+    // TODO: check via rest-api-call, if files are complete on server-side
+    sleep(1);
+
+    if(finalizeCsvDataSet(result, uuid, inputUuid, error) == false) {
+        return false;
+    }
+
+    session->closeSession(error);
+    // wait a second for the cleaner-thread to fully close the session
+    sleep(1);
+
+    return true;
 }
 
 /**
