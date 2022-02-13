@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0] - 2022-02-14
+
+### Changed
+- cpp:
+    - process to upload data by using sakura-networking instead of http
+    - changed request of results
+
+
 ## [0.1.0] - 2022-01-09
 
 ### Added
