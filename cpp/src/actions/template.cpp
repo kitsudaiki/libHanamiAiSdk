@@ -58,20 +58,20 @@ createTemplate(std::string &result,
  * @brief get a specific template from kyouko
  *
  * @param result reference for response-message
- * @param templateName name of the requested template
+ * @param templateUuid uuid of the template to dele
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 getTemplate(std::string &result,
-            const std::string &templateName,
+            const std::string &templateUuid,
             ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/template";
-    const std::string vars = "name=" + templateName;
+    const std::string vars = "uuid=" + templateUuid;
 
     // send request
     return request->sendGetRequest(result, path, vars, error);
@@ -101,20 +101,20 @@ listTemplate(std::string &result,
  * @brief delete a template form kyouko
  *
  * @param result reference for response-message
- * @param templateName name of the template to dele
+ * @param templateUuid uuid of the template to dele
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 deleteTemplate(std::string &result,
-               const std::string &templateName,
+               const std::string &templateUuid,
                ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/template";
-    const std::string vars = "name=" + templateName;
+    const std::string vars = "uuid=" + templateUuid;
 
     // send request
     return request->sendDeleteRequest(result, path, vars, error);

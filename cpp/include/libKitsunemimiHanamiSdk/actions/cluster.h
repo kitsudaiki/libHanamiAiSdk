@@ -37,14 +37,14 @@ bool createCluster(std::string &result,
                    ErrorContainer &error);
 
 bool getCluster(std::string &result,
-                const std::string &clusterName,
+                const std::string &clusterUuid,
                 ErrorContainer &error);
 
 bool listCluster(std::string &result,
                  ErrorContainer &error);
 
 bool deleteCluster(std::string &result,
-                   const std::string &clusterName,
+                   const std::string &clusterUuid,
                    ErrorContainer &error);
 
 } // namespace Hanami

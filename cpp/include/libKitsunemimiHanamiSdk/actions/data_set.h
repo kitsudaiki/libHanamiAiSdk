@@ -43,8 +43,8 @@ bool uploadMnistData(std::string &result,
                      ErrorContainer &error);
 
 bool checkDataset(std::string &result,
-                  const std::string &resultUuid,
                   const std::string &dataUuid,
+                  const std::string &resultUuid,
                   ErrorContainer &error);
 
 bool getDataset(std::string &result,
