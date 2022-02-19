@@ -61,20 +61,20 @@ createCluster(std::string &result,
  * @brief get information of a cluster from kyouko
  *
  * @param result reference for response-message
- * @param clusterName name of the requested cluster
+ * @param clusterUuid uuid of the cluster to delete
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 getCluster(std::string &result,
-           const std::string &clusterName,
+           const std::string &clusterUuid,
            ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/cluster";
-    const std::string vars = "name=" + clusterName;
+    const std::string vars = "uuid=" + clusterUuid;
 
     // send request
     return request->sendGetRequest(result, path, vars, error);
@@ -104,20 +104,20 @@ listCluster(std::string &result,
  * @brief delete a cluster with all its tasks from kyouko
  *
  * @param result reference for response-message
- * @param clusterName name of the cluster to delete
+ * @param clusterUuid uuid of the cluster to delete
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 deleteCluster(std::string &result,
-              const std::string &clusterName,
+              const std::string &clusterUuid,
               ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/cluster";
-    const std::string vars = "name=" + clusterName;
+    const std::string vars = "uuid=" + clusterUuid;
 
     // send request
     return request->sendDeleteRequest(result, path, vars, error);

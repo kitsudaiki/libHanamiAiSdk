@@ -378,16 +378,16 @@ uploadMnistData(std::string &result,
  * @brief check values against a data-set to get correctness
  *
  * @param result reference for response-message
- * @param resultUuid uuid of the result-set to compare
  * @param dataUuid uuid of the data-set to compare to
+ * @param resultUuid uuid of the result-set to compare
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 checkDataset(std::string &result,
-             const std::string &resultUuid,
              const std::string &dataUuid,
+             const std::string &resultUuid,
              ErrorContainer &error)
 {
     // create request

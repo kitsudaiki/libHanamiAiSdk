@@ -37,14 +37,14 @@ bool createTemplate(std::string &result,
                     ErrorContainer &error);
 
 bool getTemplate(std::string &result,
-                 const std::string &templateName,
+                 const std::string &templateUuid,
                  ErrorContainer &error);
 
 bool listTemplate(std::string &result,
                   ErrorContainer &error);
 
 bool deleteTemplate(std::string &result,
-                    const std::string &templateName,
+                    const std::string &templateUuid,
                     ErrorContainer &error);
 
 } // namespace Hanami
