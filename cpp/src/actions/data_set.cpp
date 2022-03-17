@@ -21,6 +21,7 @@
  */
 
 #include <libKitsunemimiHanamiSdk/actions/data_set.h>
+#include <common/websocket_client.h>
 
 #include <libKitsunemimiCrypto/common.h>
 #include <libKitsunemimiJson/json_item.h>
@@ -189,7 +190,7 @@ finalizeMnistDataSet(std::string &result,
  * @return true, if successful, else false
  */
 bool
-sendFile(Sakura::Session* session,
+sendFile(WebsocketClient* client,
          const std::string &uuid,
          const std::string &filePath,
          ErrorContainer &error)
@@ -225,7 +226,7 @@ sendFile(Sakura::Session* session,
         }
 
         // send segment
-        if(session->sendStreamData(sendBuffer, segmentSize + 44, error) == false)
+        if(client->sendMessage(sendBuffer, segmentSize + 44) == false)
         {
             success = false;
             break;
@@ -276,16 +277,20 @@ uploadCsvData(std::string &result,
     const std::string uuid = jsonItem.get("uuid").getString();
     const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
 
-    HanamiRequest* request = HanamiRequest::getInstance();
-    Sakura::Session* session = request->createSakuraSession("sagiri", error);
-    if(session == nullptr)
+    WebsocketClient wsClient;
+    const bool ret = wsClient.initClient(HanamiRequest::getInstance()->getToken(),
+                                         "sagiri",
+                                         HanamiRequest::getInstance()->getHost(),
+                                         HanamiRequest::getInstance()->getPort());
+    if(ret)
     {
+        error.addMeesage("Failed to init websocket to sagiri");
         LOG_ERROR(error);
         return false;
     }
 
     // send files
-    if(sendFile(session, inputUuid, inputFilePath, error) == false) {
+    if(sendFile(&wsClient, inputUuid, inputFilePath, error) == false) {
         return false;
     }
 
@@ -295,10 +300,6 @@ uploadCsvData(std::string &result,
     if(finalizeCsvDataSet(result, uuid, inputUuid, error) == false) {
         return false;
     }
-
-    session->closeSession(error);
-    // wait a second for the cleaner-thread to fully close the session
-    sleep(1);
 
     return true;
 }
@@ -344,19 +345,23 @@ uploadMnistData(std::string &result,
     const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
     const std::string labelUuid = jsonItem.get("uuid_label_file").getString();
 
-    HanamiRequest* request = HanamiRequest::getInstance();
-    Sakura::Session* session = request->createSakuraSession("sagiri", error);
-    if(session == nullptr)
+    WebsocketClient wsClient;
+    const bool ret = wsClient.initClient(HanamiRequest::getInstance()->getToken(),
+                                         "sagiri",
+                                         HanamiRequest::getInstance()->getHost(),
+                                         HanamiRequest::getInstance()->getPort());
+    if(ret)
     {
+        error.addMeesage("Failed to init websocket to sagiri");
         LOG_ERROR(error);
         return false;
     }
 
     // send files
-    if(sendFile(session, inputUuid, inputFilePath, error) == false) {
+    if(sendFile(&wsClient, inputUuid, inputFilePath, error) == false) {
         return false;
     }
-    if(sendFile(session, labelUuid, labelFilePath, error) == false) {
+    if(sendFile(&wsClient, labelUuid, labelFilePath, error) == false) {
         return false;
     }
 
@@ -366,10 +371,6 @@ uploadMnistData(std::string &result,
     if(finalizeMnistDataSet(result, uuid, inputUuid, labelUuid, error) == false) {
         return false;
     }
-
-    session->closeSession(error);
-    // wait a second for the cleaner-thread to fully close the session
-    sleep(1);
 
     return true;
 }

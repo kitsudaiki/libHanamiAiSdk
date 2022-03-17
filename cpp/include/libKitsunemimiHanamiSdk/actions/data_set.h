@@ -24,7 +24,7 @@
 #define KITSUNEMIMI_HANAMISDK_DATA_SET_H
 
 #include <libKitsunemimiCommon/logger.h>
-#include <libKitsunemimiHanamiSdk/common/hanami_request.h>
+#include <libKitsunemimiHanamiSdk/common/http_client.h>
 
 namespace Kitsunemimi
 {

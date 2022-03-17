@@ -20,7 +20,7 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/common/hanami_request.h>
+#include <libKitsunemimiHanamiSdk/common/http_client.h>
 
 #include <libKitsunemimiSakuraNetwork/session_controller.h>
 #include <libKitsunemimiSakuraNetwork/session.h>
@@ -53,6 +53,28 @@ Kitsunemimi::Hanami::HanamiRequest* HanamiRequest::m_instance = nullptr;
  * @brief constructor
  */
 HanamiRequest::HanamiRequest() {}
+
+const std::string&
+HanamiRequest::getHost() const
+{
+    return m_host;
+}
+
+const std::string&
+HanamiRequest::getPort() const
+{
+    return m_port;
+}
+
+/**
+ * @brief HanamiRequest::token
+ * @return
+ */
+const std::string&
+HanamiRequest::getToken() const
+{
+    return m_token;
+}
 
 /**
  * @brief static methode to get instance of the interface

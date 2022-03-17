@@ -46,7 +46,8 @@ HEADERS += \
     ../include/libKitsunemimiHanamiSdk/actions/task.h \
     ../include/libKitsunemimiHanamiSdk/actions/template.h \
     ../include/libKitsunemimiHanamiSdk/actions/user.h \
-    ../include/libKitsunemimiHanamiSdk/common/hanami_request.h
+    ../include/libKitsunemimiHanamiSdk/common/http_client.h \
+    common/websocket_client.h
 
 SOURCES += \
     actions/cluster.cpp \
@@ -54,6 +55,7 @@ SOURCES += \
     actions/task.cpp \
     actions/template.cpp \
     actions/user.cpp \
-    common/hanami_request.cpp
+    common/http_client.cpp \
+    common/websocket_client.cpp
 
 

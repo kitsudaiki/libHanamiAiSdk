@@ -90,6 +90,11 @@ public:
                            const std::string &path,
                            const std::string &vars,
                            ErrorContainer &error);
+
+    const std::string& getToken() const;
+    const std::string& getPort() const;
+    const std::string& getHost() const;
+
 private:
     HanamiRequest();
     static HanamiRequest* m_instance;
