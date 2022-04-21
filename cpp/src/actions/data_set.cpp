@@ -183,7 +183,8 @@ finalizeMnistDataSet(std::string &result,
  * @brief send data to sagiri
  *
  * @param session session over which the data should be send
- * @param uuid uuid of the file for identification in sagiri
+ * @param datasetId uuid of the dataset where the file belongs to
+ * @param fileId uuid of the file for identification in sagiri
  * @param filePath path to file, which should be send
  * @param error reference for error-output
  *
@@ -191,7 +192,8 @@ finalizeMnistDataSet(std::string &result,
  */
 bool
 sendFile(WebsocketClient* client,
-         const std::string &uuid,
+         const std::string &datasetId,
+         const std::string &fileId,
          const std::string &filePath,
          ErrorContainer &error)
 {
@@ -200,16 +202,17 @@ sendFile(WebsocketClient* client,
     Kitsunemimi::BinaryFile sourceFile(filePath);
 
     bool success = true;
-    uint64_t i = 0;
+    uint32_t i = 0;
 
     // prepare buffer
     uint64_t segmentSize = 96 * 1024;
     uint8_t* sendBuffer = new uint8_t[128*1024];
-    memcpy(sendBuffer, uuid.c_str(), 36);
+    memcpy(&sendBuffer[0], datasetId.c_str(), 36);
+    memcpy(&sendBuffer[36], fileId.c_str(), 36);
 
     do
     {
-        memcpy(&sendBuffer[36], &i, 8);
+        memcpy(&sendBuffer[72], &i, 4);
 
         // check the size for the last segment
         segmentSize = 96 * 1024;
@@ -218,7 +221,7 @@ sendFile(WebsocketClient* client,
         }
 
         // read segment of the local file
-        if(sourceFile.readDataFromFile(&sendBuffer[44], i, segmentSize) == false)
+        if(sourceFile.readDataFromFile(&sendBuffer[76], i, segmentSize) == false)
         {
             success = false;
             error.addMeesage("Failed to read file '" + filePath + "'");
@@ -226,7 +229,7 @@ sendFile(WebsocketClient* client,
         }
 
         // send segment
-        if(client->sendMessage(sendBuffer, segmentSize + 44) == false)
+        if(client->sendMessage(sendBuffer, segmentSize + 76) == false)
         {
             success = false;
             break;
@@ -238,6 +241,44 @@ sendFile(WebsocketClient* client,
 
     delete[] sendBuffer;
     return success;
+}
+
+/**
+ * @brief wait until the upload of all tempfiles are complete
+ *
+ * @param uuid uuid of the dataset
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+waitUntilFullyUploaded(const std::string &uuid,
+                       ErrorContainer &error)
+{
+    // TODO: add timeout-timer
+    bool completeUploaded = false;
+    while(completeUploaded == false)
+    {
+        sleep(1);
+
+        std::string progressStr = "";
+        if(getDatasetProgress(progressStr, uuid, error) == false)
+        {
+            LOG_ERROR(error);
+            return false;
+        }
+
+        Kitsunemimi::Json::JsonItem progress;
+        if(progress.parse(progressStr, error) == false)
+        {
+            LOG_ERROR(error);
+            return false;
+        }
+
+        completeUploaded = progress.get("complete").getBool();
+    }
+
+    return true;
 }
 
 /**
@@ -290,14 +331,21 @@ uploadCsvData(std::string &result,
     }
 
     // send files
-    if(sendFile(&wsClient, inputUuid, inputFilePath, error) == false) {
+    if(sendFile(&wsClient, uuid, inputUuid, inputFilePath, error) == false)
+    {
+        LOG_ERROR(error);
         return false;
     }
 
-    // TODO: check via rest-api-call, if files are complete on server-side
-    sleep(1);
+    if(waitUntilFullyUploaded(uuid, error) == false)
+    {
+        LOG_ERROR(error);
+        return false;
+    }
 
-    if(finalizeCsvDataSet(result, uuid, inputUuid, error) == false) {
+    if(finalizeCsvDataSet(result, uuid, inputUuid, error) == false)
+    {
+        LOG_ERROR(error);
         return false;
     }
 
@@ -350,7 +398,7 @@ uploadMnistData(std::string &result,
                                          "sagiri",
                                          HanamiRequest::getInstance()->getHost(),
                                          HanamiRequest::getInstance()->getPort());
-    if(ret)
+    if(ret == false)
     {
         error.addMeesage("Failed to init websocket to sagiri");
         LOG_ERROR(error);
@@ -358,17 +406,26 @@ uploadMnistData(std::string &result,
     }
 
     // send files
-    if(sendFile(&wsClient, inputUuid, inputFilePath, error) == false) {
+    if(sendFile(&wsClient, uuid, inputUuid, inputFilePath, error) == false)
+    {
+        LOG_ERROR(error);
         return false;
     }
-    if(sendFile(&wsClient, labelUuid, labelFilePath, error) == false) {
+    if(sendFile(&wsClient, uuid, labelUuid, labelFilePath, error) == false)
+    {
+        LOG_ERROR(error);
         return false;
     }
 
-    // TODO: check via rest-api-call, if files are complete on server-side
-    sleep(1);
+    if(waitUntilFullyUploaded(uuid, error) == false)
+    {
+        LOG_ERROR(error);
+        return false;
+    }
 
-    if(finalizeMnistDataSet(result, uuid, inputUuid, labelUuid, error) == false) {
+    if(finalizeMnistDataSet(result, uuid, inputUuid, labelUuid, error) == false)
+    {
+        LOG_ERROR(error);
         return false;
     }
 
@@ -470,6 +527,29 @@ deleteDataset(std::string &result,
 
     // send request
     return request->sendDeleteRequest(result, path, vars, error);
+}
+
+/**
+ * @brief check progress of file-upload
+ *
+ * @param result reference for response-message
+ * @param dataUuid uuid of the data-set to delete
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+getDatasetProgress(std::string &result,
+                   const std::string &dataUuid,
+                   ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/sagiri/v1/data_set/progress";
+    const std::string vars = "uuid=" + dataUuid;
+
+    // send request
+    return request->sendGetRequest(result, path, vars, error);
 }
 
 } // namespace Hanami

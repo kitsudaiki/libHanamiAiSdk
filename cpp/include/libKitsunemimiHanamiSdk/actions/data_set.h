@@ -58,6 +58,10 @@ bool deleteDataset(std::string &result,
                    const std::string &dataUuid,
                    ErrorContainer &error);
 
+bool getDatasetProgress(std::string &result,
+                   const std::string &dataUuid,
+                   ErrorContainer &error);
+
 } // namespace Hanami
 } // namespace Kitsunemimi
 

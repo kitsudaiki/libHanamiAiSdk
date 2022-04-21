@@ -491,7 +491,7 @@ HanamiRequest::makeSingleRequest(std::string &response,
         {
            req.body() = jsonBody;
            req.set(http::field::content_type, "application/json");
-           req.set(http::field::content_length, jsonBody.size());
+           req.content_length(jsonBody.size());
            req.prepare_payload();
         }
 
