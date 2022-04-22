@@ -84,15 +84,10 @@ echo "##########################################################################
 echo ""
 get_required_kitsune_lib_repo "libKitsunemimiCommon" "v0.25.3" 8
 get_required_kitsune_lib_repo "libKitsunemimiJson" "v0.11.3" 1
-get_required_kitsune_lib_repo "libKitsunemimiNetwork" "v0.8.2" 8
 echo ""
 echo "###########################################################################################################"
 echo ""
 get_required_private_repo_github "libKitsunemimiCrypto" "v0.2.0" 8
-echo ""
-echo "###########################################################################################################"
-echo ""
-get_required_kitsune_lib_repo "libKitsunemimiSakuraNetwork" "v0.8.4" 8
 echo ""
 echo "###########################################################################################################"
 echo ""
