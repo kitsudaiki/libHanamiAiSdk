@@ -27,9 +27,6 @@
 #include <libKitsunemimiJson/json_item.h>
 #include <libKitsunemimiCommon/common_items/data_items.h>
 
-#include <libKitsunemimiSakuraNetwork/session_controller.h>
-#include <libKitsunemimiSakuraNetwork/session.h>
-
 namespace Kitsunemimi
 {
 namespace Hanami

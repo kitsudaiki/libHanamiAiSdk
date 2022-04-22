@@ -22,9 +22,6 @@
 
 #include <libKitsunemimiHanamiSdk/common/http_client.h>
 
-#include <libKitsunemimiSakuraNetwork/session_controller.h>
-#include <libKitsunemimiSakuraNetwork/session.h>
-
 #include <libKitsunemimiHanamiCommon/uuid.h>
 
 #include <libKitsunemimiJson/json_item.h>
@@ -33,19 +30,6 @@ namespace Kitsunemimi
 {
 namespace Hanami
 {
-/**
- * @brief errorCallback
- */
-void errorCallback(Kitsunemimi::Sakura::Session*,
-                   const uint8_t,
-                   const std::string message)
-{
-    std::cout<<"ERROR: "<<message<<std::endl;
-}
-
-// empty callbacks
-void sessionCreateCallback(Kitsunemimi::Sakura::Session*, const std::string) {}
-void sessionCloseCallback(Kitsunemimi::Sakura::Session*, const std::string) {}
 
 Kitsunemimi::Hanami::HanamiRequest* HanamiRequest::m_instance = nullptr;
 
@@ -96,9 +80,6 @@ HanamiRequest::getInstance()
  */
 HanamiRequest::~HanamiRequest()
 {
-    if(m_sessionController != nullptr) {
-        delete m_sessionController;
-    }
 }
 
 /**
@@ -148,58 +129,6 @@ HanamiRequest::init(const std::string &host,
     getEnvVar(m_token, "HANAMI_TOKEN");
 
     return true;
-}
-
-/**
- * @brief create a sakura-session to a specific component on server-side
- *
- * @param target name of the target-component on server-side
- * @param error reference for error-output
- *
- * @return pointer to session, which forwards to the requested component if successful, else nullptr
- */
-Sakura::Session*
-HanamiRequest::createSakuraSession(const std::string &target,
-                                   Kitsunemimi::ErrorContainer &error)
-{
-    // init new session-container-isntance if not already done
-    if(m_sessionController == nullptr)
-    {
-        m_sessionController = new Sakura::SessionController(&sessionCreateCallback,
-                                                            &sessionCloseCallback,
-                                                            &errorCallback);
-    }
-
-    const std::string sessionId = generateUuid().toString();
-
-    // create tls-connection to the torii
-    const int port = std::stoi(m_port);
-    Sakura::Session* session = m_sessionController->startTcpSession(m_host,
-                                                                    port + 1,
-                                                                    sessionId,
-                                                                    sessionId,
-                                                                    error);
-
-    if(session == nullptr) {
-        return nullptr;
-    }
-
-    // build request to forward session
-    const std::string path = "/control/torii/v1/forward_session";
-    const std::string vars = "";
-    const std::string jsonBody = "{\"source_name\":\"" + sessionId
-                                 + "\",\"target_name\":\"" + target
-                                 + "\"}";
-
-    // send request to forward session
-    std::string result;
-    if(sendPostRequest(result, path, vars, jsonBody, error) == false)
-    {
-        session->closeSession(error);
-        return nullptr;
-    }
-
-    return session;
 }
 
 /**
