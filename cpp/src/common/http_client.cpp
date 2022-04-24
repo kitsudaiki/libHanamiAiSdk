@@ -308,7 +308,7 @@ HanamiRequest::makeRequest(std::string &response,
                            const std::string &vars,
                            const std::string &jsonBody,
                            ErrorContainer &error)
-    {
+{
     // get token if necessary
     if(m_token == "")
     {
@@ -433,8 +433,12 @@ HanamiRequest::makeSingleRequest(std::string &response,
         http::read(stream, buffer, res);
         response = res.body().c_str();
         statusCode = res.result_int();
-        if(statusCode != 200) {
-            error.addMeesage(response);
+        if(statusCode != 200)
+        {
+            if(statusCode == 500) {
+                response = "Internal error";
+            }
+            error.addMeesage("ERROR " + std::to_string(statusCode) + ": " + response);
         }
 
         // Gracefully close the stream
