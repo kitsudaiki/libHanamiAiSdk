@@ -33,6 +33,7 @@ namespace Hanami
  * @param result reference for response-message
  * @param templateName name of the new template
  * @param dataSetUuid uuid of the data-set, which should work as base to get init-information
+ * @param type to the template to create
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -41,6 +42,7 @@ bool
 createTemplate(std::string &result,
                const std::string &templateName,
                const std::string &dataSetUuid,
+               const std::string &type,
                ErrorContainer &error)
 {
     // create request
@@ -48,6 +50,7 @@ createTemplate(std::string &result,
     const std::string path = "/control/kyouko/v1/template";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""          + templateName + "\","
+                                 " \"type\":\""          + type + "\","
                                  " \"data_set_uuid\":\"" + dataSetUuid  + "\"}";
 
     // send request

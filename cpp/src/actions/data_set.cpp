@@ -320,7 +320,7 @@ uploadCsvData(std::string &result,
                                          "sagiri",
                                          HanamiRequest::getInstance()->getHost(),
                                          HanamiRequest::getInstance()->getPort());
-    if(ret)
+    if(ret == false)
     {
         error.addMeesage("Failed to init websocket to sagiri");
         LOG_ERROR(error);

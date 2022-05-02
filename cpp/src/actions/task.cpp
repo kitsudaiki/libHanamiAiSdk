@@ -38,14 +38,14 @@ namespace Hanami
  * @return true, if successful, else false
  */
 bool
-createLearnTask(std::string &result,
-                const std::string &clusterUuid,
-                const std::string &dataSetUuid,
-                ErrorContainer &error)
+createImageLearnTask(std::string &result,
+                     const std::string &clusterUuid,
+                     const std::string &dataSetUuid,
+                     ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/task/learn";
+    const std::string path = "/control/kyouko/v1/task/image/learn";
     const std::string vars = "";
     const std::string jsonBody = "{\"cluster_uuid\":\""
                                  + clusterUuid
@@ -68,19 +68,85 @@ createLearnTask(std::string &result,
  * @return true, if successful, else false
  */
 bool
-createRequestTask(std::string &result,
-                  const std::string &clusterUuid,
-                  const std::string &dataSetUuid,
-                  ErrorContainer &error)
+createImageRequestTask(std::string &result,
+                       const std::string &clusterUuid,
+                       const std::string &dataSetUuid,
+                       ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/task/request";
+    const std::string path = "/control/kyouko/v1/task/image/request";
     const std::string vars = "";
     const std::string jsonBody = "{\"cluster_uuid\":\""
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
                                  + dataSetUuid
+                                 + "\"}";
+
+    // send request
+    return request->sendPostRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief create a new learn-task
+ *
+ * @param result reference for response-message
+ * @param clusterUuid uuid of the cluster, which should execute the task
+ * @param dataSetUuid uuid of the data-set-file on server
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+createGraphLearnTask(std::string &result,
+                     const std::string &clusterUuid,
+                     const std::string &dataSetUuid,
+                     const std::string &columnName,
+                     ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/task/graph/learn";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"cluster_uuid\":\""
+                                 + clusterUuid
+                                 + "\",\"data_set_uuid\":\""
+                                 + dataSetUuid
+                                 + "\",\"column_name\":\""
+                                 + columnName
+                                 + "\"}";
+
+    // send request
+    return request->sendPostRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief create a new request-task
+ *
+ * @param result reference for response-message
+ * @param clusterUuid uuid of the cluster, which should execute the task
+ * @param dataSetUuid uuid of the data-set-file on server
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+createGraphRequestTask(std::string &result,
+                       const std::string &clusterUuid,
+                       const std::string &dataSetUuid,
+                       const std::string &columnName,
+                       ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/task/graph/request";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"cluster_uuid\":\""
+                                 + clusterUuid
+                                 + "\",\"data_set_uuid\":\""
+                                 + dataSetUuid
+                                 + "\",\"column_name\":\""
+                                 + columnName
                                  + "\"}";
 
     // send request
