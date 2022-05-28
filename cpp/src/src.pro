@@ -36,6 +36,7 @@ HEADERS += \
     ../include/libKitsunemimiHanamiSdk/actions/task.h \
     ../include/libKitsunemimiHanamiSdk/actions/template.h \
     ../include/libKitsunemimiHanamiSdk/actions/user.h \
+    ../include/libKitsunemimiHanamiSdk/actions/snapshot.h \
     ../include/libKitsunemimiHanamiSdk/common/http_client.h \
     common/websocket_client.h
 
@@ -45,6 +46,7 @@ SOURCES += \
     actions/task.cpp \
     actions/template.cpp \
     actions/user.cpp \
+    actions/snapshot.cpp \
     common/http_client.cpp \
     common/websocket_client.cpp
 

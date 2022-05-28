@@ -199,7 +199,7 @@ sendFile(WebsocketClient* client,
     Kitsunemimi::BinaryFile sourceFile(filePath);
 
     bool success = true;
-    uint32_t i = 0;
+    uint64_t i = 0;
 
     // prepare buffer
     uint64_t segmentSize = 96 * 1024;
@@ -209,7 +209,7 @@ sendFile(WebsocketClient* client,
 
     do
     {
-        memcpy(&sendBuffer[72], &i, 4);
+        memcpy(&sendBuffer[72], &i, 8);
 
         // check the size for the last segment
         segmentSize = 96 * 1024;
@@ -218,7 +218,7 @@ sendFile(WebsocketClient* client,
         }
 
         // read segment of the local file
-        if(sourceFile.readDataFromFile(&sendBuffer[76], i, segmentSize) == false)
+        if(sourceFile.readDataFromFile(&sendBuffer[80], i, segmentSize) == false)
         {
             success = false;
             error.addMeesage("Failed to read file '" + filePath + "'");
@@ -226,7 +226,7 @@ sendFile(WebsocketClient* client,
         }
 
         // send segment
-        if(client->sendMessage(sendBuffer, segmentSize + 76) == false)
+        if(client->sendMessage(sendBuffer, segmentSize + 80) == false)
         {
             success = false;
             break;
@@ -530,7 +530,7 @@ deleteDataset(std::string &result,
  * @brief check progress of file-upload
  *
  * @param result reference for response-message
- * @param dataUuid uuid of the data-set to delete
+ * @param dataUuid uuid of the data-set to get
  * @param error reference for error-output
  *
  * @return true, if successful, else false
