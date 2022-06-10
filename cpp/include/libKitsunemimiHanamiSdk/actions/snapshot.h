@@ -1,5 +1,5 @@
 /**
- * @file        cluster.h
+ * @file        snapshot.h
  *
  * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
  *
@@ -20,8 +20,8 @@
  *      limitations under the License.
  */
 
-#ifndef KITSUNEMIMI_HANAMISDK_CLUSTER_H
-#define KITSUNEMIMI_HANAMISDK_CLUSTER_H
+#ifndef KITSUNEMIMI_HANAMISDK_SNAPSHOT_H
+#define KITSUNEMIMI_HANAMISDK_SNAPSHOT_H
 
 #include <libKitsunemimiCommon/logger.h>
 #include <libKitsunemimiHanamiSdk/common/http_client.h>
@@ -31,33 +31,18 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
-bool createCluster(std::string &result,
-                   const std::string &clusterName,
-                   const std::string &templateUuid,
-                   ErrorContainer &error);
-
-bool getCluster(std::string &result,
-                const std::string &clusterUuid,
-                ErrorContainer &error);
-
-bool listCluster(std::string &result,
+bool getSnapshot(std::string &result,
+                 const std::string &snapshotUuid,
                  ErrorContainer &error);
 
-bool deleteCluster(std::string &result,
-                   const std::string &clusterUuid,
-                   ErrorContainer &error);
+bool listSnapshot(std::string &result,
+                  ErrorContainer &error);
 
-bool saveCluster(std::string &result,
-                 const std::string &clusterUuid,
-                 const std::string &snapshotName,
-                 ErrorContainer &error);
-
-bool restoreCluster(std::string &result,
-                    const std::string &clusterUuid,
+bool deleteSnapshot(std::string &result,
                     const std::string &snapshotUuid,
                     ErrorContainer &error);
 
 } // namespace Hanami
 } // namespace Kitsunemimi
 
-#endif // KITSUNEMIMI_HANAMISDK_CLUSTER_H
+#endif // KITSUNEMIMI_HANAMISDK_SNAPSHOT_H

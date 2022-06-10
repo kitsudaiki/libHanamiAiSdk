@@ -61,7 +61,7 @@ createCluster(std::string &result,
  * @brief get information of a cluster from kyouko
  *
  * @param result reference for response-message
- * @param clusterUuid uuid of the cluster to delete
+ * @param clusterUuid uuid of the cluster to get
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -121,6 +121,66 @@ deleteCluster(std::string &result,
 
     // send request
     return request->sendDeleteRequest(result, path, vars, error);
+}
+
+/**
+ * @brief create a snapshot of a cluster
+ *
+ * @param result reference for response-message
+ * @param clusterUuid uuid of the cluster to delete
+ * @param snapshotName name of the new snapshot
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+saveCluster(std::string &result,
+            const std::string &clusterUuid,
+            const std::string &snapshotName,
+            ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/cluster/save";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"name\":\""
+                                 + snapshotName
+                                 + "\",\"cluster_uuid\":\""
+                                 + clusterUuid
+                                 + "\"}";
+
+    // send request
+    return request->sendPostRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief create a snapshot of a cluster
+ *
+ * @param result reference for response-message
+ * @param clusterUuid uuid of the cluster to delete
+ * @param snapshotUuid uuid of the snapshot, which should be loaded into the cluster
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+restoreCluster(std::string &result,
+               const std::string &clusterUuid,
+               const std::string &snapshotUuid,
+               ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/cluster/load";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"snapshot_uuid\":\""
+                                 + snapshotUuid
+                                 + "\",\"cluster_uuid\":\""
+                                 + clusterUuid
+                                 + "\"}";
+
+    // send request
+    return request->sendPostRequest(result, path, vars, jsonBody, error);
 }
 
 } // namespace Hanami
