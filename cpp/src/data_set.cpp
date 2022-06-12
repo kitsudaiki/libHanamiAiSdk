@@ -20,8 +20,9 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/actions/data_set.h>
+#include <libKitsunemimiHanamiSdk/data_set.h>
 #include <common/websocket_client.h>
+#include <common/http_client.h>
 
 #include <libKitsunemimiCrypto/common.h>
 #include <libKitsunemimiJson/json_item.h>

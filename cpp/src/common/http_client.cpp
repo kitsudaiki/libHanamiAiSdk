@@ -20,7 +20,7 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/common/http_client.h>
+#include <common/http_client.h>
 
 #include <libKitsunemimiHanamiCommon/uuid.h>
 

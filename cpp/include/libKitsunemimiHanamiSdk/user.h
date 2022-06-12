@@ -1,5 +1,5 @@
 /**
- * @file        template.h
+ * @file        user.h
  *
  * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
  *
@@ -20,35 +20,36 @@
  *      limitations under the License.
  */
 
-#ifndef KITSUNEMIMI_HANAMISDK_TEMPLATE_H
-#define KITSUNEMIMI_HANAMISDK_TEMPLATE_H
+#ifndef KITSUNEMIMI_HANAMISDK_USER_H
+#define KITSUNEMIMI_HANAMISDK_USER_H
 
 #include <libKitsunemimiCommon/logger.h>
-#include <libKitsunemimiHanamiSdk/common/http_client.h>
 
 namespace Kitsunemimi
 {
 namespace Hanami
 {
 
-bool createTemplate(std::string &result,
-                    const std::string &templateName,
-                    const std::string &dataSetUuid,
-                    const std::string &type,
-                    ErrorContainer &error);
+bool createUser(std::string &result,
+                const std::string &userName,
+                const std::string &password,
+                const bool isAdmin,
+                const std::string &roles,
+                const std::string &projects,
+                ErrorContainer &error);
 
-bool getTemplate(std::string &result,
-                 const std::string &templateUuid,
-                 ErrorContainer &error);
+bool getUser(std::string &result,
+             const std::string &userName,
+             ErrorContainer &error);
 
-bool listTemplate(std::string &result,
-                  ErrorContainer &error);
+bool listUser(std::string &result,
+              ErrorContainer &error);
 
-bool deleteTemplate(std::string &result,
-                    const std::string &templateUuid,
-                    ErrorContainer &error);
+bool deleteUser(std::string &result,
+                const std::string &userName,
+                ErrorContainer &error);
 
 } // namespace Hanami
 } // namespace Kitsunemimi
 
-#endif // KITSUNEMIMI_HANAMISDK_TEMPLATE_H
+#endif // KITSUNEMIMI_HANAMISDK_USER_H

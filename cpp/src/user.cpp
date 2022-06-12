@@ -1,5 +1,5 @@
 /**
- * @file        template.cpp
+ * @file        user.cpp
  *
  * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
  *
@@ -20,7 +20,8 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/actions/template.h>
+#include <libKitsunemimiHanamiSdk/user.h>
+#include <common/http_client.h>
 
 namespace Kitsunemimi
 {
@@ -28,60 +29,71 @@ namespace Hanami
 {
 
 /**
- * @brief generate a new template on kyouko
+ * @brief create a new user in misaka
  *
  * @param result reference for response-message
- * @param templateName name of the new template
- * @param dataSetUuid uuid of the data-set, which should work as base to get init-information
- * @param type to the template to create
+ * @param userName
+ * @param password
+ * @param isAdmin
+ * @param roles
+ * @param projects
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
-createTemplate(std::string &result,
-               const std::string &templateName,
-               const std::string &dataSetUuid,
-               const std::string &type,
-               ErrorContainer &error)
+createUser(std::string &result,
+           const std::string &userName,
+           const std::string &password,
+           const bool isAdmin,
+           const std::string &roles,
+           const std::string &projects,
+           ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/template";
+    const std::string path = "/control/misaka/v1/user";
     const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""          + templateName + "\","
-                                 " \"type\":\""          + type + "\","
-                                 " \"data_set_uuid\":\"" + dataSetUuid  + "\"}";
+    const std::string jsonBody = "{\"name\":\""
+                                 + userName
+                                 + "\",\"pw\":\""
+                                 + password
+                                 + "\",\"is_admin\":"
+                                 + (isAdmin ? "true" : "false") +
+                                 + ",\"roles\":\""
+                                 + roles
+                                 + "\",\"projects\":\""
+                                 + projects
+                                 + "\"}";
 
     // send request
     return request->sendPostRequest(result, path, vars, jsonBody, error);
 }
 
 /**
- * @brief get a specific template from kyouko
+ * @brief get information of a user from misaka
  *
  * @param result reference for response-message
- * @param templateUuid uuid of the template to get
+ * @param userName name of the requested user
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
-getTemplate(std::string &result,
-            const std::string &templateUuid,
-            ErrorContainer &error)
+getUser(std::string &result,
+        const std::string &userName,
+        ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/template";
-    const std::string vars = "uuid=" + templateUuid;
+    const std::string path = "/control/misaka/v1/user";
+    const std::string vars = "name=" + userName;
 
-    // send request
     return request->sendGetRequest(result, path, vars, error);
 }
 
 /**
- * @brief list all visible templates on kyouko
+ * @brief list all visible users on misaka
  *
  * @param result reference for response-message
  * @param error reference for error-output
@@ -89,35 +101,35 @@ getTemplate(std::string &result,
  * @return true, if successful, else false
  */
 bool
-listTemplate(std::string &result,
-             ErrorContainer &error)
+listUser(std::string &result,
+         ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/template/all";
+    const std::string path = "/control/misaka/v1/user/all";
 
     // send request
     return request->sendGetRequest(result, path, "", error);
 }
 
 /**
- * @brief delete a template form kyouko
+ * @brief delete a user from misaka
  *
  * @param result reference for response-message
- * @param templateUuid uuid of the template to delete
+ * @param userName name of the user, which should be deleted
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
-deleteTemplate(std::string &result,
-               const std::string &templateUuid,
-               ErrorContainer &error)
+deleteUser(std::string &result,
+           const std::string &userName,
+           ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/template";
-    const std::string vars = "uuid=" + templateUuid;
+    const std::string path = "/control/misaka/v1/user";
+    const std::string vars = "name=" + userName;
 
     // send request
     return request->sendDeleteRequest(result, path, vars, error);

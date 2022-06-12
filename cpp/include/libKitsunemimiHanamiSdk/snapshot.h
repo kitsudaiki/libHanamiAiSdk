@@ -1,5 +1,5 @@
 /**
- * @file        user.h
+ * @file        snapshot.h
  *
  * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
  *
@@ -20,37 +20,28 @@
  *      limitations under the License.
  */
 
-#ifndef KITSUNEMIMI_HANAMISDK_USER_H
-#define KITSUNEMIMI_HANAMISDK_USER_H
+#ifndef KITSUNEMIMI_HANAMISDK_SNAPSHOT_H
+#define KITSUNEMIMI_HANAMISDK_SNAPSHOT_H
 
 #include <libKitsunemimiCommon/logger.h>
-#include <libKitsunemimiHanamiSdk/common/http_client.h>
 
 namespace Kitsunemimi
 {
 namespace Hanami
 {
 
-bool createUser(std::string &result,
-                const std::string &userName,
-                const std::string &password,
-                const bool isAdmin,
-                const std::string &roles,
-                const std::string &projects,
-                ErrorContainer &error);
+bool getSnapshot(std::string &result,
+                 const std::string &snapshotUuid,
+                 ErrorContainer &error);
 
-bool getUser(std::string &result,
-             const std::string &userName,
-             ErrorContainer &error);
+bool listSnapshot(std::string &result,
+                  ErrorContainer &error);
 
-bool listUser(std::string &result,
-              ErrorContainer &error);
-
-bool deleteUser(std::string &result,
-                const std::string &userName,
-                ErrorContainer &error);
+bool deleteSnapshot(std::string &result,
+                    const std::string &snapshotUuid,
+                    ErrorContainer &error);
 
 } // namespace Hanami
 } // namespace Kitsunemimi
 
-#endif // KITSUNEMIMI_HANAMISDK_USER_H
+#endif // KITSUNEMIMI_HANAMISDK_SNAPSHOT_H

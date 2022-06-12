@@ -20,7 +20,8 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/actions/cluster.h>
+#include <libKitsunemimiHanamiSdk/cluster.h>
+#include <common/http_client.h>
 
 namespace Kitsunemimi
 {

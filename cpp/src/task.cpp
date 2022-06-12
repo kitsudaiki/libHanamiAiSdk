@@ -20,7 +20,8 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/actions/task.h>
+#include <libKitsunemimiHanamiSdk/task.h>
+#include <common/http_client.h>
 
 namespace Kitsunemimi
 {
