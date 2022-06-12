@@ -316,7 +316,9 @@ uploadCsvData(std::string &result,
     const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
 
     WebsocketClient wsClient;
-    const bool ret = wsClient.initClient(HanamiRequest::getInstance()->getToken(),
+    std::string websocketUuid = "";
+    const bool ret = wsClient.initClient(websocketUuid,
+                                         HanamiRequest::getInstance()->getToken(),
                                          "sagiri",
                                          HanamiRequest::getInstance()->getHost(),
                                          HanamiRequest::getInstance()->getPort());
@@ -391,7 +393,9 @@ uploadMnistData(std::string &result,
     const std::string labelUuid = jsonItem.get("uuid_label_file").getString();
 
     WebsocketClient wsClient;
-    const bool ret = wsClient.initClient(HanamiRequest::getInstance()->getToken(),
+    std::string websocketUuid = "";
+    const bool ret = wsClient.initClient(websocketUuid,
+                                         HanamiRequest::getInstance()->getToken(),
                                          "sagiri",
                                          HanamiRequest::getInstance()->getHost(),
                                          HanamiRequest::getInstance()->getPort());

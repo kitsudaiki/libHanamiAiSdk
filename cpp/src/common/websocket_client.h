@@ -30,7 +30,8 @@ public:
     WebsocketClient();
     ~WebsocketClient();
 
-    bool initClient(const std::string &token,
+    bool initClient(std::string &socketUuid,
+                    const std::string &token,
                     const std::string &target,
                     const std::string &host,
                     const std::string &port);

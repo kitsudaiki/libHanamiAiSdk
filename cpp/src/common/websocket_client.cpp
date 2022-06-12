@@ -1,5 +1,7 @@
 #include "websocket_client.h"
 
+#include <libKitsunemimiJson/json_item.h>
+
 namespace Kitsunemimi
 {
 namespace Hanami
@@ -16,11 +18,13 @@ WebsocketClient::~WebsocketClient()
 }
 
 bool
-WebsocketClient::initClient(const std::string &token,
+WebsocketClient::initClient(std::string &socketUuid,
+                            const std::string &token,
                             const std::string &target,
                             const std::string &host,
                             const std::string &port)
 {
+    ErrorContainer error;
     try
     {
         ssl::context ctx{ssl::context::tlsv12_client};
@@ -73,14 +77,16 @@ WebsocketClient::initClient(const std::string &token,
         beast::flat_buffer buffer;
         m_websocket->read(buffer);
 
-        const std::string response(static_cast<const char*>(buffer.data().data()),
+        const std::string responseMsg(static_cast<const char*>(buffer.data().data()),
                                    buffer.data().size());
 
-        if(response == "failed") {
-            return false;
-        } else if(response == "success") {
-            return true;
+        Kitsunemimi::Json::JsonItem response;
+        if(response.parse(responseMsg, error) == false) {
+            error.addMeesage("Failed to parse response-message from Websocket-init");
         }
+
+        socketUuid = response.get("uuid").getString();
+        return response.get("success").getInt();
     }
     catch(std::exception const& e)
     {
