@@ -29,6 +29,7 @@ namespace Kitsunemimi
 {
 namespace Hanami
 {
+class WebsocketClient;
 
 bool createCluster(std::string &result,
                    const std::string &clusterName,
@@ -60,10 +61,9 @@ bool switchToTaskMode(std::string &result,
                       const std::string &clusterUuid,
                       ErrorContainer &error);
 
-bool switchToDirectMode(std::string &result,
-                        const std::string &clusterUuid,
-                        const std::string &connectionUuid,
-                        ErrorContainer &error);
+WebsocketClient* switchToDirectMode(std::string &result,
+                                    const std::string &clusterUuid,
+                                    ErrorContainer &error);
 } // namespace Hanami
 } // namespace Kitsunemimi
 

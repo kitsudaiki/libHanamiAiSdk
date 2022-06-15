@@ -22,6 +22,7 @@
 
 #include <libKitsunemimiHanamiSdk/cluster.h>
 #include <common/http_client.h>
+#include <libKitsunemimiHanamiSdk/common/websocket_client.h>
 
 namespace Kitsunemimi
 {
@@ -201,7 +202,7 @@ switchToTaskMode(std::string &result,
     const std::string path = "/control/kyouko/v1/cluster/set_mode";
     const std::string vars = "";
     const std::string jsonBody = "{\"new_state\":\"TASK\""
-                                 ",\"cluster_uuid\":\""
+                                 ",\"uuid\":\""
                                  + clusterUuid
                                  + "\"}";
 
@@ -216,25 +217,45 @@ switchToTaskMode(std::string &result,
  * @param error
  * @return
  */
-bool
+WebsocketClient*
 switchToDirectMode(std::string &result,
                    const std::string &clusterUuid,
-                   const std::string &connectionUuid,
                    ErrorContainer &error)
 {
+    WebsocketClient* wsClient = new WebsocketClient();
+    std::string websocketUuid = "";
+    const bool ret = wsClient->initClient(websocketUuid,
+                                          HanamiRequest::getInstance()->getToken(),
+                                          "kyouko",
+                                          HanamiRequest::getInstance()->getHost(),
+                                          HanamiRequest::getInstance()->getPort());
+    if(ret == false)
+    {
+        error.addMeesage("Failed to init websocket to kyouko");
+        LOG_ERROR(error);
+        delete wsClient;
+        return nullptr;
+    }
+
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/cluster/set_mode";
     const std::string vars = "";
     const std::string jsonBody = "{\"connection_uuid\":\""
-                                 + connectionUuid
+                                 + websocketUuid
                                  + "\",\"new_state\":\"DIRECT\""
-                                   ",\"cluster_uuid\":\""
+                                   ",\"uuid\":\""
                                  + clusterUuid
                                  + "\"}";
 
     // send request
-    return request->sendPutRequest(result, path, vars, jsonBody, error);
+    if(request->sendPutRequest(result, path, vars, jsonBody, error) == false)
+    {
+        delete wsClient;
+        return nullptr;
+    }
+
+    return wsClient;
 }
 
 } // namespace Hanami

@@ -1,4 +1,4 @@
-#include "websocket_client.h"
+#include <libKitsunemimiHanamiSdk/common/websocket_client.h>
 
 #include <libKitsunemimiJson/json_item.h>
 
@@ -78,7 +78,7 @@ WebsocketClient::initClient(std::string &socketUuid,
         m_websocket->read(buffer);
 
         const std::string responseMsg(static_cast<const char*>(buffer.data().data()),
-                                   buffer.data().size());
+                                      buffer.data().size());
 
         Kitsunemimi::Json::JsonItem response;
         if(response.parse(responseMsg, error) == false) {
@@ -119,6 +119,25 @@ WebsocketClient::sendMessage(const void* data, const uint64_t dataSize)
     }
 
     return true;
+}
+
+/**
+ * @brief WebsocketClient::readMessage
+ * @param numberOfByes
+ * @return
+ */
+void*
+WebsocketClient::readMessage(uint64_t &numberOfByes)
+{
+    // Read a message into our buffer
+    beast::flat_buffer buffer;
+    m_websocket->read(buffer);
+
+    numberOfByes = buffer.data().size();
+    void* data = new uint8_t[numberOfByes];
+    memcpy(data, buffer.data().data(), numberOfByes);
+
+    return data;
 }
 
 /**

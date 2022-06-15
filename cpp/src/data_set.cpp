@@ -21,7 +21,7 @@
  */
 
 #include <libKitsunemimiHanamiSdk/data_set.h>
-#include <common/websocket_client.h>
+#include <libKitsunemimiHanamiSdk/common/websocket_client.h>
 #include <common/http_client.h>
 
 #include <libKitsunemimiCrypto/common.h>
