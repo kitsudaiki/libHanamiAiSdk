@@ -56,6 +56,14 @@ bool restoreCluster(std::string &result,
                     const std::string &snapshotUuid,
                     ErrorContainer &error);
 
+bool switchToTaskMode(std::string &result,
+                      const std::string &clusterUuid,
+                      ErrorContainer &error);
+
+bool switchToDirectMode(std::string &result,
+                        const std::string &clusterUuid,
+                        const std::string &connectionUuid,
+                        ErrorContainer &error);
 } // namespace Hanami
 } // namespace Kitsunemimi
 

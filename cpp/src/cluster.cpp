@@ -155,7 +155,7 @@ saveCluster(std::string &result,
 }
 
 /**
- * @brief create a snapshot of a cluster
+ * @brief restore cluster from a snapshot
  *
  * @param result reference for response-message
  * @param clusterUuid uuid of the cluster to delete
@@ -182,6 +182,59 @@ restoreCluster(std::string &result,
 
     // send request
     return request->sendPostRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief switchToTaskMode
+ * @param result
+ * @param clusterUuid
+ * @param error
+ * @return
+ */
+bool
+switchToTaskMode(std::string &result,
+                 const std::string &clusterUuid,
+                 ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/cluster/set_mode";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"new_state\":\"TASK\""
+                                 ",\"cluster_uuid\":\""
+                                 + clusterUuid
+                                 + "\"}";
+
+    // send request
+    return request->sendPutRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief switchToDirectMode
+ * @param result
+ * @param clusterUuid
+ * @param error
+ * @return
+ */
+bool
+switchToDirectMode(std::string &result,
+                   const std::string &clusterUuid,
+                   const std::string &connectionUuid,
+                   ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/cluster/set_mode";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"connection_uuid\":\""
+                                 + connectionUuid
+                                 + "\",\"new_state\":\"DIRECT\""
+                                   ",\"cluster_uuid\":\""
+                                 + clusterUuid
+                                 + "\"}";
+
+    // send request
+    return request->sendPutRequest(result, path, vars, jsonBody, error);
 }
 
 } // namespace Hanami
