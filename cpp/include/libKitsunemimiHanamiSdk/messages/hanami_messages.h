@@ -32,6 +32,50 @@ public:
     void createBlob(DataBuffer &result);
 };
 
+class RequestStart_Message
+        : public HanamiMessage
+{
+public:
+    RequestStart_Message();
+    ~RequestStart_Message();
+
+    bool read(void* data, const uint64_t dataSize);
+    void createBlob(DataBuffer &result);
+};
+
+class LearnStart_Message
+        : public HanamiMessage
+{
+public:
+    LearnStart_Message();
+    ~LearnStart_Message();
+
+    bool read(void* data, const uint64_t dataSize);
+    void createBlob(DataBuffer &result);
+};
+
+class RequestEnd_Message
+        : public HanamiMessage
+{
+public:
+    RequestEnd_Message();
+    ~RequestEnd_Message();
+
+    bool read(void* data, const uint64_t dataSize);
+    void createBlob(DataBuffer &result);
+};
+
+class LearnEnd_Message
+        : public HanamiMessage
+{
+public:
+    LearnEnd_Message();
+    ~LearnEnd_Message();
+
+    bool read(void* data, const uint64_t dataSize);
+    void createBlob(DataBuffer &result);
+};
+
 }  // namespace Hanami
 }  // namespace Kitsunemimi
 
