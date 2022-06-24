@@ -1,3 +1,25 @@
+/**
+ * @file        websocket_client.cpp
+ *
+ * @author      Tobias Anker <tobias.anker@kitsunemimi.moe>
+ *
+ * @copyright   Apache License Version 2.0
+ *
+ *      Copyright 2021 Tobias Anker
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ */
+
 #include <libKitsunemimiHanamiSdk/common/websocket_client.h>
 
 #include <libKitsunemimiJson/json_item.h>
@@ -7,28 +29,50 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
-WebsocketClient::WebsocketClient()
-{
+/**
+ * @brief constructor
+ */
+WebsocketClient::WebsocketClient() {}
 
-}
-
+/**
+ * @brief destructor
+ */
 WebsocketClient::~WebsocketClient()
 {
     m_websocket->close(websocket::close_code::normal);
+    // a 'delete' on the m_websocket-pointer breaks the program,
+    // because of bad programming in the websocket-class of the boost beast library
+    // TODO: fix the memory-leak
 }
 
+/**
+ * @brief initialize new websocket-connection to a torii
+ *
+ * @param socketUuid reference for the
+ * @param token token to authenticate socket on the torii
+ * @param target name of the target on server-side behind the torii
+ * @param host address of the torii
+ * @param port port where the server is listen on target-side
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
 bool
 WebsocketClient::initClient(std::string &socketUuid,
                             const std::string &token,
                             const std::string &target,
                             const std::string &host,
-                            const std::string &port)
+                            const std::string &port,
+                            ErrorContainer &error)
 {
-    ErrorContainer error;
     try
     {
+        // init ssl
         ssl::context ctx{ssl::context::tlsv12_client};
-        if(loadCertificates(ctx) == false) {
+        if(loadCertificates(ctx) == false)
+        {
+            error.addMeesage("Failed to load certificates for creating Websocket-Client");
+            LOG_ERROR(error);
             return false;
         }
 
@@ -80,9 +124,12 @@ WebsocketClient::initClient(std::string &socketUuid,
         const std::string responseMsg(static_cast<const char*>(buffer.data().data()),
                                       buffer.data().size());
 
+        // parse response
         Kitsunemimi::Json::JsonItem response;
-        if(response.parse(responseMsg, error) == false) {
+        if(response.parse(responseMsg, error) == false)
+        {
             error.addMeesage("Failed to parse response-message from Websocket-init");
+            LOG_ERROR(error);
         }
 
         socketUuid = response.get("uuid").getString();
@@ -90,7 +137,9 @@ WebsocketClient::initClient(std::string &socketUuid,
     }
     catch(std::exception const& e)
     {
-        std::cerr << "Error: " << e.what() << std::endl;
+        const std::string msg(e.what());
+        error.addMeesage("Error-Message while initilializing Websocket-Client: '" + msg + "'");
+        LOG_ERROR(error);
         return false;
     }
 
@@ -98,13 +147,18 @@ WebsocketClient::initClient(std::string &socketUuid,
 }
 
 /**
- * @brief WebsocketClient::sendMessage
- * @param data
- * @param dataSize
- * @return
+ * @brief send data over websocket-client
+ *
+ * @param data pointer to data to send
+ * @param dataSize number of bytes to send
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
  */
 bool
-WebsocketClient::sendMessage(const void* data, const uint64_t dataSize)
+WebsocketClient::sendMessage(const void* data,
+                             const uint64_t dataSize,
+                             ErrorContainer &error)
 {
     try
     {
@@ -112,9 +166,11 @@ WebsocketClient::sendMessage(const void* data, const uint64_t dataSize)
         m_websocket->binary(true);
         m_websocket->write(net::buffer(data, dataSize));
     }
-    catch(std::exception const& e)
+    catch(const std::exception &e)
     {
-        std::cerr << "Error: " << e.what() << std::endl;
+        const std::string msg(e.what());
+        error.addMeesage("Error-Message while send Websocket-Data: '" + msg + "'");
+        LOG_ERROR(error);
         return false;
     }
 
@@ -123,27 +179,47 @@ WebsocketClient::sendMessage(const void* data, const uint64_t dataSize)
 
 /**
  * @brief WebsocketClient::readMessage
- * @param numberOfByes
- * @return
+ *
+ * @param numberOfByes reference for output of number of read bytes
+ * @param error reference for error-output
+ *
+ * @return nullptr if failed, else pointer
  */
-void*
-WebsocketClient::readMessage(uint64_t &numberOfByes)
+uint8_t*
+WebsocketClient::readMessage(uint64_t &numberOfByes,
+                             ErrorContainer &error)
 {
-    // Read a message into our buffer
-    beast::flat_buffer buffer;
-    m_websocket->read(buffer);
+    try
+    {
+        // Read a message into our buffer
+        beast::flat_buffer buffer;
+        m_websocket->read(buffer);
 
-    numberOfByes = buffer.data().size();
-    void* data = new uint8_t[numberOfByes];
-    memcpy(data, buffer.data().data(), numberOfByes);
+        numberOfByes = buffer.data().size();
+        uint8_t* data = new uint8_t[numberOfByes];
+        memcpy(data, buffer.data().data(), numberOfByes);
 
-    return data;
+        return data;
+    }
+    catch(const std::exception &e)
+    {
+        numberOfByes = 0;
+        const std::string msg(e.what());
+        error.addMeesage("Error-Message while read Websocket-Data: '" + msg + "'");
+        LOG_ERROR(error);
+        return nullptr;
+    }
+
+    numberOfByes = 0;
+    return nullptr;
 }
 
 /**
- * @brief WebsocketClient::loadCertificates
- * @param ctx
- * @return
+ * @brief load ssl-certificates for ssl-encryption of websocket
+ *
+ * @param ctx reference to ssl-context
+ *
+ * @return true, if successful, else false
  */
 bool
 WebsocketClient::loadCertificates(boost::asio::ssl::context& ctx)
@@ -253,5 +329,5 @@ WebsocketClient::loadCertificates(boost::asio::ssl::context& ctx)
     return true;
 }
 
-}
-}
+}  // namespace Hanami
+}  // namespace Kitsunemimi

@@ -228,7 +228,8 @@ switchToDirectMode(std::string &result,
                                           HanamiRequest::getInstance()->getToken(),
                                           "kyouko",
                                           HanamiRequest::getInstance()->getHost(),
-                                          HanamiRequest::getInstance()->getPort());
+                                          HanamiRequest::getInstance()->getPort(),
+                                          error);
     if(ret == false)
     {
         error.addMeesage("Failed to init websocket to kyouko");

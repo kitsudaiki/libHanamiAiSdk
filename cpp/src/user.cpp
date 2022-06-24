@@ -32,11 +32,11 @@ namespace Hanami
  * @brief create a new user in misaka
  *
  * @param result reference for response-message
- * @param userName
- * @param password
- * @param isAdmin
- * @param roles
- * @param projects
+ * @param userName name of the new user
+ * @param password password of the new user
+ * @param isAdmin true to make new user to an admin
+ * @param roles name of role of the user
+ * @param projects uuid of the project of the new user
  * @param error reference for error-output
  *
  * @return true, if successful, else false

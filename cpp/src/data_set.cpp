@@ -227,8 +227,9 @@ sendFile(WebsocketClient* client,
         }
 
         // send segment
-        if(client->sendMessage(sendBuffer, segmentSize + 80) == false)
+        if(client->sendMessage(sendBuffer, segmentSize + 80, error) == false)
         {
+            LOG_ERROR(error);
             success = false;
             break;
         }
@@ -322,7 +323,8 @@ uploadCsvData(std::string &result,
                                          HanamiRequest::getInstance()->getToken(),
                                          "sagiri",
                                          HanamiRequest::getInstance()->getHost(),
-                                         HanamiRequest::getInstance()->getPort());
+                                         HanamiRequest::getInstance()->getPort(),
+                                         error);
     if(ret == false)
     {
         error.addMeesage("Failed to init websocket to sagiri");
@@ -399,7 +401,8 @@ uploadMnistData(std::string &result,
                                          HanamiRequest::getInstance()->getToken(),
                                          "sagiri",
                                          HanamiRequest::getInstance()->getHost(),
-                                         HanamiRequest::getInstance()->getPort());
+                                         HanamiRequest::getInstance()->getPort(),
+                                         error);
     if(ret == false)
     {
         error.addMeesage("Failed to init websocket to sagiri");

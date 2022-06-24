@@ -40,11 +40,11 @@ namespace Hanami
  * @return true, if successful, else false
  */
 bool
-createTemplate(std::string &result,
-               const std::string &templateName,
-               const std::string &dataSetUuid,
-               const std::string &type,
-               ErrorContainer &error)
+generateTemplate(std::string &result,
+                 const std::string &templateName,
+                 const std::string &dataSetUuid,
+                 const std::string &type,
+                 ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
