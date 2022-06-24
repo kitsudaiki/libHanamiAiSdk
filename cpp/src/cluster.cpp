@@ -20,7 +20,9 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/actions/cluster.h>
+#include <libKitsunemimiHanamiSdk/cluster.h>
+#include <common/http_client.h>
+#include <libKitsunemimiHanamiSdk/common/websocket_client.h>
 
 namespace Kitsunemimi
 {
@@ -154,7 +156,7 @@ saveCluster(std::string &result,
 }
 
 /**
- * @brief create a snapshot of a cluster
+ * @brief restore cluster from a snapshot
  *
  * @param result reference for response-message
  * @param clusterUuid uuid of the cluster to delete
@@ -181,6 +183,79 @@ restoreCluster(std::string &result,
 
     // send request
     return request->sendPostRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief switchToTaskMode
+ * @param result
+ * @param clusterUuid
+ * @param error
+ * @return
+ */
+bool
+switchToTaskMode(std::string &result,
+                 const std::string &clusterUuid,
+                 ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/cluster/set_mode";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"new_state\":\"TASK\""
+                                 ",\"uuid\":\""
+                                 + clusterUuid
+                                 + "\"}";
+
+    // send request
+    return request->sendPutRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief switchToDirectMode
+ * @param result
+ * @param clusterUuid
+ * @param error
+ * @return
+ */
+WebsocketClient*
+switchToDirectMode(std::string &result,
+                   const std::string &clusterUuid,
+                   ErrorContainer &error)
+{
+    WebsocketClient* wsClient = new WebsocketClient();
+    std::string websocketUuid = "";
+    const bool ret = wsClient->initClient(websocketUuid,
+                                          HanamiRequest::getInstance()->getToken(),
+                                          "kyouko",
+                                          HanamiRequest::getInstance()->getHost(),
+                                          HanamiRequest::getInstance()->getPort());
+    if(ret == false)
+    {
+        error.addMeesage("Failed to init websocket to kyouko");
+        LOG_ERROR(error);
+        delete wsClient;
+        return nullptr;
+    }
+
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/cluster/set_mode";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"connection_uuid\":\""
+                                 + websocketUuid
+                                 + "\",\"new_state\":\"DIRECT\""
+                                   ",\"uuid\":\""
+                                 + clusterUuid
+                                 + "\"}";
+
+    // send request
+    if(request->sendPutRequest(result, path, vars, jsonBody, error) == false)
+    {
+        delete wsClient;
+        return nullptr;
+    }
+
+    return wsClient;
 }
 
 } // namespace Hanami

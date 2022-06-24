@@ -24,12 +24,12 @@
 #define KITSUNEMIMI_HANAMISDK_CLUSTER_H
 
 #include <libKitsunemimiCommon/logger.h>
-#include <libKitsunemimiHanamiSdk/common/http_client.h>
 
 namespace Kitsunemimi
 {
 namespace Hanami
 {
+class WebsocketClient;
 
 bool createCluster(std::string &result,
                    const std::string &clusterName,
@@ -57,6 +57,13 @@ bool restoreCluster(std::string &result,
                     const std::string &snapshotUuid,
                     ErrorContainer &error);
 
+bool switchToTaskMode(std::string &result,
+                      const std::string &clusterUuid,
+                      ErrorContainer &error);
+
+WebsocketClient* switchToDirectMode(std::string &result,
+                                    const std::string &clusterUuid,
+                                    ErrorContainer &error);
 } // namespace Hanami
 } // namespace Kitsunemimi
 

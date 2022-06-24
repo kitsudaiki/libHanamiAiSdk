@@ -30,12 +30,15 @@ public:
     WebsocketClient();
     ~WebsocketClient();
 
-    bool initClient(const std::string &token,
+    bool initClient(std::string &socketUuid,
+                    const std::string &token,
                     const std::string &target,
                     const std::string &host,
                     const std::string &port);
     bool sendMessage(const void* data,
                      const uint64_t dataSize);
+
+    void *readMessage(uint64_t &numberOfByes);
 
 private:
     websocket::stream<beast::ssl_stream<tcp::socket>>* m_websocket = nullptr;

@@ -1,4 +1,6 @@
-#include "websocket_client.h"
+#include <libKitsunemimiHanamiSdk/common/websocket_client.h>
+
+#include <libKitsunemimiJson/json_item.h>
 
 namespace Kitsunemimi
 {
@@ -16,11 +18,13 @@ WebsocketClient::~WebsocketClient()
 }
 
 bool
-WebsocketClient::initClient(const std::string &token,
+WebsocketClient::initClient(std::string &socketUuid,
+                            const std::string &token,
                             const std::string &target,
                             const std::string &host,
                             const std::string &port)
 {
+    ErrorContainer error;
     try
     {
         ssl::context ctx{ssl::context::tlsv12_client};
@@ -73,14 +77,16 @@ WebsocketClient::initClient(const std::string &token,
         beast::flat_buffer buffer;
         m_websocket->read(buffer);
 
-        const std::string response(static_cast<const char*>(buffer.data().data()),
-                                   buffer.data().size());
+        const std::string responseMsg(static_cast<const char*>(buffer.data().data()),
+                                      buffer.data().size());
 
-        if(response == "failed") {
-            return false;
-        } else if(response == "success") {
-            return true;
+        Kitsunemimi::Json::JsonItem response;
+        if(response.parse(responseMsg, error) == false) {
+            error.addMeesage("Failed to parse response-message from Websocket-init");
         }
+
+        socketUuid = response.get("uuid").getString();
+        return response.get("success").getInt();
     }
     catch(std::exception const& e)
     {
@@ -113,6 +119,25 @@ WebsocketClient::sendMessage(const void* data, const uint64_t dataSize)
     }
 
     return true;
+}
+
+/**
+ * @brief WebsocketClient::readMessage
+ * @param numberOfByes
+ * @return
+ */
+void*
+WebsocketClient::readMessage(uint64_t &numberOfByes)
+{
+    // Read a message into our buffer
+    beast::flat_buffer buffer;
+    m_websocket->read(buffer);
+
+    numberOfByes = buffer.data().size();
+    void* data = new uint8_t[numberOfByes];
+    memcpy(data, buffer.data().data(), numberOfByes);
+
+    return data;
 }
 
 /**

@@ -31,22 +31,28 @@ INCLUDEPATH += $$PWD \
                $$PWD/../include
 
 HEADERS += \
-    ../include/libKitsunemimiHanamiSdk/actions/cluster.h \
-    ../include/libKitsunemimiHanamiSdk/actions/data_set.h \
-    ../include/libKitsunemimiHanamiSdk/actions/task.h \
-    ../include/libKitsunemimiHanamiSdk/actions/template.h \
-    ../include/libKitsunemimiHanamiSdk/actions/user.h \
-    ../include/libKitsunemimiHanamiSdk/actions/snapshot.h \
-    ../include/libKitsunemimiHanamiSdk/common/http_client.h \
-    common/websocket_client.h
+    ../include/libKitsunemimiHanamiSdk/cluster.h \
+    ../include/libKitsunemimiHanamiSdk/data_set.h \
+    ../include/libKitsunemimiHanamiSdk/init.h \
+    ../include/libKitsunemimiHanamiSdk/messages/hanami_messages.h \
+    ../include/libKitsunemimiHanamiSdk/task.h \
+    ../include/libKitsunemimiHanamiSdk/template.h \
+    ../include/libKitsunemimiHanamiSdk/user.h \
+    ../include/libKitsunemimiHanamiSdk/snapshot.h \
+    ../include/libKitsunemimiHanamiSdk/io.h \
+    common/http_client.h \
+    ../include/libKitsunemimiHanamiSdk/common/websocket_client.h
 
 SOURCES += \
-    actions/cluster.cpp \
-    actions/data_set.cpp \
-    actions/task.cpp \
-    actions/template.cpp \
-    actions/user.cpp \
-    actions/snapshot.cpp \
+    cluster.cpp \
+    data_set.cpp \
+    init.cpp \
+    io.cpp \
+    messages/hanami_messages.cpp \
+    task.cpp \
+    template.cpp \
+    user.cpp \
+    snapshot.cpp \
     common/http_client.cpp \
     common/websocket_client.cpp
 

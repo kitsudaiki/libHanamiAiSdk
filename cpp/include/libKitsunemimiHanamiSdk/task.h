@@ -24,7 +24,6 @@
 #define KITSUNEMIMI_HANAMISDK_TASK_H
 
 #include <libKitsunemimiCommon/logger.h>
-#include <libKitsunemimiHanamiSdk/common/http_client.h>
 
 namespace Kitsunemimi
 {
