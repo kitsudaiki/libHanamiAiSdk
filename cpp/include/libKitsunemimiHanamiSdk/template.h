@@ -31,9 +31,13 @@ namespace Hanami
 {
 
 bool generateTemplate(std::string &result,
+                      const std::string &templateName,
+                      const std::string &dataSetUuid,
+                      const std::string &type,
+                      ErrorContainer &error);
+bool uploadTemplate(std::string &result,
                     const std::string &templateName,
-                    const std::string &dataSetUuid,
-                    const std::string &type,
+                    const std::string &data,
                     ErrorContainer &error);
 
 bool getTemplate(std::string &result,

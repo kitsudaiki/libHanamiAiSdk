@@ -48,12 +48,40 @@ generateTemplate(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/template";
+    const std::string path = "/control/kyouko/v1/template/generate";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""          + templateName + "\","
                                  " \"type\":\""          + type + "\","
                                  " \"data_set_uuid\":\"" + dataSetUuid  + "\"}";
 
+    // send request
+    return request->sendPostRequest(result, path, vars, jsonBody, error);
+}
+
+/**
+ * @brief upload a template to the kyouko
+ *
+ * @param result reference for response-message
+ * @param templateName name of the new template
+ * @param data template to upload.
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+uploadTemplate(std::string &result,
+               const std::string &templateName,
+               const std::string &data,
+               ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/kyouko/v1/template/upload";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"name\":\""   + templateName + "\","
+                                 " \"template\":" + data + "}";
+
+    std::cout<<jsonBody<<std::endl;
     // send request
     return request->sendPostRequest(result, path, vars, jsonBody, error);
 }
