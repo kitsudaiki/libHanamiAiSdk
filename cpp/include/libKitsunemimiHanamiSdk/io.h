@@ -4,15 +4,28 @@
 #include <string>
 #include <stdint.h>
 
-bool learn(const std::string &clusterUuid,
-           const float* inputData,
-           const uint64_t numberOfInputValues,
-           const float* shouldOutputData,
-           const uint64_t numberOfOutputalues);
+#include <libKitsunemimiCommon/logger.h>
 
-float* request(const std::string &clusterUuid,
-               const float* inputData,
+namespace Kitsunemimi
+{
+namespace Hanami
+{
+class WebsocketClient;
+
+bool learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+           float* inputValues,
+           const uint64_t numberOfInputValues,
+           float* shouldValues,
+           const uint64_t numberOfShouldValues,
+           Kitsunemimi::ErrorContainer &error);
+
+float* request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+               float* inputData,
                const uint64_t numberOfInputValues,
-               uint64_t &numberOfOutputValues);
+               uint64_t &numberOfOutputValues,
+               Kitsunemimi::ErrorContainer &error);
+
+} // namespace Hanami
+} // namespace Kitsunemimi
 
 #endif // IO_H

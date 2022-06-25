@@ -30,7 +30,7 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
-bool createTemplate(std::string &result,
+bool generateTemplate(std::string &result,
                     const std::string &templateName,
                     const std::string &dataSetUuid,
                     const std::string &type,
