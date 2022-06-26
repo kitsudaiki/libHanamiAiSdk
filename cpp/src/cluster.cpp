@@ -56,7 +56,14 @@ createCluster(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to create cluster");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -79,7 +86,14 @@ getCluster(std::string &result,
     const std::string vars = "uuid=" + clusterUuid;
 
     // send request
-    return request->sendGetRequest(result, path, vars, error);
+    if(request->sendGetRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to get cluster with UUID '" + clusterUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -99,7 +113,14 @@ listCluster(std::string &result,
     const std::string path = "/control/kyouko/v1/cluster/all";
 
     // send request
-    return request->sendGetRequest(result, path, "", error);
+    if(request->sendGetRequest(result, path, "", error) == false)
+    {
+        error.addMeesage("Failed to list clusters");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -122,7 +143,14 @@ deleteCluster(std::string &result,
     const std::string vars = "uuid=" + clusterUuid;
 
     // send request
-    return request->sendDeleteRequest(result, path, vars, error);
+    if(request->sendDeleteRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to delete cluster with UUID '" + clusterUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -152,7 +180,14 @@ saveCluster(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to save cluster with UUID '" + clusterUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -182,15 +217,24 @@ restoreCluster(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to restore snapshot with UUID '" + snapshotUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
- * @brief switchToTaskMode
- * @param result
- * @param clusterUuid
- * @param error
- * @return
+ * @brief switch cluster to task-mode
+ *
+ * @param result reference for response-message
+ * @param clusterUuid uuid of the cluster to swtich
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
  */
 bool
 switchToTaskMode(std::string &result,
@@ -207,21 +251,31 @@ switchToTaskMode(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPutRequest(result, path, vars, jsonBody, error);
+    if(request->sendPutRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to swith cluster with UUID '" + clusterUuid + "' to task-mode");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
- * @brief switchToDirectMode
- * @param result
- * @param clusterUuid
- * @param error
- * @return
+ * @brief switch cluster to direct-mode
+ *
+ * @param result reference for response-message
+ * @param clusterUuid uuid of the cluster to swtich
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
  */
 WebsocketClient*
 switchToDirectMode(std::string &result,
                    const std::string &clusterUuid,
                    ErrorContainer &error)
 {
+    // init websocket-client
     WebsocketClient* wsClient = new WebsocketClient();
     std::string websocketUuid = "";
     const bool ret = wsClient->initClient(websocketUuid,
@@ -252,6 +306,8 @@ switchToDirectMode(std::string &result,
     // send request
     if(request->sendPutRequest(result, path, vars, jsonBody, error) == false)
     {
+        error.addMeesage("Failed to swith cluster with UUID '" + clusterUuid + "' to direct-mode");
+        LOG_ERROR(error);
         delete wsClient;
         return nullptr;
     }

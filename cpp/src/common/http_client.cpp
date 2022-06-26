@@ -246,6 +246,8 @@ HanamiRequest::requestToken(ErrorContainer &error)
     if(m_user == ""
         && getEnvVar(m_user, "HANAMI_USER") == false)
     {
+        error.addMeesage("Failed to request token, because no user-name was provided");
+        LOG_ERROR(error);
         return false;
     }
 
@@ -253,6 +255,8 @@ HanamiRequest::requestToken(ErrorContainer &error)
     if(m_pw == ""
         && getEnvVar(m_pw, "HANAMI_PW") == false)
     {
+        error.addMeesage("Failed to request token, because no password was provided");
+        LOG_ERROR(error);
         return false;
     }
 
@@ -266,7 +270,8 @@ HanamiRequest::requestToken(ErrorContainer &error)
     std::string response;
     if(makeSingleRequest(response, http::verb::get, path, "", error) != 200)
     {
-        error.addMeesage("failed to request token");
+        error.addMeesage("Failed to request token");
+        LOG_ERROR(error);
         return false;
     }
 
@@ -274,7 +279,8 @@ HanamiRequest::requestToken(ErrorContainer &error)
     Kitsunemimi::Json::JsonItem item;
     if(item.parse(response, error) == false)
     {
-        error.addMeesage("failed to parse token-response");
+        error.addMeesage("Failed to parse token-response");
+        LOG_ERROR(error);
         return false;
     }
 
@@ -282,7 +288,8 @@ HanamiRequest::requestToken(ErrorContainer &error)
     m_token = item["token"].getString();
     if(m_token == "")
     {
-        error.addMeesage("can not find token in token-response");
+        error.addMeesage("Can not find token in token-response");
+        LOG_ERROR(error);
         return false;
     }
 

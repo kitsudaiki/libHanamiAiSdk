@@ -48,7 +48,14 @@ getSnapshot(std::string &result,
     const std::string vars = "uuid=" + snapshotUuid;
 
     // send request
-    return request->sendGetRequest(result, path, vars, error);
+    if(request->sendGetRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to get snapshot with UUID '" + snapshotUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -68,7 +75,14 @@ listSnapshot(std::string &result,
     const std::string path = "/control/sagiri/v1/cluster_snapshot/all";
 
     // send request
-    return request->sendGetRequest(result, path, "", error);
+    if(request->sendGetRequest(result, path, "", error) == false)
+    {
+        error.addMeesage("Failed to list snapshots");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -91,7 +105,14 @@ deleteSnapshot(std::string &result,
     const std::string vars = "uuid=" + snapshotUuid;
 
     // send request
-    return request->sendDeleteRequest(result, path, vars, error);
+    if(request->sendDeleteRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to delete snapshot with UUID '" + snapshotUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 } // namespace Hanami

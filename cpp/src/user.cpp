@@ -67,7 +67,14 @@ createUser(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to create user with name '" + userName + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -89,7 +96,14 @@ getUser(std::string &result,
     const std::string path = "/control/misaka/v1/user";
     const std::string vars = "name=" + userName;
 
-    return request->sendGetRequest(result, path, vars, error);
+    if(request->sendGetRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to get user with name '" + userName + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -109,7 +123,14 @@ listUser(std::string &result,
     const std::string path = "/control/misaka/v1/user/all";
 
     // send request
-    return request->sendGetRequest(result, path, "", error);
+    if(request->sendGetRequest(result, path, "", error) == false)
+    {
+        error.addMeesage("Failed to list users");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -132,7 +153,14 @@ deleteUser(std::string &result,
     const std::string vars = "name=" + userName;
 
     // send request
-    return request->sendDeleteRequest(result, path, vars, error);
+    if(request->sendDeleteRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to delete user with name '" + userName + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 } // namespace Hanami

@@ -55,7 +55,18 @@ createImageLearnTask(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to start image-learn-task on cluster with UUID '"
+                         + clusterUuid
+                         + "' and dataset with UUID '"
+                         + dataSetUuid
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -85,7 +96,18 @@ createImageRequestTask(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to start image-request-task on cluster with UUID '"
+                         + clusterUuid
+                         + "' and dataset with UUID '"
+                         + dataSetUuid
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -118,7 +140,18 @@ createGraphLearnTask(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to start graph-learn-task on cluster with UUID '"
+                         + clusterUuid
+                         + "' and dataset with UUID '"
+                         + dataSetUuid
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -151,7 +184,18 @@ createGraphRequestTask(std::string &result,
                                  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to start graph-request-task on cluster with UUID '"
+                         + clusterUuid
+                         + "' and dataset with UUID '"
+                         + dataSetUuid
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -176,7 +220,18 @@ getTask(std::string &result,
     std::string vars = "uuid=" + taskUuid + "&cluster_uuid=" + clusterUuid;
 
     // send request
-    return request->sendGetRequest(result, path, vars, error);
+    if(request->sendGetRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to get task with UUID '"
+                         + taskUuid
+                         + "' of cluster with UUID '"
+                         + clusterUuid
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -196,7 +251,14 @@ listTask(std::string &result,
     const std::string path = "/control/kyouko/v1/task/all";
 
     // send request
-    return request->sendGetRequest(result, path, "", error);
+    if(request->sendGetRequest(result, path, "", error) == false)
+    {
+        error.addMeesage("Failed to list tasks");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -219,7 +281,14 @@ deleteTask(std::string &result,
     const std::string vars = "uuid=" + taskUuid;
 
     // send request
-    return request->sendDeleteRequest(result, path, vars, error);
+    if(request->sendDeleteRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to delete task with UUID '" + taskUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 } // namespace Hanami

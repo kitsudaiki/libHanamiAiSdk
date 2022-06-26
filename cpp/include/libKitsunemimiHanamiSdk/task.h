@@ -31,14 +31,14 @@ namespace Hanami
 {
 
 bool createImageLearnTask(std::string &result,
-                     const std::string &clusterUuid,
-                     const std::string &dataSetUuid,
-                     ErrorContainer &error);
+                          const std::string &clusterUuid,
+                          const std::string &dataSetUuid,
+                          ErrorContainer &error);
 
 bool createImageRequestTask(std::string &result,
-                       const std::string &clusterUuid,
-                       const std::string &dataSetUuid,
-                       ErrorContainer &error);
+                            const std::string &clusterUuid,
+                            const std::string &dataSetUuid,
+                            ErrorContainer &error);
 
 bool createGraphLearnTask(std::string &result,
                           const std::string &clusterUuid,

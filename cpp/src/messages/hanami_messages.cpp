@@ -30,7 +30,7 @@ namespace Hanami
 //==================================================================================================
 
 /**
- * @brief ClusterInput_Message::ClusterInput_Message
+ * @brief constructor
  */
 ClusterIO_Message::ClusterIO_Message()
 {
@@ -38,15 +38,17 @@ ClusterIO_Message::ClusterIO_Message()
 }
 
 /**
- * @brief ClusterInput_Message::~ClusterInput_Message
+ * @brief destructor
  */
 ClusterIO_Message::~ClusterIO_Message() {}
 
 /**
- * @brief ClusterInput_Message::read
- * @param data
- * @param dataSize
- * @return
+ * @brief read message from byte-array
+ *
+ * @param data pointer to byte-buffer
+ * @param dataSize number of bytes
+ *
+ * @return true, if message was valid, else false
  */
 bool
 ClusterIO_Message::read(void* data, const uint64_t dataSize)
@@ -69,8 +71,9 @@ ClusterIO_Message::read(void* data, const uint64_t dataSize)
 }
 
 /**
- * @brief ClusterInput_Message::createBlob
- * @param result
+ * @brief convert message to byte-array
+ *
+ * @param result reference to the data-buffer to returning the final byte-array
  */
 void
 ClusterIO_Message::createBlob(DataBuffer &result)
@@ -89,7 +92,7 @@ ClusterIO_Message::createBlob(DataBuffer &result)
 //==================================================================================================
 
 /**
- * @brief RequestStart_Message::RequestStart_Message
+ * @brief constructor
  */
 RequestStart_Message::RequestStart_Message()
 {
@@ -97,15 +100,17 @@ RequestStart_Message::RequestStart_Message()
 }
 
 /**
- * @brief RequestStart_Message::~RequestStart_Message
+ * @brief destructor
  */
 RequestStart_Message::~RequestStart_Message() {}
 
 /**
- * @brief RequestStart_Message::read
- * @param data
- * @param dataSize
- * @return
+ * @brief read message from byte-array
+ *
+ * @param data pointer to byte-buffer
+ * @param dataSize number of bytes
+ *
+ * @return true, if message was valid, else false
  */
 bool
 RequestStart_Message::read(void* data, const uint64_t dataSize)
@@ -118,8 +123,9 @@ RequestStart_Message::read(void* data, const uint64_t dataSize)
 }
 
 /**
- * @brief RequestStart_Message::createBlob
- * @param result
+ * @brief convert message to byte-array
+ *
+ * @param result reference to the data-buffer to returning the final byte-array
  */
 void
 RequestStart_Message::createBlob(DataBuffer &result)
@@ -131,7 +137,7 @@ RequestStart_Message::createBlob(DataBuffer &result)
 //==================================================================================================
 
 /**
- * @brief LearnStart_Message::LearnStart_Message
+ * @brief constructor
  */
 LearnStart_Message::LearnStart_Message()
 {
@@ -139,15 +145,17 @@ LearnStart_Message::LearnStart_Message()
 }
 
 /**
- * @brief LearnStart_Message::~LearnStart_Message
+ * @brief destructor
  */
 LearnStart_Message::~LearnStart_Message() {}
 
 /**
- * @brief LearnStart_Message::read
- * @param data
- * @param dataSize
- * @return
+ * @brief read message from byte-array
+ *
+ * @param data pointer to byte-buffer
+ * @param dataSize number of bytes
+ *
+ * @return true, if message was valid, else false
  */
 bool
 LearnStart_Message::read(void* data, const uint64_t dataSize)
@@ -160,8 +168,9 @@ LearnStart_Message::read(void* data, const uint64_t dataSize)
 }
 
 /**
- * @brief LearnStart_Message::createBlob
- * @param result
+ * @brief convert message to byte-array
+ *
+ * @param result reference to the data-buffer to returning the final byte-array
  */
 void
 LearnStart_Message::createBlob(DataBuffer &result)
@@ -173,7 +182,7 @@ LearnStart_Message::createBlob(DataBuffer &result)
 //==================================================================================================
 
 /**
- * @brief RequestEnd_Message::RequestEnd_Message
+ * @brief constructor
  */
 RequestEnd_Message::RequestEnd_Message()
 {
@@ -181,15 +190,17 @@ RequestEnd_Message::RequestEnd_Message()
 }
 
 /**
- * @brief RequestEnd_Message::~RequestEnd_Message
+ * @brief destructor
  */
 RequestEnd_Message::~RequestEnd_Message() {}
 
 /**
- * @brief RequestEnd_Message::read
- * @param data
- * @param dataSize
- * @return
+ * @brief read message from byte-array
+ *
+ * @param data pointer to byte-buffer
+ * @param dataSize number of bytes
+ *
+ * @return true, if message was valid, else false
  */
 bool
 RequestEnd_Message::read(void *data, const uint64_t dataSize)
@@ -202,8 +213,9 @@ RequestEnd_Message::read(void *data, const uint64_t dataSize)
 }
 
 /**
- * @brief RequestEnd_Message::createBlob
- * @param result
+ * @brief convert message to byte-array
+ *
+ * @param result reference to the data-buffer to returning the final byte-array
  */
 void
 RequestEnd_Message::createBlob(DataBuffer &result)
@@ -215,7 +227,7 @@ RequestEnd_Message::createBlob(DataBuffer &result)
 //==================================================================================================
 
 /**
- * @brief LearnEnd_Message::LearnEnd_Message
+ * @brief constructor
  */
 LearnEnd_Message::LearnEnd_Message()
 {
@@ -223,15 +235,17 @@ LearnEnd_Message::LearnEnd_Message()
 }
 
 /**
- * @brief LearnEnd_Message::~LearnEnd_Message
+ * @brief destructor
  */
 LearnEnd_Message::~LearnEnd_Message() {}
 
 /**
- * @brief LearnEnd_Message::read
- * @param data
- * @param dataSize
- * @return
+ * @brief read message from byte-array
+ *
+ * @param data pointer to byte-buffer
+ * @param dataSize number of bytes
+ *
+ * @return true, if message was valid, else false
  */
 bool
 LearnEnd_Message::read(void* data, const uint64_t dataSize)
@@ -244,8 +258,9 @@ LearnEnd_Message::read(void* data, const uint64_t dataSize)
 }
 
 /**
- * @brief LearnEnd_Message::createBlob
- * @param result
+ * @brief convert message to byte-array
+ *
+ * @param result reference to the data-buffer to returning the final byte-array
  */
 void
 LearnEnd_Message::createBlob(DataBuffer &result)

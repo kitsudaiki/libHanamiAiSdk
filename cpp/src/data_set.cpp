@@ -317,6 +317,7 @@ uploadCsvData(std::string &result,
     const std::string uuid = jsonItem.get("uuid").getString();
     const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
 
+    // init websocket to sagiri
     WebsocketClient wsClient;
     std::string websocketUuid = "";
     const bool ret = wsClient.initClient(websocketUuid,
@@ -332,13 +333,14 @@ uploadCsvData(std::string &result,
         return false;
     }
 
-    // send files
+    // send file
     if(sendFile(&wsClient, uuid, inputUuid, inputFilePath, error) == false)
     {
         LOG_ERROR(error);
         return false;
     }
 
+    // wait until all data-transfers to sagiri are completed
     if(waitUntilFullyUploaded(uuid, error) == false)
     {
         LOG_ERROR(error);
@@ -395,6 +397,7 @@ uploadMnistData(std::string &result,
     const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
     const std::string labelUuid = jsonItem.get("uuid_label_file").getString();
 
+    // init websocket to sagiri
     WebsocketClient wsClient;
     std::string websocketUuid = "";
     const bool ret = wsClient.initClient(websocketUuid,
@@ -410,26 +413,33 @@ uploadMnistData(std::string &result,
         return false;
     }
 
-    // send files
+    // send file with inputs
     if(sendFile(&wsClient, uuid, inputUuid, inputFilePath, error) == false)
     {
-        LOG_ERROR(error);
-        return false;
-    }
-    if(sendFile(&wsClient, uuid, labelUuid, labelFilePath, error) == false)
-    {
+        error.addMeesage("Failed to send file with input-values");
         LOG_ERROR(error);
         return false;
     }
 
+    // send file with labels
+    if(sendFile(&wsClient, uuid, labelUuid, labelFilePath, error) == false)
+    {
+        error.addMeesage("Failed to send file with labes");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    // wait until all data-transfers to sagiri are completed
     if(waitUntilFullyUploaded(uuid, error) == false)
     {
+        error.addMeesage("Failed to wait for fully uploaded files");
         LOG_ERROR(error);
         return false;
     }
 
     if(finalizeMnistDataSet(result, uuid, inputUuid, labelUuid, error) == false)
     {
+        error.addMeesage("Failed to finalize MNIST-dataset");
         LOG_ERROR(error);
         return false;
     }
@@ -488,7 +498,14 @@ getDataset(std::string &result,
     const std::string vars = "uuid=" + dataUuid;
 
     // send request
-    return request->sendGetRequest(result, path, vars, error);
+    if(request->sendGetRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to get dataset with UUID '" + dataUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -508,7 +525,14 @@ listDatasets(std::string &result,
     const std::string path = "/control/sagiri/v1/data_set/all";
 
     // send request
-    return request->sendGetRequest(result, path, "", error);
+    if(request->sendGetRequest(result, path, "", error) == false)
+    {
+        error.addMeesage("Failed to list datasets");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -531,7 +555,14 @@ deleteDataset(std::string &result,
     const std::string vars = "uuid=" + dataUuid;
 
     // send request
-    return request->sendDeleteRequest(result, path, vars, error);
+    if(request->sendDeleteRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to delete dataset with UUID '" + dataUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -554,7 +585,14 @@ getDatasetProgress(std::string &result,
     const std::string vars = "uuid=" + dataUuid;
 
     // send request
-    return request->sendGetRequest(result, path, vars, error);
+    if(request->sendGetRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to check upload-state of dataset with UUID '" + dataUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 } // namespace Hanami

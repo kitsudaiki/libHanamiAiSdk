@@ -55,7 +55,16 @@ generateTemplate(std::string &result,
                                  " \"data_set_uuid\":\"" + dataSetUuid  + "\"}";
 
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to generate new template based on dataset with UUID '"
+                         + dataSetUuid
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -81,9 +90,15 @@ uploadTemplate(std::string &result,
     const std::string jsonBody = "{\"name\":\""   + templateName + "\","
                                  " \"template\":" + data + "}";
 
-    std::cout<<jsonBody<<std::endl;
     // send request
-    return request->sendPostRequest(result, path, vars, jsonBody, error);
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to upload new template");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -106,7 +121,14 @@ getTemplate(std::string &result,
     const std::string vars = "uuid=" + templateUuid;
 
     // send request
-    return request->sendGetRequest(result, path, vars, error);
+    if(request->sendGetRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to get template with UUID '" + templateUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -126,7 +148,14 @@ listTemplate(std::string &result,
     const std::string path = "/control/kyouko/v1/template/all";
 
     // send request
-    return request->sendGetRequest(result, path, "", error);
+    if(request->sendGetRequest(result, path, "", error) == false)
+    {
+        error.addMeesage("Failed to list templates");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -149,7 +178,14 @@ deleteTemplate(std::string &result,
     const std::string vars = "uuid=" + templateUuid;
 
     // send request
-    return request->sendDeleteRequest(result, path, vars, error);
+    if(request->sendDeleteRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to delete template with UUID '" + templateUuid + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
 }
 
 } // namespace Hanami
