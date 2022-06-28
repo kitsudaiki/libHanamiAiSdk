@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0] - 2022-06-28
+
+### Added
+- cpp:
+    - snapshot-handling
+    - direct-io
+
+### Changed
+- cpp:
+    - change upload of data from sakura-network to websockets
+
+
 ## [0.2.0] - 2022-02-14
 
 ### Changed

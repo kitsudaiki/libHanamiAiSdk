@@ -34,9 +34,10 @@ boost-library | libboost1.71-dev | >= 1.71 | provides boost beast library for HT
 
 Repository-Name | Version-Tag | Download-Path
 --- | --- | ---
-libKitsunemimiCommon | v0.25.1 |  https://github.com/kitsudaiki/libKitsunemimiCommon.git
+libKitsunemimiCommon | v0.26.0 |  https://github.com/kitsudaiki/libKitsunemimiCommon.git
 libKitsunemimiJson | v0.11.3 |  https://github.com/kitsudaiki/libKitsunemimiJson.git
 libKitsunemimiCrypto | v0.2.0 |  -
+libKitsunemimiHanamiCommon | v0.2.0 | -
 
 #### Required build tools for go-part
 
