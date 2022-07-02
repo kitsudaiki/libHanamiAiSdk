@@ -33,7 +33,7 @@ namespace Hanami
 bool initClient(const std::string &host,
                 const std::string &port,
                 const std::string &user,
-                const std::string &pw,
+                const std::string &password,
                 ErrorContainer &error);
 
 } // namespace Hanami

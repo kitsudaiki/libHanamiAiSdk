@@ -34,7 +34,7 @@ namespace Hanami
  * @param host target-address to connect
  * @param port target-port to connect
  * @param user name of the user
- * @param pw password of the user
+ * @param password password of the user
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -43,11 +43,11 @@ bool
 initClient(const std::string &host,
            const std::string &port,
            const std::string &user,
-           const std::string &pw,
+           const std::string &password,
            ErrorContainer &error)
 {
     Kitsunemimi::Hanami::HanamiRequest* request = Kitsunemimi::Hanami::HanamiRequest::getInstance();
-    if(request->init(host, port, user, pw) == false)
+    if(request->init(host, port, user, password) == false)
     {
         error.addMeesage("Failed to initialize hanami-client");
         LOG_ERROR(error);
