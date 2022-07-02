@@ -260,15 +260,13 @@ HanamiRequest::requestToken(ErrorContainer &error)
         return false;
     }
 
-    // build request-path
-    std::string path = "/control/misaka/v1/token?name=";
-    path.append(m_user);
-    path.append("&pw=");
-    path.append(m_pw);
+    // build request-path and body
+    const std::string path = "/control/misaka/v1/token";
+    const std::string jsonBody = "{\"name\":\"" + m_user + "\",\"pw\":\"" + m_pw + "\"}";
 
     // make token-request
     std::string response;
-    if(makeSingleRequest(response, http::verb::get, path, "", error) != 200)
+    if(makeSingleRequest(response, http::verb::post, path, jsonBody, error) != 200)
     {
         error.addMeesage("Failed to request token");
         LOG_ERROR(error);
