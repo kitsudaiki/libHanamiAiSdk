@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1] - 2022-07-02
+
+### Changed
+- use POST instead of GET requests for token-requests
+- rename 'pw' to 'password' in token-request for better error-messages
+
+
 ## [0.3.0] - 2022-06-28
 
 ### Added
