@@ -56,7 +56,7 @@ createUser(std::string &result,
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""
                                  + userName
-                                 + "\",\"pw\":\""
+                                 + "\",\"password\":\""
                                  + password
                                  + "\",\"is_admin\":"
                                  + (isAdmin ? "true" : "false") +

@@ -59,7 +59,7 @@ public:
     bool init(const std::string &host = "",
               const std::string &port = "",
               const std::string &user = "",
-              const std::string &pw = "",
+              const std::string &password = "",
               const std::string &cacert = "");
 
     bool sendGetRequest(std::string &response,
@@ -97,7 +97,7 @@ private:
     std::string m_cacert = "";
     std::string m_token = "";
     std::string m_user = "";
-    std::string m_pw = "";
+    std::string m_password = "";
 
     bool requestToken(ErrorContainer &error);
     bool makeRequest(std::string &response,

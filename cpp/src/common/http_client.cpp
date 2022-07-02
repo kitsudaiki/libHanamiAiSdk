@@ -88,7 +88,7 @@ HanamiRequest::~HanamiRequest()
  * @param host target-host-address
  * @param port port of the server
  * @param user user-name for token-request
- * @param pw pw for token-request
+ * @param password password for token-request
  * @param cacert cacert for connection-validation
  *
  * @return false, if host or port ar missing in variables and venv, else true
@@ -97,14 +97,14 @@ bool
 HanamiRequest::init(const std::string &host,
                     const std::string &port,
                     const std::string &user,
-                    const std::string &pw,
+                    const std::string &password,
                     const std::string &cacert)
 {
     m_host = host;
     m_port = port;
     m_cacert = cacert;
     m_user = user;
-    m_pw = pw;
+    m_password = password;
 
     // get host-address
     if(m_host == ""
@@ -252,8 +252,8 @@ HanamiRequest::requestToken(ErrorContainer &error)
     }
 
     // get password for access
-    if(m_pw == ""
-        && getEnvVar(m_pw, "HANAMI_PW") == false)
+    if(m_password == ""
+        && getEnvVar(m_password, "HANAMI_PW") == false)
     {
         error.addMeesage("Failed to request token, because no password was provided");
         LOG_ERROR(error);
@@ -262,7 +262,11 @@ HanamiRequest::requestToken(ErrorContainer &error)
 
     // build request-path and body
     const std::string path = "/control/misaka/v1/token";
-    const std::string jsonBody = "{\"name\":\"" + m_user + "\",\"pw\":\"" + m_pw + "\"}";
+    const std::string jsonBody = "{\"name\":\""
+                                 + m_user
+                                 + "\",\"password\":\""
+                                 + m_password
+                                 + "\"}";
 
     // make token-request
     std::string response;
