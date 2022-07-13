@@ -221,9 +221,9 @@ HanamiRequest::sendDeleteRequest(std::string &response,
  */
 bool
 HanamiRequest::getEnvVar(std::string &content,
-                   const std::string &key) const
+                         const std::string &key) const
 {
-    char* val = getenv(key.c_str());
+    const char* val = getenv(key.c_str());
     if(val == NULL) {
         return false;
     }

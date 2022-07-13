@@ -50,26 +50,32 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
       const uint64_t numberOfShouldValues,
       Kitsunemimi::ErrorContainer &error)
 {
-    Kitsunemimi::DataBuffer buffer;
     Kitsunemimi::Hanami::ClusterIO_Message inputMsg;
     Kitsunemimi::Hanami::ClusterIO_Message shouldMsg;
-    Kitsunemimi::DataBuffer inputBuffer;
-    Kitsunemimi::DataBuffer shouldBuffer;
+    uint8_t inputBuffer[96*1024];
+    uint8_t shouldBuffer[96*1024];
+    uint8_t buffer[96*1024];
 
     inputMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::INPUT_SEGMENT;
     inputMsg.segmentId = 0;
     inputMsg.values = inputValues;
     inputMsg.numberOfValues = numberOfInputValues;
-    inputMsg.createBlob(inputBuffer);
+    const uint64_t inputSize = inputMsg.createBlob(inputBuffer, 96*1024);
+    if(inputSize == 0) {
+        return false;
+    }
 
     shouldMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::OUTPUT_SEGMENT;
     shouldMsg.segmentId = 0;
     shouldMsg.values = shouldValues;
     shouldMsg.numberOfValues = numberOfShouldValues;
-    shouldMsg.createBlob(shouldBuffer);
+    const uint64_t shouldSize = shouldMsg.createBlob(shouldBuffer, 96*1024);
+    if(shouldSize == 0) {
+        return false;
+    }
 
     // send input
-    if(wsClient->sendMessage(inputBuffer.data, inputBuffer.usedBufferSize, error) == false)
+    if(wsClient->sendMessage(inputBuffer, inputSize, error) == false)
     {
         error.addMeesage("Failed to send input-values");
         LOG_ERROR(error);
@@ -77,7 +83,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     }
 
     // send should
-    if(wsClient->sendMessage(shouldBuffer.data, shouldBuffer.usedBufferSize, error) == false)
+    if(wsClient->sendMessage(shouldBuffer, shouldSize, error) == false)
     {
         error.addMeesage("Failed to send should-values");
         LOG_ERROR(error);
@@ -86,8 +92,12 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 
     // send start of learn
     Kitsunemimi::Hanami::LearnStart_Message learnStartMsg;
-    learnStartMsg.createBlob(buffer);
-    if(wsClient->sendMessage(buffer.data, buffer.usedBufferSize, error) == false)
+    const uint64_t size = learnStartMsg.createBlob(buffer, 96*1024);
+    if(size == 0) {
+        return false;
+    }
+
+    if(wsClient->sendMessage(buffer, size, error) == false)
     {
         error.addMeesage("Failed to send learn-start-message");
         LOG_ERROR(error);
@@ -138,18 +148,21 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
         uint64_t &numberOfOutputValues,
         Kitsunemimi::ErrorContainer &error)
 {
-    Kitsunemimi::DataBuffer buffer;
-    Kitsunemimi::DataBuffer inputBuffer;
+    uint8_t buffer[96*1024];
+    uint8_t inputBuffer[96*1024];
 
     Kitsunemimi::Hanami::ClusterIO_Message inputMsg;
     inputMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::INPUT_SEGMENT;
     inputMsg.segmentId = 0;
     inputMsg.values = inputData;
     inputMsg.numberOfValues = numberOfInputValues;
-    inputMsg.createBlob(inputBuffer);
+    const uint64_t inputSize = inputMsg.createBlob(inputBuffer, 96*1024);
+    if(inputSize == 0) {
+        return nullptr;
+    }
 
     // send input
-    if(wsClient->sendMessage(inputBuffer.data, inputBuffer.usedBufferSize, error) == false)
+    if(wsClient->sendMessage(inputBuffer, inputSize, error) == false)
     {
         error.addMeesage("Failed to send input-values");
         LOG_ERROR(error);
@@ -158,8 +171,12 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 
     // send start of request
     Kitsunemimi::Hanami::RequestStart_Message reqStartMsg;
-    reqStartMsg.createBlob(buffer);
-    if(wsClient->sendMessage(buffer.data, buffer.usedBufferSize, error) == false)
+    const uint64_t size = reqStartMsg.createBlob(buffer, 96*1024);
+    if(size == 0) {
+        return nullptr;
+    }
+
+    if(wsClient->sendMessage(buffer, size, error) == false)
     {
         error.addMeesage("Failed to send request-start-message");
         LOG_ERROR(error);

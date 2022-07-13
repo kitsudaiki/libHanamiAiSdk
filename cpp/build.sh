@@ -91,7 +91,7 @@ get_required_private_repo_github "libKitsunemimiCrypto" "v0.2.0" 8
 echo ""
 echo "###########################################################################################################"
 echo ""
-get_required_private_repo_gitlab "libKitsunemimiHanamiCommon" "v0.2.0" "2ue6RNxkCDs2A7qp1xtN" 8
+get_required_private_repo_gitlab "libKitsunemimiHanamiCommon" "master" "2ue6RNxkCDs2A7qp1xtN" 8
 echo ""
 echo "###########################################################################################################"
 
