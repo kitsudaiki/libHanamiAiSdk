@@ -74,19 +74,30 @@ ClusterIO_Message::read(void* data, const uint64_t dataSize)
  * @brief convert message to byte-array
  *
  * @param result reference to the data-buffer to returning the final byte-array
+ *
+ * @return 0, if data are too big for the provided buffer, else number of used bytes
  */
-void
-ClusterIO_Message::createBlob(DataBuffer &result)
+uint64_t
+ClusterIO_Message::createBlob(uint8_t* result, const uint64_t bufferSize)
 {
     const uint64_t totalMsgSize = sizeof(MessageHeader)
                                   + 3 * sizeof(Entry)
                                   + 2 * sizeof(uint64_t)
                                   + numberOfValues * sizeof(float);
 
-    initBlob(result, totalMsgSize);
-    appendUint(result, segmentType);
-    appendUint(result, segmentId);
-    appendFloatList(result, values, numberOfValues);
+    if(bufferSize < totalMsgSize) {
+        return 0;
+    }
+
+    uint64_t pos = 0;
+    pos += initBlob(&result[pos], totalMsgSize);
+    pos += appendUint(&result[pos], segmentType);
+    pos += appendUint(&result[pos], segmentId);
+    pos += appendFloatList(&result[pos], values, numberOfValues);
+
+    assert(pos == totalMsgSize);
+
+    return pos;
 }
 
 //==================================================================================================
@@ -127,11 +138,20 @@ RequestStart_Message::read(void* data, const uint64_t dataSize)
  *
  * @param result reference to the data-buffer to returning the final byte-array
  */
-void
-RequestStart_Message::createBlob(DataBuffer &result)
+uint64_t
+RequestStart_Message::createBlob(uint8_t* result, const uint64_t bufferSize)
 {
     const uint64_t totalMsgSize = sizeof(MessageHeader);
-    initBlob(result, totalMsgSize);
+    if(bufferSize < totalMsgSize) {
+        return 0;
+    }
+
+    uint64_t pos = 0;
+    pos += initBlob(&result[pos], totalMsgSize);
+
+    assert(pos == totalMsgSize);
+
+    return pos;
 }
 
 //==================================================================================================
@@ -172,11 +192,20 @@ LearnStart_Message::read(void* data, const uint64_t dataSize)
  *
  * @param result reference to the data-buffer to returning the final byte-array
  */
-void
-LearnStart_Message::createBlob(DataBuffer &result)
+uint64_t
+LearnStart_Message::createBlob(uint8_t* result, const uint64_t bufferSize)
 {
     const uint64_t totalMsgSize = sizeof(MessageHeader);
-    initBlob(result, totalMsgSize);
+    if(bufferSize < totalMsgSize) {
+        return 0;
+    }
+
+    uint64_t pos = 0;
+    pos += initBlob(result, totalMsgSize);
+
+    assert(pos == totalMsgSize);
+
+    return pos;
 }
 
 //==================================================================================================
@@ -217,11 +246,20 @@ RequestEnd_Message::read(void *data, const uint64_t dataSize)
  *
  * @param result reference to the data-buffer to returning the final byte-array
  */
-void
-RequestEnd_Message::createBlob(DataBuffer &result)
+uint64_t
+RequestEnd_Message::createBlob(uint8_t* result, const uint64_t bufferSize)
 {
     const uint64_t totalMsgSize = sizeof(MessageHeader);
-    initBlob(result, totalMsgSize);
+    if(bufferSize < totalMsgSize) {
+        return 0;
+    }
+
+    uint64_t pos = 0;
+    pos += initBlob(result, totalMsgSize);
+
+    assert(pos == totalMsgSize);
+
+    return pos;
 }
 
 //==================================================================================================
@@ -262,11 +300,20 @@ LearnEnd_Message::read(void* data, const uint64_t dataSize)
  *
  * @param result reference to the data-buffer to returning the final byte-array
  */
-void
-LearnEnd_Message::createBlob(DataBuffer &result)
+uint64_t
+LearnEnd_Message::createBlob(uint8_t* result, const uint64_t bufferSize)
 {
     const uint64_t totalMsgSize = sizeof(MessageHeader);
-    initBlob(result, totalMsgSize);
+    if(bufferSize < totalMsgSize) {
+        return 0;
+    }
+
+    uint64_t pos = 0;
+    pos += initBlob(result, totalMsgSize);
+
+    assert(pos == totalMsgSize);
+
+    return pos;
 }
 
 //==================================================================================================

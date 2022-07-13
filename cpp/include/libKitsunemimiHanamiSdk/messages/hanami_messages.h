@@ -51,7 +51,7 @@ public:
     uint64_t numberOfValues = 0;
 
     bool read(void* data, const uint64_t dataSize);
-    void createBlob(DataBuffer &result);
+    uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
 
 class RequestStart_Message
@@ -62,7 +62,7 @@ public:
     ~RequestStart_Message();
 
     bool read(void* data, const uint64_t dataSize);
-    void createBlob(DataBuffer &result);
+    uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
 
 class LearnStart_Message
@@ -73,7 +73,7 @@ public:
     ~LearnStart_Message();
 
     bool read(void* data, const uint64_t dataSize);
-    void createBlob(DataBuffer &result);
+    uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
 
 class RequestEnd_Message
@@ -84,7 +84,7 @@ public:
     ~RequestEnd_Message();
 
     bool read(void* data, const uint64_t dataSize);
-    void createBlob(DataBuffer &result);
+    uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
 
 class LearnEnd_Message
@@ -95,7 +95,7 @@ public:
     ~LearnEnd_Message();
 
     bool read(void* data, const uint64_t dataSize);
-    void createBlob(DataBuffer &result);
+    uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
 
 }  // namespace Hanami
