@@ -57,7 +57,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     uint8_t buffer[96*1024];
 
     inputMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::INPUT_SEGMENT;
-    inputMsg.segmentId = 0;
+    inputMsg.segmentName = "input";
     inputMsg.values = inputValues;
     inputMsg.numberOfValues = numberOfInputValues;
     const uint64_t inputSize = inputMsg.createBlob(inputBuffer, 96*1024);
@@ -66,7 +66,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     }
 
     shouldMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::OUTPUT_SEGMENT;
-    shouldMsg.segmentId = 0;
+    shouldMsg.segmentName = "output";
     shouldMsg.values = shouldValues;
     shouldMsg.numberOfValues = numberOfShouldValues;
     const uint64_t shouldSize = shouldMsg.createBlob(shouldBuffer, 96*1024);
@@ -153,7 +153,7 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 
     Kitsunemimi::Hanami::ClusterIO_Message inputMsg;
     inputMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::INPUT_SEGMENT;
-    inputMsg.segmentId = 0;
+    inputMsg.segmentName = "input";
     inputMsg.values = inputData;
     inputMsg.numberOfValues = numberOfInputValues;
     const uint64_t inputSize = inputMsg.createBlob(inputBuffer, 96*1024);

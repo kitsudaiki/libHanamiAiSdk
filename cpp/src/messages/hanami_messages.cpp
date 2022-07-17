@@ -57,10 +57,10 @@ ClusterIO_Message::read(void* data, const uint64_t dataSize)
         return false;
     }
 
-    if(readUint(data, segmentType) == false) {
+    if(readString(data, segmentName) == false) {
         return false;
     }
-    if(readUint(data, segmentId) == false) {
+    if(readUint(data, segmentType) == false) {
         return false;
     }
     if(readFloatList(data, &values, numberOfValues) == false) {
@@ -82,7 +82,8 @@ ClusterIO_Message::createBlob(uint8_t* result, const uint64_t bufferSize)
 {
     const uint64_t totalMsgSize = sizeof(MessageHeader)
                                   + 3 * sizeof(Entry)
-                                  + 2 * sizeof(uint64_t)
+                                  + segmentName.size()
+                                  + sizeof(uint64_t)
                                   + numberOfValues * sizeof(float);
 
     if(bufferSize < totalMsgSize) {
@@ -91,8 +92,8 @@ ClusterIO_Message::createBlob(uint8_t* result, const uint64_t bufferSize)
 
     uint64_t pos = 0;
     pos += initBlob(&result[pos], totalMsgSize);
+    pos += appendString(&result[pos], segmentName);
     pos += appendUint(&result[pos], segmentType);
-    pos += appendUint(&result[pos], segmentId);
     pos += appendFloatList(&result[pos], values, numberOfValues);
 
     assert(pos == totalMsgSize);

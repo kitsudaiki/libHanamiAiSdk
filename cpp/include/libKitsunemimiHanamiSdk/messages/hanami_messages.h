@@ -31,6 +31,8 @@ namespace Kitsunemimi
 namespace Hanami
 {
 
+//==================================================================================================
+
 class ClusterIO_Message
         : public HanamiMessage
 {
@@ -45,14 +47,16 @@ public:
         OUTPUT_SEGMENT = 2,
     };
 
+    std::string segmentName = "";
     uint64_t segmentType = UNDEFINED_SEGMENT_TYPE;
-    uint64_t segmentId = 0;
     float* values = nullptr;
     uint64_t numberOfValues = 0;
 
     bool read(void* data, const uint64_t dataSize);
     uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
+
+//==================================================================================================
 
 class RequestStart_Message
         : public HanamiMessage
@@ -65,6 +69,8 @@ public:
     uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
 
+//==================================================================================================
+
 class LearnStart_Message
         : public HanamiMessage
 {
@@ -75,6 +81,8 @@ public:
     bool read(void* data, const uint64_t dataSize);
     uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
+
+//==================================================================================================
 
 class RequestEnd_Message
         : public HanamiMessage
@@ -87,6 +95,8 @@ public:
     uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
 
+//==================================================================================================
+
 class LearnEnd_Message
         : public HanamiMessage
 {
@@ -97,6 +107,8 @@ public:
     bool read(void* data, const uint64_t dataSize);
     uint64_t createBlob(uint8_t* result, const uint64_t bufferSize);
 };
+
+//==================================================================================================
 
 }  // namespace Hanami
 }  // namespace Kitsunemimi
