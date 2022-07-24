@@ -29,7 +29,7 @@ namespace Hanami
 {
 
 /**
- * @brief create a new user in misaka
+ * @brief create a new user in misaki
  *
  * @param result reference for response-message
  * @param userName name of the new user
@@ -52,7 +52,7 @@ createUser(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/v1/user";
+    const std::string path = "/control/misaki/v1/user";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""
                                  + userName
@@ -78,7 +78,7 @@ createUser(std::string &result,
 }
 
 /**
- * @brief get information of a user from misaka
+ * @brief get information of a user from misaki
  *
  * @param result reference for response-message
  * @param userName name of the requested user
@@ -93,7 +93,7 @@ getUser(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/v1/user";
+    const std::string path = "/control/misaki/v1/user";
     const std::string vars = "name=" + userName;
 
     if(request->sendGetRequest(result, path, vars, error) == false)
@@ -107,7 +107,7 @@ getUser(std::string &result,
 }
 
 /**
- * @brief list all visible users on misaka
+ * @brief list all visible users on misaki
  *
  * @param result reference for response-message
  * @param error reference for error-output
@@ -120,7 +120,7 @@ listUser(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/v1/user/all";
+    const std::string path = "/control/misaki/v1/user/all";
 
     // send request
     if(request->sendGetRequest(result, path, "", error) == false)
@@ -134,7 +134,7 @@ listUser(std::string &result,
 }
 
 /**
- * @brief delete a user from misaka
+ * @brief delete a user from misaki
  *
  * @param result reference for response-message
  * @param userName name of the user, which should be deleted
@@ -149,7 +149,7 @@ deleteUser(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/misaka/v1/user";
+    const std::string path = "/control/misaki/v1/user";
     const std::string vars = "name=" + userName;
 
     // send request
