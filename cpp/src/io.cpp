@@ -20,10 +20,10 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/io.h>
+#include <libKitsumiAiSdk/io.h>
 
-#include <libKitsunemimiHanamiSdk/messages/hanami_messages.h>
-#include <libKitsunemimiHanamiSdk/common/websocket_client.h>
+#include <libKitsumiAiSdk/messages/hanami_messages.h>
+#include <libKitsumiAiSdk/common/websocket_client.h>
 
 namespace Kitsunemimi
 {

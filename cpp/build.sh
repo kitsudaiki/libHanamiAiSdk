@@ -87,9 +87,9 @@ echo "##########################################################################
 #-----------------------------------------------------------------------------------------------------------------
 
 if [ $1 = "test" ]; then
-    build_kitsune_lib_repo "libKitsunemimiHanamiSdk" 1 "run_tests"
+    build_kitsune_lib_repo "libKitsumiAiSdk" 1 "run_tests"
 else
-    build_kitsune_lib_repo "libKitsunemimiHanamiSdk" 1
+    build_kitsune_lib_repo "libKitsumiAiSdk" 1
 fi
 
 #-----------------------------------------------------------------------------------------------------------------

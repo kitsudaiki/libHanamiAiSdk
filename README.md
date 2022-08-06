@@ -1,8 +1,8 @@
 # libKitsumiAiSdk
 
 ![Github workfloat status](https://img.shields.io/github/workflow/status/kitsudaiki/libKitsumiAiSdk/build-and-test/develop?label=build%20and%20test&style=flat-square)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/kitsudaiki/libKitsunemimiHanamiSdk?label=version&style=flat-square)
-![GitHub](https://img.shields.io/github/license/kitsudaiki/libKitsunemimiHanamiSdk?style=flat-square)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/kitsudaiki/libKitsumiAiSdk?label=version&style=flat-square)
+![GitHub](https://img.shields.io/github/license/kitsudaiki/libKitsumiAiSdk?style=flat-square)
 ![C++Version](https://img.shields.io/badge/c%2B%2B-17-blue?style=flat-square)
 ![Platform](https://img.shields.io/badge/platform-Linux--x64-lightgrey?style=flat-square)
 
@@ -53,8 +53,8 @@ In all of my repositories you will find a `build.sh`. You only have to run this 
 Run the following commands:
 
 ```
-git clone https://github.com/kitsudaiki/libKitsunemimiHanamiSdk.git
-cd libKitsunemimiHanamiSdk/cpp
+git clone https://github.com/kitsudaiki/libKitsumiAiSdk.git
+cd libKitsumiAiSdk/cpp
 ./build.sh
 cd ../result
 ```

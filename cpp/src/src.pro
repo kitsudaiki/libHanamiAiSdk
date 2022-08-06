@@ -1,6 +1,6 @@
 QT -= qt core gui
 
-TARGET = KitsunemimiHanamiSdk
+TARGET = KitsumiAiSdk
 CONFIG += c++17
 TEMPLATE = lib
 VERSION = 0.3.1
@@ -31,17 +31,17 @@ INCLUDEPATH += $$PWD \
                $$PWD/../include
 
 HEADERS += \
-    ../include/libKitsunemimiHanamiSdk/cluster.h \
-    ../include/libKitsunemimiHanamiSdk/data_set.h \
-    ../include/libKitsunemimiHanamiSdk/init.h \
-    ../include/libKitsunemimiHanamiSdk/messages/hanami_messages.h \
-    ../include/libKitsunemimiHanamiSdk/task.h \
-    ../include/libKitsunemimiHanamiSdk/template.h \
-    ../include/libKitsunemimiHanamiSdk/user.h \
-    ../include/libKitsunemimiHanamiSdk/snapshot.h \
-    ../include/libKitsunemimiHanamiSdk/io.h \
+    ../include/libKitsumiAiSdk/cluster.h \
+    ../include/libKitsumiAiSdk/data_set.h \
+    ../include/libKitsumiAiSdk/init.h \
+    ../include/libKitsumiAiSdk/messages/hanami_messages.h \
+    ../include/libKitsumiAiSdk/task.h \
+    ../include/libKitsumiAiSdk/template.h \
+    ../include/libKitsumiAiSdk/user.h \
+    ../include/libKitsumiAiSdk/snapshot.h \
+    ../include/libKitsumiAiSdk/io.h \
     common/http_client.h \
-    ../include/libKitsunemimiHanamiSdk/common/websocket_client.h
+    ../include/libKitsumiAiSdk/common/websocket_client.h
 
 SOURCES += \
     cluster.cpp \

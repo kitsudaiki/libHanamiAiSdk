@@ -20,7 +20,7 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/snapshot.h>
+#include <libKitsumiAiSdk/snapshot.h>
 #include <common/http_client.h>
 
 namespace Kitsunemimi

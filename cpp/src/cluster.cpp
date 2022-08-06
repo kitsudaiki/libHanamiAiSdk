@@ -20,9 +20,9 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/cluster.h>
+#include <libKitsumiAiSdk/cluster.h>
 #include <common/http_client.h>
-#include <libKitsunemimiHanamiSdk/common/websocket_client.h>
+#include <libKitsumiAiSdk/common/websocket_client.h>
 
 namespace Kitsunemimi
 {

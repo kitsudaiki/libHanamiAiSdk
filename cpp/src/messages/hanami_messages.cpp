@@ -20,7 +20,7 @@
  *      limitations under the License.
  */
 
-#include <libKitsunemimiHanamiSdk/messages/hanami_messages.h>
+#include <libKitsumiAiSdk/messages/hanami_messages.h>
 
 namespace Kitsunemimi
 {
