@@ -22,8 +22,9 @@
 
 #include <libKitsumiAiSdk/io.h>
 
-#include <libKitsumiAiSdk/messages/hanami_messages.h>
 #include <libKitsumiAiSdk/common/websocket_client.h>
+
+#include <../../libKitsunemimiHanamiProtobuffers/kyouko_messages.proto3.pb.h>
 
 namespace Kitsunemimi
 {
@@ -50,56 +51,54 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
       const uint64_t numberOfShouldValues,
       Kitsunemimi::ErrorContainer &error)
 {
-    Kitsunemimi::Hanami::ClusterIO_Message inputMsg;
-    Kitsunemimi::Hanami::ClusterIO_Message shouldMsg;
-    uint8_t inputBuffer[96*1024];
-    uint8_t shouldBuffer[96*1024];
     uint8_t buffer[96*1024];
 
-    inputMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::INPUT_SEGMENT;
-    inputMsg.segmentName = "input";
-    inputMsg.values = inputValues;
-    inputMsg.numberOfValues = numberOfInputValues;
-    const uint64_t inputSize = inputMsg.createBlob(inputBuffer, 96*1024);
-    if(inputSize == 0) {
-        return false;
+    ClusterIO_Message inputMsg;
+    inputMsg.set_segmentname("input");
+    inputMsg.set_islast(false);
+    inputMsg.set_processtype(ClusterProcessType::LEARN_TYPE);
+    inputMsg.set_datatype(ClusterDataType::INPUT_TYPE);
+    inputMsg.set_numberofvalues(numberOfInputValues);
+    for(uint64_t i = 0; i < numberOfInputValues; i++) {
+        inputMsg.add_values(inputValues[i]);
     }
 
-    shouldMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::OUTPUT_SEGMENT;
-    shouldMsg.segmentName = "output";
-    shouldMsg.values = shouldValues;
-    shouldMsg.numberOfValues = numberOfShouldValues;
-    const uint64_t shouldSize = shouldMsg.createBlob(shouldBuffer, 96*1024);
-    if(shouldSize == 0) {
+    const uint64_t inputMsgSize = inputMsg.ByteSizeLong();
+    if(inputMsg.SerializeToArray(buffer, inputMsgSize) == false)
+    {
+        error.addMeesage("Failed to serialize learn-message");
         return false;
     }
 
     // send input
-    if(wsClient->sendMessage(inputBuffer, inputSize, error) == false)
+    if(wsClient->sendMessage(buffer, inputMsgSize, error) == false)
     {
         error.addMeesage("Failed to send input-values");
         LOG_ERROR(error);
         return false;
     }
 
+    ClusterIO_Message shouldMsg;
+    shouldMsg.set_segmentname("output");
+    shouldMsg.set_islast(true);
+    shouldMsg.set_processtype(ClusterProcessType::LEARN_TYPE);
+    shouldMsg.set_datatype(ClusterDataType::SHOULD_TYPE);
+    shouldMsg.set_numberofvalues(numberOfShouldValues);
+    for(uint64_t i = 0; i < numberOfShouldValues; i++) {
+        shouldMsg.add_values(shouldValues[i]);
+    }
+
+    const uint64_t shouldMsgSize = shouldMsg.ByteSizeLong();
+    if(shouldMsg.SerializeToArray(buffer, shouldMsgSize) == false)
+    {
+        error.addMeesage("Failed to serialize learn-message");
+        return false;
+    }
+
     // send should
-    if(wsClient->sendMessage(shouldBuffer, shouldSize, error) == false)
+    if(wsClient->sendMessage(buffer, shouldMsgSize, error) == false)
     {
         error.addMeesage("Failed to send should-values");
-        LOG_ERROR(error);
-        return false;
-    }
-
-    // send start of learn
-    Kitsunemimi::Hanami::LearnStart_Message learnStartMsg;
-    const uint64_t size = learnStartMsg.createBlob(buffer, 96*1024);
-    if(size == 0) {
-        return false;
-    }
-
-    if(wsClient->sendMessage(buffer, size, error) == false)
-    {
-        error.addMeesage("Failed to send learn-start-message");
         LOG_ERROR(error);
         return false;
     }
@@ -117,8 +116,8 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 
     // check end-message
     bool success = true;
-    Kitsunemimi::Hanami::LearnEnd_Message recvMsg;
-    if(recvMsg.read(recvData, numberOfBytes) == false)
+    ClusterIO_Message response;
+    if(response.ParseFromArray(recvData, numberOfBytes) == false)
     {
         success = false;
         error.addMeesage("Got no valid learn-end-message");
@@ -149,36 +148,28 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
         Kitsunemimi::ErrorContainer &error)
 {
     uint8_t buffer[96*1024];
-    uint8_t inputBuffer[96*1024];
 
-    Kitsunemimi::Hanami::ClusterIO_Message inputMsg;
-    inputMsg.segmentType = Kitsunemimi::Hanami::ClusterIO_Message::INPUT_SEGMENT;
-    inputMsg.segmentName = "input";
-    inputMsg.values = inputData;
-    inputMsg.numberOfValues = numberOfInputValues;
-    const uint64_t inputSize = inputMsg.createBlob(inputBuffer, 96*1024);
-    if(inputSize == 0) {
+    ClusterIO_Message inputMsg;
+    inputMsg.set_segmentname("input");
+    inputMsg.set_islast(true);
+    inputMsg.set_processtype(ClusterProcessType::REQUEST_TYPE);
+    inputMsg.set_datatype(ClusterDataType::INPUT_TYPE);
+    inputMsg.set_numberofvalues(numberOfInputValues);
+    for(uint64_t i = 0; i < numberOfInputValues; i++) {
+        inputMsg.add_values(inputData[i]);
+    }
+
+    const uint64_t inputMsgSize = inputMsg.ByteSizeLong();
+    if(inputMsg.SerializeToArray(buffer, inputMsgSize) == false)
+    {
+        error.addMeesage("Failed to serialize request-message");
         return nullptr;
     }
 
     // send input
-    if(wsClient->sendMessage(inputBuffer, inputSize, error) == false)
+    if(wsClient->sendMessage(buffer, inputMsgSize, error) == false)
     {
         error.addMeesage("Failed to send input-values");
-        LOG_ERROR(error);
-        return nullptr;
-    }
-
-    // send start of request
-    Kitsunemimi::Hanami::RequestStart_Message reqStartMsg;
-    const uint64_t size = reqStartMsg.createBlob(buffer, 96*1024);
-    if(size == 0) {
-        return nullptr;
-    }
-
-    if(wsClient->sendMessage(buffer, size, error) == false)
-    {
-        error.addMeesage("Failed to send request-start-message");
         LOG_ERROR(error);
         return nullptr;
     }
@@ -195,8 +186,8 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     }
 
     // read message from response
-    Kitsunemimi::Hanami::ClusterIO_Message recvMsg;
-    if(recvMsg.read(recvData, numberOfBytes) == false)
+    ClusterIO_Message response;
+    if(response.ParseFromArray(recvData, numberOfBytes) == false)
     {
         delete[] recvData;
         error.addMeesage("Got no valid request response");
@@ -205,10 +196,10 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     }
 
     // convert output
-    numberOfOutputValues = recvMsg.numberOfValues;
+    numberOfOutputValues = response.numberofvalues();
     float* result = new float[numberOfOutputValues];
     for(uint64_t i = 0; i < numberOfOutputValues; i++) {
-        result[i] = recvMsg.values[i];
+        result[i] = response.values(i);
     }
 
     delete[] recvData;

@@ -72,6 +72,7 @@ generateTemplate(std::string &result,
  *
  * @param result reference for response-message
  * @param templateName name of the new template
+ * @param type type of the new template (cluster or segment)
  * @param data template to upload.
  * @param error reference for error-output
  *
