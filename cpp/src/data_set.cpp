@@ -29,7 +29,7 @@
 #include <libKitsunemimiCommon/items/data_items.h>
 #include <libKitsunemimiCommon/files/binary_file.h>
 
-#include <../../libKitsunemimiHanamiProtobuffers/hanami_messages/sagiri_messages.h>
+#include <../../libKitsunemimiHanamiMessages/hanami_messages/sagiri_messages.h>
 
 namespace Kitsunemimi
 {

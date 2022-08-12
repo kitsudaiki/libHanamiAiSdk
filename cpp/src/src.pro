@@ -41,8 +41,8 @@ HEADERS += \
     ../include/libKitsumiAiSdk/io.h \
     common/http_client.h \
     ../include/libKitsumiAiSdk/common/websocket_client.h \
-    ../../../libKitsunemimiHanamiProtobuffers/hanami_messages/kyouko_messages.h \
-    ../../../libKitsunemimiHanamiProtobuffers/hanami_messages/sagiri_messages.h
+    ../../../libKitsunemimiHanamiMessages/hanami_messages/kyouko_messages.h \
+    ../../../libKitsunemimiHanamiMessages/hanami_messages/sagiri_messages.h
 
 SOURCES += \
     cluster.cpp \

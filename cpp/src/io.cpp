@@ -24,7 +24,7 @@
 
 #include <libKitsumiAiSdk/common/websocket_client.h>
 
-#include <../../libKitsunemimiHanamiProtobuffers/hanami_messages/kyouko_messages.h>
+#include <../../libKitsunemimiHanamiMessages/hanami_messages/kyouko_messages.h>
 
 namespace Kitsunemimi
 {
