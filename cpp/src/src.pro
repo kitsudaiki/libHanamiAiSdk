@@ -34,26 +34,24 @@ HEADERS += \
     ../include/libKitsumiAiSdk/cluster.h \
     ../include/libKitsumiAiSdk/data_set.h \
     ../include/libKitsumiAiSdk/init.h \
-    ../include/libKitsumiAiSdk/messages/hanami_messages.h \
     ../include/libKitsumiAiSdk/task.h \
     ../include/libKitsumiAiSdk/template.h \
     ../include/libKitsumiAiSdk/user.h \
     ../include/libKitsumiAiSdk/snapshot.h \
     ../include/libKitsumiAiSdk/io.h \
     common/http_client.h \
-    ../include/libKitsumiAiSdk/common/websocket_client.h
+    ../include/libKitsumiAiSdk/common/websocket_client.h \
+    ../../../libKitsunemimiHanamiProtobuffers/hanami_messages/kyouko_messages.h \
+    ../../../libKitsunemimiHanamiProtobuffers/hanami_messages/sagiri_messages.h
 
 SOURCES += \
     cluster.cpp \
     data_set.cpp \
     init.cpp \
     io.cpp \
-    messages/hanami_messages.cpp \
     task.cpp \
     template.cpp \
     user.cpp \
     snapshot.cpp \
     common/http_client.cpp \
     common/websocket_client.cpp
-
-

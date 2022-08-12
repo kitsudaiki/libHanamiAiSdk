@@ -26,7 +26,10 @@
 
 #include <libKitsunemimiCrypto/common.h>
 #include <libKitsunemimiJson/json_item.h>
-#include <libKitsunemimiCommon/common_items/data_items.h>
+#include <libKitsunemimiCommon/items/data_items.h>
+#include <libKitsunemimiCommon/files/binary_file.h>
+
+#include <../../libKitsunemimiHanamiProtobuffers/hanami_messages/sagiri_messages.h>
 
 namespace Kitsunemimi
 {
@@ -200,45 +203,64 @@ sendFile(WebsocketClient* client,
     Kitsunemimi::BinaryFile sourceFile(filePath);
 
     bool success = true;
-    uint64_t i = 0;
+    uint64_t pos = 0;
 
     // prepare buffer
     uint64_t segmentSize = 96 * 1024;
-    uint8_t* sendBuffer = new uint8_t[128*1024];
-    memcpy(&sendBuffer[0], datasetId.c_str(), 36);
-    memcpy(&sendBuffer[36], fileId.c_str(), 36);
+
+    Kitsunemimi::Hanami::FileUpload_Message message;
+    message.fileUuid = fileId;
+    message.datasetUuid = datasetId;
+    message.type = Kitsunemimi::Hanami::FileUpload_Message::UploadDataType::DATASET_TYPE;
+    message.isLast = false;
+
+
+    uint8_t readBuffer[96*1024];
+    uint8_t sendBuffer[128*1024];
 
     do
     {
-        memcpy(&sendBuffer[72], &i, 8);
-
         // check the size for the last segment
         segmentSize = 96 * 1024;
-        if(dataSize - i < segmentSize) {
-            segmentSize = dataSize - i;
+        if(dataSize - pos < segmentSize) {
+            segmentSize = dataSize - pos;
+        }
+
+        if(pos + segmentSize >= dataSize) {
+            message.isLast = true;
         }
 
         // read segment of the local file
-        if(sourceFile.readDataFromFile(&sendBuffer[80], i, segmentSize) == false)
+        if(sourceFile.readDataFromFile(&readBuffer[0], pos, segmentSize, error) == false)
         {
             success = false;
             error.addMeesage("Failed to read file '" + filePath + "'");
             break;
         }
 
+        message.position = pos;
+        message.payload = readBuffer;
+        message.numberOfBytes = segmentSize;
+
+        const uint64_t msgSize = message.createBlob(sendBuffer, 128*1024);
+        if(msgSize == 0)
+        {
+            error.addMeesage("Failed to serialize learn-message");
+            return false;
+        }
+
         // send segment
-        if(client->sendMessage(sendBuffer, segmentSize + 80, error) == false)
+        if(client->sendMessage(sendBuffer, msgSize, error) == false)
         {
             LOG_ERROR(error);
             success = false;
             break;
         }
 
-        i += segmentSize;
+        pos += segmentSize;
     }
-    while(i < dataSize);
+    while(pos < dataSize);
 
-    delete[] sendBuffer;
     return success;
 }
 
