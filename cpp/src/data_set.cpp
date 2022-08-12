@@ -29,7 +29,7 @@
 #include <libKitsunemimiCommon/items/data_items.h>
 #include <libKitsunemimiCommon/files/binary_file.h>
 
-#include <../../libKitsunemimiHanamiProtobuffers/sagiri_messages.proto3.pb.h>
+#include <../../libKitsunemimiHanamiProtobuffers/hanami_messages/sagiri_messages.h>
 
 namespace Kitsunemimi
 {
@@ -208,11 +208,12 @@ sendFile(WebsocketClient* client,
     // prepare buffer
     uint64_t segmentSize = 96 * 1024;
 
-    FileUpload_Message message;
-    message.set_fileuuid(fileId);
-    message.set_datasetuuid(datasetId);
-    message.set_type(UploadDataType::DATASET_TYPE);
-    message.set_islast(false);
+    Kitsunemimi::Hanami::FileUpload_Message message;
+    message.fileUuid = fileId;
+    message.datasetUuid = datasetId;
+    message.type = Kitsunemimi::Hanami::FileUpload_Message::UploadDataType::DATASET_TYPE;
+    message.isLast = false;
+
 
     uint8_t readBuffer[96*1024];
     uint8_t sendBuffer[128*1024];
@@ -226,7 +227,7 @@ sendFile(WebsocketClient* client,
         }
 
         if(pos + segmentSize >= dataSize) {
-            message.set_islast(true);
+            message.isLast = true;
         }
 
         // read segment of the local file
@@ -237,11 +238,12 @@ sendFile(WebsocketClient* client,
             break;
         }
 
-        message.set_position(pos);
-        message.set_data(readBuffer, segmentSize);
+        message.position = pos;
+        message.payload = readBuffer;
+        message.numberOfBytes = segmentSize;
 
-        const uint64_t msgSize = message.ByteSizeLong();
-        if(message.SerializeToArray(sendBuffer, msgSize) == false)
+        const uint64_t msgSize = message.createBlob(sendBuffer, 128*1024);
+        if(msgSize == 0)
         {
             error.addMeesage("Failed to serialize learn-message");
             return false;

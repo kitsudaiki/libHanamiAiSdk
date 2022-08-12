@@ -90,7 +90,7 @@ echo ""
 echo "###########################################################################################################"
 echo ""
 get_required_private_repo_github "libKitsunemimiHanamiCommon" "develop" 8
-download_private_repo_github "libKitsunemimiHanamiProtobuffers" "develop"
+download_private_repo_github "libKitsunemimiHanamiMessages" "develop"
 echo ""
 echo "###########################################################################################################"
 
