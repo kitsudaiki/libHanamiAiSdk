@@ -388,7 +388,7 @@ HanamiRequest::makeSingleRequest(std::string &response,
         int version = 11;
 
         // init ssl
-        ssl::context ctx(ssl::context::tlsv12_client);
+        ssl::context ctx(ssl::context::tlsv13_client);
         //load_root_certificates(ctx);
         //ctx.set_verify_mode(ssl::verify_peer);
 
