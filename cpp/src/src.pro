@@ -34,6 +34,7 @@ HEADERS += \
     ../include/libKitsumiAiSdk/cluster.h \
     ../include/libKitsumiAiSdk/data_set.h \
     ../include/libKitsumiAiSdk/init.h \
+    ../include/libKitsumiAiSdk/project.h \
     ../include/libKitsumiAiSdk/task.h \
     ../include/libKitsumiAiSdk/template.h \
     ../include/libKitsumiAiSdk/user.h \
@@ -49,6 +50,7 @@ SOURCES += \
     data_set.cpp \
     init.cpp \
     io.cpp \
+    project.cpp \
     task.cpp \
     template.cpp \
     user.cpp \
