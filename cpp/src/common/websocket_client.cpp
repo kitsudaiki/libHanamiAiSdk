@@ -68,7 +68,7 @@ WebsocketClient::initClient(std::string &socketUuid,
     try
     {
         // init ssl
-        ssl::context ctx{ssl::context::tlsv12_client};
+        ssl::context ctx{ssl::context::tlsv13_client};
         /*if(loadCertificates(ctx) == false)
         {
             error.addMeesage("Failed to load certificates for creating Websocket-Client");

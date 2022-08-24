@@ -88,8 +88,11 @@ uploadTemplate(std::string &result,
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/template/upload";
     const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""   + templateName + "\","
-                                 " \"template\":" + data + "}";
+    const std::string jsonBody = "{\"name\":\""
+                                 + templateName
+                                 + "\",\"template\":"
+                                 + data
+                                 + "}";
 
     // send request
     if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)

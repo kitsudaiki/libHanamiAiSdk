@@ -34,7 +34,7 @@ namespace Hanami
  *
  * @param result reference for response-message
  * @param clusterName name of the new cluster
- * @param templateUuid uuid of the template, which works as base for the new cluster
+ * @param clusterDefinition information to build the new cluster
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -42,7 +42,7 @@ namespace Hanami
 bool
 createCluster(std::string &result,
               const std::string &clusterName,
-              const std::string &templateUuid,
+              const std::string &clusterDefinition,
               ErrorContainer &error)
 {
     // create request
@@ -51,9 +51,9 @@ createCluster(std::string &result,
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""
                                  + clusterName
-                                 + "\",\"template_uuid\":\""
-                                 + templateUuid
-                                 + "\"}";
+                                 + "\",\"cluster_definition\":"
+                                 + clusterDefinition
+                                 + "}";
 
     // send request
     if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
