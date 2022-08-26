@@ -32,6 +32,7 @@ namespace Hanami
  * @brief create a new user in misaki
  *
  * @param result reference for response-message
+ * @param projectId id of the new project
  * @param projectName name of the new project
  * @param error reference for error-output
  *
@@ -39,21 +40,24 @@ namespace Hanami
  */
 bool
 createProject(std::string &result,
-           const std::string &projectName,
-           ErrorContainer &error)
+              const std::string &projectId,
+              const std::string &projectName,
+              ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaki/v1/project";
     const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""
+    const std::string jsonBody = "{\"id\":\""
+                                 + projectId
+                                 + "\",\"name\":\""
                                  + projectName
                                  + "\"}";
 
     // send request
     if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
     {
-        error.addMeesage("Failed to create project with name '" + projectName + "'");
+        error.addMeesage("Failed to create project with id '" + projectId + "'");
         LOG_ERROR(error);
         return false;
     }
@@ -65,24 +69,24 @@ createProject(std::string &result,
  * @brief get information of a user from misaki
  *
  * @param result reference for response-message
- * @param projectName name of the requested project
+ * @param projectId id of the requested project
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 getProject(std::string &result,
-           const std::string &projectName,
+           const std::string &projectId,
            ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaki/v1/project";
-    const std::string vars = "name=" + projectName;
+    const std::string vars = "id=" + projectId;
 
     if(request->sendGetRequest(result, path, vars, error) == false)
     {
-        error.addMeesage("Failed to get project with name '" + projectName + "'");
+        error.addMeesage("Failed to get project with name '" + projectId + "'");
         LOG_ERROR(error);
         return false;
     }
@@ -121,25 +125,25 @@ listProject(std::string &result,
  * @brief delete a project from misaki
  *
  * @param result reference for response-message
- * @param projectName name of the project, which should be deleted
+ * @param projectId id of the project, which should be deleted
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 deleteProject(std::string &result,
-              const std::string &projectName,
+              const std::string &projectId,
               ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaki/v1/project";
-    const std::string vars = "name=" + projectName;
+    const std::string vars = "id=" + projectId;
 
     // send request
     if(request->sendDeleteRequest(result, path, vars, error) == false)
     {
-        error.addMeesage("Failed to delete project with name '" + projectName + "'");
+        error.addMeesage("Failed to delete project with id '" + projectId + "'");
         LOG_ERROR(error);
         return false;
     }

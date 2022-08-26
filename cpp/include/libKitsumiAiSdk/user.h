@@ -31,6 +31,7 @@ namespace Hanami
 {
 
 bool createUser(std::string &result,
+                const std::string &userId,
                 const std::string &userName,
                 const std::string &password,
                 const bool isAdmin,
@@ -39,14 +40,14 @@ bool createUser(std::string &result,
                 ErrorContainer &error);
 
 bool getUser(std::string &result,
-             const std::string &userName,
+             const std::string &userId,
              ErrorContainer &error);
 
 bool listUser(std::string &result,
               ErrorContainer &error);
 
 bool deleteUser(std::string &result,
-                const std::string &userName,
+                const std::string &userId,
                 ErrorContainer &error);
 
 } // namespace Hanami

@@ -96,7 +96,7 @@ private:
     std::string m_port = "";
     std::string m_cacert = "";
     std::string m_token = "";
-    std::string m_user = "";
+    std::string m_userId = "";
     std::string m_password = "";
 
     bool requestToken(ErrorContainer &error);
