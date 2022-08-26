@@ -31,18 +31,19 @@ namespace Hanami
 {
 
 bool createProject(std::string &result,
+                   const std::string &projectId,
                    const std::string &projectName,
                    ErrorContainer &error);
 
 bool getProject(std::string &result,
-                const std::string &projectName,
+                const std::string &projectId,
                 ErrorContainer &error);
 
 bool listProject(std::string &result,
                  ErrorContainer &error);
 
 bool deleteProject(std::string &result,
-                   const std::string &projectName,
+                   const std::string &projectId,
                    ErrorContainer &error);
 
 } // namespace Hanami

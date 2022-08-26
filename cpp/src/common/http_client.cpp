@@ -103,7 +103,7 @@ HanamiRequest::init(const std::string &host,
     m_host = host;
     m_port = port;
     m_cacert = cacert;
-    m_user = user;
+    m_userId = user;
     m_password = password;
 
     // get host-address
@@ -243,17 +243,17 @@ bool
 HanamiRequest::requestToken(ErrorContainer &error)
 {
     // get user for access
-    if(m_user == ""
-        && getEnvVar(m_user, "HANAMI_USER") == false)
+    if(m_userId == ""
+        && getEnvVar(m_userId, "HANAMI_USER_ID") == false)
     {
-        error.addMeesage("Failed to request token, because no user-name was provided");
+        error.addMeesage("Failed to request token, because no user-id was provided");
         LOG_ERROR(error);
         return false;
     }
 
     // get password for access
     if(m_password == ""
-        && getEnvVar(m_password, "HANAMI_PW") == false)
+        && getEnvVar(m_password, "HANAMI_USER_PW") == false)
     {
         error.addMeesage("Failed to request token, because no password was provided");
         LOG_ERROR(error);
@@ -262,8 +262,8 @@ HanamiRequest::requestToken(ErrorContainer &error)
 
     // build request-path and body
     const std::string path = "/control/misaki/v1/token";
-    const std::string jsonBody = "{\"name\":\""
-                                 + m_user
+    const std::string jsonBody = "{\"id\":\""
+                                 + m_userId
                                  + "\",\"password\":\""
                                  + m_password
                                  + "\"}";

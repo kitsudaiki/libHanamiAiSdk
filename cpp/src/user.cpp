@@ -32,6 +32,7 @@ namespace Hanami
  * @brief create a new user in misaki
  *
  * @param result reference for response-message
+ * @param id id of the new user
  * @param userName name of the new user
  * @param password password of the new user
  * @param isAdmin true to make new user to an admin
@@ -43,6 +44,7 @@ namespace Hanami
  */
 bool
 createUser(std::string &result,
+           const std::string &userId,
            const std::string &userName,
            const std::string &password,
            const bool isAdmin,
@@ -54,7 +56,9 @@ createUser(std::string &result,
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaki/v1/user";
     const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""
+    const std::string jsonBody = "{\"id\":\""
+                                 + userId
+                                 + "\",\"name\":\""
                                  + userName
                                  + "\",\"password\":\""
                                  + password
@@ -81,24 +85,24 @@ createUser(std::string &result,
  * @brief get information of a user from misaki
  *
  * @param result reference for response-message
- * @param userName name of the requested user
+ * @param userId id of the requested user
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 getUser(std::string &result,
-        const std::string &userName,
+        const std::string &userId,
         ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaki/v1/user";
-    const std::string vars = "name=" + userName;
+    const std::string vars = "id=" + userId;
 
     if(request->sendGetRequest(result, path, vars, error) == false)
     {
-        error.addMeesage("Failed to get user with name '" + userName + "'");
+        error.addMeesage("Failed to get user with id '" + userId + "'");
         LOG_ERROR(error);
         return false;
     }
@@ -137,25 +141,25 @@ listUser(std::string &result,
  * @brief delete a user from misaki
  *
  * @param result reference for response-message
- * @param userName name of the user, which should be deleted
+ * @param userId id of the user, which should be deleted
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 deleteUser(std::string &result,
-           const std::string &userName,
+           const std::string &userId,
            ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/misaki/v1/user";
-    const std::string vars = "name=" + userName;
+    const std::string vars = "id=" + userId;
 
     // send request
     if(request->sendDeleteRequest(result, path, vars, error) == false)
     {
-        error.addMeesage("Failed to delete user with name '" + userName + "'");
+        error.addMeesage("Failed to delete user with id '" + userId + "'");
         LOG_ERROR(error);
         return false;
     }
