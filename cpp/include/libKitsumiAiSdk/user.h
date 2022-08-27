@@ -35,8 +35,6 @@ bool createUser(std::string &result,
                 const std::string &userName,
                 const std::string &password,
                 const bool isAdmin,
-                const std::string &roles,
-                const std::string &projects,
                 ErrorContainer &error);
 
 bool getUser(std::string &result,

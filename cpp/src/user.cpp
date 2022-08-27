@@ -36,8 +36,6 @@ namespace Hanami
  * @param userName name of the new user
  * @param password password of the new user
  * @param isAdmin true to make new user to an admin
- * @param roles name of role of the user
- * @param projects uuid of the project of the new user
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -48,8 +46,6 @@ createUser(std::string &result,
            const std::string &userName,
            const std::string &password,
            const bool isAdmin,
-           const std::string &roles,
-           const std::string &projects,
            ErrorContainer &error)
 {
     // create request
@@ -64,11 +60,7 @@ createUser(std::string &result,
                                  + password
                                  + "\",\"is_admin\":"
                                  + (isAdmin ? "true" : "false") +
-                                 + ",\"roles\":\""
-                                 + roles
-                                 + "\",\"projects\":\""
-                                 + projects
-                                 + "\"}";
+                                 + "}";
 
     // send request
     if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
