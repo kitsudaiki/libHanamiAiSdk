@@ -24,6 +24,7 @@
 #define IO_H
 
 #include <string>
+#include <vector>
 #include <stdint.h>
 
 #include <libKitsunemimiCommon/logger.h>
@@ -33,6 +34,16 @@ namespace Kitsunemimi
 namespace Hanami
 {
 class WebsocketClient;
+
+bool learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+           std::vector<float> &inputValues,
+           std::vector<float> &shouldValues,
+           Kitsunemimi::ErrorContainer &error);
+
+float* request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+               std::vector<float> &inputValues,
+               uint64_t &numberOfOutputValues,
+               Kitsunemimi::ErrorContainer &error);
 
 bool learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
            float* inputValues,

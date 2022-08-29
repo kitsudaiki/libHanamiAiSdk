@@ -32,7 +32,54 @@ namespace Hanami
 {
 
 /**
- * @brief learn learn single value
+ * @brief learn single value
+ *
+ * @param wsClient pointer to websocket-client for data-transfer
+ * @param inputValues vector with all input-values
+ * @param shouldValues vector with all should-values
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+learn(WebsocketClient* wsClient,
+      std::vector<float> &inputValues,
+      std::vector<float> &shouldValues,
+      ErrorContainer &error)
+{
+    return learn(wsClient,
+                 &inputValues[0],
+                 inputValues.size(),
+                 &shouldValues[0],
+                 shouldValues.size(),
+                 error);
+}
+
+/**
+ * @brief request single value
+ *
+ * @param wsClient pointer to websocket-client for data-transfer
+ * @param inputValues vector with all input-values
+ * @param numberOfOutputValues reference for returning number of output-values
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+float*
+request(WebsocketClient* wsClient,
+        std::vector<float> &inputValues,
+        uint64_t &numberOfOutputValues,
+        ErrorContainer &error)
+{
+    return request(wsClient,
+                   &inputValues[0],
+                   inputValues.size(),
+                   numberOfOutputValues,
+                   error);
+}
+
+/**
+ * @brief learn single value
  *
  * @param wsClient pointer to websocket-client for data-transfer
  * @param inputValues float-pointer to array with input-values for input-segment
@@ -53,6 +100,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 {
     uint8_t buffer[96*1024];
 
+    // build input-message
     Kitsunemimi::Hanami::ClusterIO_Message inputMsg;
     inputMsg.segmentName = "input";
     inputMsg.isLast = false;
@@ -61,6 +109,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     inputMsg.numberOfValues = numberOfInputValues;
     inputMsg.values = inputValues;
 
+    // add input-values to message
     const uint64_t inputMsgSize = inputMsg.createBlob(buffer, 96*1024);
     if(inputMsgSize == 0)
     {
@@ -77,6 +126,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
         return false;
     }
 
+    // build should-message
     Kitsunemimi::Hanami::ClusterIO_Message shouldMsg;
     shouldMsg.segmentName = "output";
     shouldMsg.isLast = true;
@@ -85,6 +135,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     shouldMsg.numberOfValues = numberOfShouldValues;
     shouldMsg.values = shouldValues;
 
+    // add should-values to message
     const uint64_t shouldMsgSize = shouldMsg.createBlob(buffer, 96*1024);
     if(shouldMsgSize == 0)
     {
@@ -128,7 +179,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 }
 
 /**
- * @brief request request single value
+ * @brief request single value
  *
  * @param wsClient pointer to websocket-client for data-transfer
  * @param inputValues float-pointer to array with input-values for input-segment
@@ -147,6 +198,7 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 {
     uint8_t buffer[96*1024];
 
+    // build message
     Kitsunemimi::Hanami::ClusterIO_Message inputMsg;
     inputMsg.segmentName = "input";
     inputMsg.isLast = true;
@@ -155,6 +207,7 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     inputMsg.numberOfValues = numberOfInputValues;
     inputMsg.values = inputData;
 
+    // add input-values to message
     const uint64_t inputMsgSize = inputMsg.createBlob(buffer, 96*1024);
     if(inputMsgSize == 0)
     {
@@ -163,7 +216,7 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
         return nullptr;
     }
 
-    // send input
+    // send message
     if(wsClient->sendMessage(buffer, inputMsgSize, error) == false)
     {
         error.addMeesage("Failed to send input-values");
