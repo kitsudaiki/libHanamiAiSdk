@@ -40,6 +40,7 @@ namespace Hanami
  */
 bool
 createImageLearnTask(std::string &result,
+                     const std::string &name,
                      const std::string &clusterUuid,
                      const std::string &dataSetUuid,
                      ErrorContainer &error)
@@ -48,7 +49,9 @@ createImageLearnTask(std::string &result,
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/task/image/learn";
     const std::string vars = "";
-    const std::string jsonBody = "{\"cluster_uuid\":\""
+    const std::string jsonBody = "{\"name\":\""
+                                 + name
+                                 + "\",\"cluster_uuid\":\""
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
                                  + dataSetUuid
@@ -81,6 +84,7 @@ createImageLearnTask(std::string &result,
  */
 bool
 createImageRequestTask(std::string &result,
+                       const std::string &name,
                        const std::string &clusterUuid,
                        const std::string &dataSetUuid,
                        ErrorContainer &error)
@@ -89,7 +93,9 @@ createImageRequestTask(std::string &result,
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/task/image/request";
     const std::string vars = "";
-    const std::string jsonBody = "{\"cluster_uuid\":\""
+    const std::string jsonBody = "{\"name\":\""
+                                 + name
+                                 + "\",\"cluster_uuid\":\""
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
                                  + dataSetUuid
@@ -122,6 +128,7 @@ createImageRequestTask(std::string &result,
  */
 bool
 createGraphLearnTask(std::string &result,
+                     const std::string &name,
                      const std::string &clusterUuid,
                      const std::string &dataSetUuid,
                      const std::string &columnName,
@@ -131,7 +138,9 @@ createGraphLearnTask(std::string &result,
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/task/graph/learn";
     const std::string vars = "";
-    const std::string jsonBody = "{\"cluster_uuid\":\""
+    const std::string jsonBody = "{\"name\":\""
+                                 + name
+                                 + "\",\"cluster_uuid\":\""
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
                                  + dataSetUuid
@@ -166,6 +175,7 @@ createGraphLearnTask(std::string &result,
  */
 bool
 createGraphRequestTask(std::string &result,
+                       const std::string &name,
                        const std::string &clusterUuid,
                        const std::string &dataSetUuid,
                        const std::string &columnName,
@@ -175,7 +185,9 @@ createGraphRequestTask(std::string &result,
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/task/graph/request";
     const std::string vars = "";
-    const std::string jsonBody = "{\"cluster_uuid\":\""
+    const std::string jsonBody = "{\"name\":\""
+                                 + name
+                                 + "\",\"cluster_uuid\":\""
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
                                  + dataSetUuid
