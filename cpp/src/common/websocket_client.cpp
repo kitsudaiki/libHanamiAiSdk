@@ -20,7 +20,7 @@
  *      limitations under the License.
  */
 
-#include <libKitsumiAiSdk/common/websocket_client.h>
+#include <libHanamiAiSdk/common/websocket_client.h>
 
 #include <libKitsunemimiJson/json_item.h>
 

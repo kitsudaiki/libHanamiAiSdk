@@ -20,9 +20,9 @@
  *      limitations under the License.
  */
 
-#include <libKitsumiAiSdk/io.h>
+#include <libHanamiAiSdk/io.h>
 
-#include <libKitsumiAiSdk/common/websocket_client.h>
+#include <libHanamiAiSdk/common/websocket_client.h>
 
 #include <../../libKitsunemimiHanamiMessages/hanami_messages/kyouko_messages.h>
 

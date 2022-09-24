@@ -20,8 +20,8 @@
  *      limitations under the License.
  */
 
-#include <libKitsumiAiSdk/data_set.h>
-#include <libKitsumiAiSdk/common/websocket_client.h>
+#include <libHanamiAiSdk/data_set.h>
+#include <libHanamiAiSdk/common/websocket_client.h>
 #include <common/http_client.h>
 
 #include <libKitsunemimiCrypto/common.h>

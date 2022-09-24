@@ -31,18 +31,18 @@ INCLUDEPATH += $$PWD \
                $$PWD/../include
 
 HEADERS += \
-    ../include/libKitsumiAiSdk/cluster.h \
-    ../include/libKitsumiAiSdk/data_set.h \
-    ../include/libKitsumiAiSdk/init.h \
-    ../include/libKitsumiAiSdk/project.h \
-    ../include/libKitsumiAiSdk/request_result.h \
-    ../include/libKitsumiAiSdk/task.h \
-    ../include/libKitsumiAiSdk/template.h \
-    ../include/libKitsumiAiSdk/user.h \
-    ../include/libKitsumiAiSdk/snapshot.h \
-    ../include/libKitsumiAiSdk/io.h \
+    ../include/libHanamiAiSdk/cluster.h \
+    ../include/libHanamiAiSdk/data_set.h \
+    ../include/libHanamiAiSdk/init.h \
+    ../include/libHanamiAiSdk/project.h \
+    ../include/libHanamiAiSdk/request_result.h \
+    ../include/libHanamiAiSdk/task.h \
+    ../include/libHanamiAiSdk/template.h \
+    ../include/libHanamiAiSdk/user.h \
+    ../include/libHanamiAiSdk/snapshot.h \
+    ../include/libHanamiAiSdk/io.h \
     common/http_client.h \
-    ../include/libKitsumiAiSdk/common/websocket_client.h \
+    ../include/libHanamiAiSdk/common/websocket_client.h \
     ../../../libKitsunemimiHanamiMessages/hanami_messages/kyouko_messages.h \
     ../../../libKitsunemimiHanamiMessages/hanami_messages/sagiri_messages.h
 
