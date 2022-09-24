@@ -29,7 +29,7 @@ namespace Hanami
 {
 
 /**
- * @brief get information of a snapshot from sagiri
+ * @brief get information of a snapshot from shiori
  *
  * @param result reference for response-message
  * @param snapshotUuid uuid of the snapshot to get
@@ -44,7 +44,7 @@ getSnapshot(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/cluster_snapshot";
+    const std::string path = "/control/shiori/v1/cluster_snapshot";
     const std::string vars = "uuid=" + snapshotUuid;
 
     // send request
@@ -59,7 +59,7 @@ getSnapshot(std::string &result,
 }
 
 /**
- * @brief list all visible snapshot on sagiri
+ * @brief list all visible snapshot on shiori
  *
  * @param result reference for response-message
  * @param error reference for error-output
@@ -72,7 +72,7 @@ listSnapshot(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/cluster_snapshot/all";
+    const std::string path = "/control/shiori/v1/cluster_snapshot/all";
 
     // send request
     if(request->sendGetRequest(result, path, "", error) == false)
@@ -101,7 +101,7 @@ deleteSnapshot(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/cluster_snapshot";
+    const std::string path = "/control/shiori/v1/cluster_snapshot";
     const std::string vars = "uuid=" + snapshotUuid;
 
     // send request

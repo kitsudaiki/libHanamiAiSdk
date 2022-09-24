@@ -44,7 +44,7 @@ HEADERS += \
     common/http_client.h \
     ../include/libHanamiAiSdk/common/websocket_client.h \
     ../../../libKitsunemimiHanamiMessages/hanami_messages/kyouko_messages.h \
-    ../../../libKitsunemimiHanamiMessages/hanami_messages/sagiri_messages.h
+    ../../../libKitsunemimiHanamiMessages/hanami_messages/shiori_messages.h
 
 SOURCES += \
     cluster.cpp \
