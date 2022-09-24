@@ -29,7 +29,7 @@ namespace Hanami
 {
 
 /**
- * @brief get results of a request from sagiri
+ * @brief get results of a request from shiori
  *
  * @param result reference for response-message
  * @param requestResultUuid uuid of the requested result
@@ -44,7 +44,7 @@ getRequestResult(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/request_result";
+    const std::string path = "/control/shiori/v1/request_result";
     const std::string vars = "uuid=" + requestResultUuid;
 
     if(request->sendGetRequest(result, path, vars, error) == false)
@@ -71,7 +71,7 @@ listRequestResult(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/request_result/all";
+    const std::string path = "/control/shiori/v1/request_result/all";
 
     // send request
     if(request->sendGetRequest(result, path, "", error) == false)
@@ -100,7 +100,7 @@ deleteRequestResult(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/request_result";
+    const std::string path = "/control/shiori/v1/request_result";
     const std::string vars = "uuid=" + requestResultUuid;
 
     // send request

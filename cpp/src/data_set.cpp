@@ -29,7 +29,7 @@
 #include <libKitsunemimiCommon/items/data_items.h>
 #include <libKitsunemimiCommon/files/binary_file.h>
 
-#include <../../libKitsunemimiHanamiMessages/hanami_messages/sagiri_messages.h>
+#include <../../libKitsunemimiHanamiMessages/hanami_messages/shiori_messages.h>
 
 namespace Kitsunemimi
 {
@@ -51,7 +51,7 @@ getFileSize(const std::string &filePath)
 }
 
 /**
- * @brief initialize a new csv-dataset in sagiri
+ * @brief initialize a new csv-dataset in shiori
  *
  * @param result reference for response-message
  * @param dataSetName name for the new data-set
@@ -68,7 +68,7 @@ createCsvDataSet(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/csv/data_set";
+    const std::string path = "/control/shiori/v1/csv/data_set";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""    + dataSetName + "\""
                                  ",\"input_data_size\":" + std::to_string(inputDataSize) + "}";
@@ -99,7 +99,7 @@ finalizeCsvDataSet(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/csv/data_set";
+    const std::string path = "/control/shiori/v1/csv/data_set";
     const std::string vars = "";
     const std::string jsonBody = "{\"uuid\":\""    + uuid + "\""
                                  ",\"uuid_input_file\":\"" + inputUuid + "\"}";
@@ -113,7 +113,7 @@ finalizeCsvDataSet(std::string &result,
 }
 
 /**
- * @brief initialize a new mnist-dataset in sagiri
+ * @brief initialize a new mnist-dataset in shiori
  *
  * @param result reference for response-message
  * @param dataSetName name for the new data-set
@@ -132,7 +132,7 @@ createMnistDataSet(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/mnist/data_set";
+    const std::string path = "/control/shiori/v1/mnist/data_set";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""    + dataSetName + "\""
                                  ",\"input_data_size\":" + std::to_string(inputDataSize) +
@@ -166,7 +166,7 @@ finalizeMnistDataSet(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/mnist/data_set";
+    const std::string path = "/control/shiori/v1/mnist/data_set";
     const std::string vars = "";
     const std::string jsonBody = "{\"uuid\":\""    + uuid + "\""
                                  ",\"uuid_input_file\":\"" + inputUuid + "\""
@@ -181,11 +181,11 @@ finalizeMnistDataSet(std::string &result,
 }
 
 /**
- * @brief send data to sagiri
+ * @brief send data to shiori
  *
  * @param session session over which the data should be send
  * @param datasetId uuid of the dataset where the file belongs to
- * @param fileId uuid of the file for identification in sagiri
+ * @param fileId uuid of the file for identification in shiori
  * @param filePath path to file, which should be send
  * @param error reference for error-output
  *
@@ -303,7 +303,7 @@ waitUntilFullyUploaded(const std::string &uuid,
 }
 
 /**
- * @brief upload new csv-data-set to sagiri
+ * @brief upload new csv-data-set to shiori
  *
  * @param result reference for response-message
  * @param dataSetName name for the new data-set
@@ -339,18 +339,18 @@ uploadCsvData(std::string &result,
     const std::string uuid = jsonItem.get("uuid").getString();
     const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
 
-    // init websocket to sagiri
+    // init websocket to shiori
     WebsocketClient wsClient;
     std::string websocketUuid = "";
     const bool ret = wsClient.initClient(websocketUuid,
                                          HanamiRequest::getInstance()->getToken(),
-                                         "sagiri",
+                                         "shiori",
                                          HanamiRequest::getInstance()->getHost(),
                                          HanamiRequest::getInstance()->getPort(),
                                          error);
     if(ret == false)
     {
-        error.addMeesage("Failed to init websocket to sagiri");
+        error.addMeesage("Failed to init websocket to shiori");
         LOG_ERROR(error);
         return false;
     }
@@ -362,7 +362,7 @@ uploadCsvData(std::string &result,
         return false;
     }
 
-    // wait until all data-transfers to sagiri are completed
+    // wait until all data-transfers to shiori are completed
     if(waitUntilFullyUploaded(uuid, error) == false)
     {
         LOG_ERROR(error);
@@ -379,7 +379,7 @@ uploadCsvData(std::string &result,
 }
 
 /**
- * @brief upload new mnist-data-set to sagiri
+ * @brief upload new mnist-data-set to shiori
  *
  * @param result reference for response-message
  * @param dataSetName name for the new data-set
@@ -419,18 +419,18 @@ uploadMnistData(std::string &result,
     const std::string inputUuid = jsonItem.get("uuid_input_file").getString();
     const std::string labelUuid = jsonItem.get("uuid_label_file").getString();
 
-    // init websocket to sagiri
+    // init websocket to shiori
     WebsocketClient wsClient;
     std::string websocketUuid = "";
     const bool ret = wsClient.initClient(websocketUuid,
                                          HanamiRequest::getInstance()->getToken(),
-                                         "sagiri",
+                                         "shiori",
                                          HanamiRequest::getInstance()->getHost(),
                                          HanamiRequest::getInstance()->getPort(),
                                          error);
     if(ret == false)
     {
-        error.addMeesage("Failed to init websocket to sagiri");
+        error.addMeesage("Failed to init websocket to shiori");
         LOG_ERROR(error);
         return false;
     }
@@ -451,7 +451,7 @@ uploadMnistData(std::string &result,
         return false;
     }
 
-    // wait until all data-transfers to sagiri are completed
+    // wait until all data-transfers to shiori are completed
     if(waitUntilFullyUploaded(uuid, error) == false)
     {
         error.addMeesage("Failed to wait for fully uploaded files");
@@ -487,7 +487,7 @@ checkDataset(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/data_set/check";
+    const std::string path = "/control/shiori/v1/data_set/check";
     const std::string vars = "";
     const std::string jsonBody = "{\"data_set_uuid\":\"" + dataUuid + "\""
                                  ",\"result_uuid\":\"" + resultUuid + "\"}";
@@ -516,7 +516,7 @@ getDataset(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/data_set";
+    const std::string path = "/control/shiori/v1/data_set";
     const std::string vars = "uuid=" + dataUuid;
 
     // send request
@@ -531,7 +531,7 @@ getDataset(std::string &result,
 }
 
 /**
- * @brief list all data-sets of the user, which are available on sagiri
+ * @brief list all data-sets of the user, which are available on shiori
  *
  * @param result reference for response-message
  * @param error reference for error-output
@@ -544,7 +544,7 @@ listDatasets(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/data_set/all";
+    const std::string path = "/control/shiori/v1/data_set/all";
 
     // send request
     if(request->sendGetRequest(result, path, "", error) == false)
@@ -558,7 +558,7 @@ listDatasets(std::string &result,
 }
 
 /**
- * @brief delete a data-set from sagiri
+ * @brief delete a data-set from shiori
  *
  * @param result reference for response-message
  * @param dataUuid uuid of the data-set to delete
@@ -573,7 +573,7 @@ deleteDataset(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/data_set";
+    const std::string path = "/control/shiori/v1/data_set";
     const std::string vars = "uuid=" + dataUuid;
 
     // send request
@@ -603,7 +603,7 @@ getDatasetProgress(std::string &result,
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/sagiri/v1/data_set/progress";
+    const std::string path = "/control/shiori/v1/data_set/progress";
     const std::string vars = "uuid=" + dataUuid;
 
     // send request
