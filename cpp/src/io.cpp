@@ -126,6 +126,19 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
         return false;
     }
 
+    // receive bogus-response, which is not further processed and exist only because of issue:
+    //     https://github.com/kitsudaiki/KyoukoMind/issues/27
+    uint64_t numberOfBytes = 0;
+    uint8_t* recvData = wsClient->readMessage(numberOfBytes, error);
+    if(recvData == nullptr
+            || numberOfBytes == 0)
+    {
+        error.addMeesage("Got no valid response");
+        LOG_ERROR(error);
+        return false;
+    }
+    delete[] recvData;
+
     // build should-message
     Kitsunemimi::Hanami::ClusterIO_Message shouldMsg;
     shouldMsg.segmentName = "output";
@@ -153,8 +166,8 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     }
 
     // receive response
-    uint64_t numberOfBytes = 0;
-    uint8_t* recvData = wsClient->readMessage(numberOfBytes, error);
+    numberOfBytes = 0;
+    recvData = wsClient->readMessage(numberOfBytes, error);
     if(recvData == nullptr
             || numberOfBytes == 0)
     {
@@ -213,6 +226,7 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     {
         Kitsunemimi::ErrorContainer error;
         error.addMeesage("Failed to serialize request-message");
+        LOG_ERROR(error);
         return nullptr;
     }
 
