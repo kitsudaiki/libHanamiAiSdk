@@ -26,6 +26,7 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
+#include <chrono>
 
 #include <libKitsunemimiCommon/logger.h>
 
