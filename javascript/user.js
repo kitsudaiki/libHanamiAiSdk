@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function createUser_request(outputFunc, userId, name, pasword, isAdmin, token)
+function createUser_request(outputFunc, userId, name, password, isAdmin, token)
 {
     const path = "/control/misaki/v1/user";
     let reqContent = "{id:\"" + userId;
