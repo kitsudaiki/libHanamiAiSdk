@@ -39,7 +39,7 @@ function removeProjectFromUser_request(outputFunc, userId, projectId, token)
     let path = "/control/misaki/v1/user/project"
     path += "?project_id=" + projectId;
     path += "&id=" + userId;
-    createObject_request(outputFunc, path, reqContent, token);
+    deleteObject_request(outputFunc, path, token);
 }
 
 function listUsers_request(outputFunc, token)
