@@ -34,8 +34,8 @@ function listTasks_request(outputFunc, clusterUuid, token)
     listObjects_request(outputFunc, path, token);
 }
 
-function deleteTask_request(outputFunc, clusterUuid, token)
+function deleteTask_request(outputFunc, clusterUuid, taskUuid, token)
 {
     const request = "/control/kyouko/v1/task?cluster_uuid=" + clusterUuid + "&uuid=" + taskUuid;
-    deleteObject_request(postProcessFunc, request, token);
+    deleteObject_request(outputFunc, request, token);
 }
