@@ -26,21 +26,11 @@ function makeHttpRequest(outputFunc, path, type, payload, token)
     {
         if(requestConnection.status != 200) 
         {
-            // TODO: error-popup
             console.log("Failed to request power-consumption from azuki with response-code: " 
                         + requestConnection.status);
-            return;
         }
 
-        if(type !== "DELETE")
-        {
-            const jsonContent = JSON.parse(requestConnection.responseText);
-            outputFunc(jsonContent);
-        }
-        else
-        {
-            outputFunc();
-        }
+        outputFunc(requestConnection.status, requestConnection.responseText);
     };
 
     // callback for fail
