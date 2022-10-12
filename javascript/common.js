@@ -26,8 +26,7 @@ function makeHttpRequest(outputFunc, path, type, payload, token)
     {
         if(requestConnection.status != 200) 
         {
-            console.log("Failed to request power-consumption from azuki with response-code: " 
-                        + requestConnection.status);
+            console.log("HTTP-request failed: " + requestConnection.status);
         }
 
         outputFunc(requestConnection.status, requestConnection.responseText);

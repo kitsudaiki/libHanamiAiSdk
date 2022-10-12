@@ -25,3 +25,9 @@ function getTemperatureData_request(outputFunc, token)
     let request = "/control/azuki/v1/temperature_production";
     getObject_request(outputFunc, request, token);
 }
+
+function getSpeedData_request(outputFunc, token)
+{
+    let request = "/control/azuki/v1/speed";
+    getObject_request(outputFunc, request, token);
+}
