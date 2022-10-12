@@ -36,7 +36,7 @@ function addProjectToUser_request(outputFunc, userId, projectId, role, isProject
 
 function removeProjectFromUser_request(outputFunc, userId, projectId, token)
 {
-    let path = "/control/misaki/v1/user/project"
+    let path = "/control/misaki/v1/user/project";
     path += "?project_id=" + projectId;
     path += "&id=" + userId;
     deleteObject_request(outputFunc, path, token);
