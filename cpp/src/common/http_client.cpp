@@ -26,12 +26,10 @@
 
 #include <libKitsunemimiJson/json_item.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
-Kitsunemimi::Hanami::HanamiRequest* HanamiRequest::m_instance = nullptr;
+HanamiAI::HanamiRequest* HanamiRequest::m_instance = nullptr;
 
 /**
  * @brief constructor
@@ -58,6 +56,12 @@ const std::string&
 HanamiRequest::getToken() const
 {
     return m_token;
+}
+
+void
+HanamiRequest::updateToken(const std::string &newToken)
+{
+    m_token = newToken;
 }
 
 /**
@@ -145,7 +149,7 @@ bool
 HanamiRequest::sendGetRequest(std::string &response,
                               const std::string &path,
                               const std::string &vars,
-                              ErrorContainer &error)
+                              Kitsunemimi::ErrorContainer &error)
 {
     return makeRequest(response, http::verb::get, path, vars, "", error);
 }
@@ -166,7 +170,7 @@ HanamiRequest::sendPostRequest(std::string &response,
                                const std::string &path,
                                const std::string &vars,
                                const std::string &body,
-                               ErrorContainer &error)
+                               Kitsunemimi::ErrorContainer &error)
 {
     return makeRequest(response, http::verb::post, path, vars, body, error);
 }
@@ -187,7 +191,7 @@ HanamiRequest::sendPutRequest(std::string &response,
                               const std::string &path,
                               const std::string &vars,
                               const std::string &body,
-                              ErrorContainer &error)
+                              Kitsunemimi::ErrorContainer &error)
 {
     return makeRequest(response, http::verb::put, path, vars, body, error);
 }
@@ -206,7 +210,7 @@ bool
 HanamiRequest::sendDeleteRequest(std::string &response,
                                  const std::string &path,
                                  const std::string &vars,
-                                 ErrorContainer &error)
+                                 Kitsunemimi::ErrorContainer &error)
 {
     return makeRequest(response, http::verb::delete_, path, vars, "", error);
 }
@@ -240,7 +244,7 @@ HanamiRequest::getEnvVar(std::string &content,
  * @return false, if something failed, else true
  */
 bool
-HanamiRequest::requestToken(ErrorContainer &error)
+HanamiRequest::requestToken(Kitsunemimi::ErrorContainer &error)
 {
     // get user for access
     if(m_userId == ""
@@ -316,7 +320,7 @@ HanamiRequest::makeRequest(std::string &response,
                            const std::string &path,
                            const std::string &vars,
                            const std::string &jsonBody,
-                           ErrorContainer &error)
+                           Kitsunemimi::ErrorContainer &error)
 {
     // get token if necessary
     if(m_token == "")
@@ -379,7 +383,7 @@ HanamiRequest::makeSingleRequest(std::string &response,
                                  const http::verb type,
                                  const std::string &target,
                                  const std::string &jsonBody,
-                                 ErrorContainer &error)
+                                 Kitsunemimi::ErrorContainer &error)
 {
     u_int16_t statusCode = 0;
 
@@ -476,5 +480,4 @@ HanamiRequest::makeSingleRequest(std::string &response,
     return statusCode;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

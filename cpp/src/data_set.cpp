@@ -31,9 +31,7 @@
 
 #include <../../libKitsunemimiHanamiMessages/hanami_messages/shiori_messages.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -64,7 +62,7 @@ bool
 createCsvDataSet(std::string &result,
                  const std::string &dataSetName,
                  const uint64_t inputDataSize,
-                 ErrorContainer &error)
+                 Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -95,7 +93,7 @@ bool
 finalizeCsvDataSet(std::string &result,
                    const std::string &uuid,
                    const std::string &inputUuid,
-                   ErrorContainer &error)
+                   Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -128,7 +126,7 @@ createMnistDataSet(std::string &result,
                    const std::string &dataSetName,
                    const uint64_t inputDataSize,
                    const uint64_t labelDataSize,
-                   ErrorContainer &error)
+                   Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -162,7 +160,7 @@ finalizeMnistDataSet(std::string &result,
                      const std::string &uuid,
                      const std::string &inputUuid,
                      const std::string &labelUuid,
-                     ErrorContainer &error)
+                     Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -196,7 +194,7 @@ sendFile(WebsocketClient* client,
          const std::string &datasetId,
          const std::string &fileId,
          const std::string &filePath,
-         ErrorContainer &error)
+         Kitsunemimi::ErrorContainer &error)
 {
     // get data, which should be send
     const uint64_t dataSize = getFileSize(filePath);
@@ -274,7 +272,7 @@ sendFile(WebsocketClient* client,
  */
 bool
 waitUntilFullyUploaded(const std::string &uuid,
-                       ErrorContainer &error)
+                       Kitsunemimi::ErrorContainer &error)
 {
     // TODO: add timeout-timer
     bool completeUploaded = false;
@@ -316,7 +314,7 @@ bool
 uploadCsvData(std::string &result,
               const std::string &dataSetName,
               const std::string &inputFilePath,
-              ErrorContainer &error)
+              Kitsunemimi::ErrorContainer &error)
 {
     // init new mnist-data-set
     if(createCsvDataSet(result,
@@ -394,7 +392,7 @@ uploadMnistData(std::string &result,
                 const std::string &dataSetName,
                 const std::string &inputFilePath,
                 const std::string &labelFilePath,
-                ErrorContainer &error)
+                Kitsunemimi::ErrorContainer &error)
 {
     // init new mnist-data-set
     if(createMnistDataSet(result,
@@ -483,7 +481,7 @@ bool
 checkDataset(std::string &result,
              const std::string &dataUuid,
              const std::string &resultUuid,
-             ErrorContainer &error)
+             Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -512,7 +510,7 @@ checkDataset(std::string &result,
 bool
 getDataset(std::string &result,
            const std::string &dataUuid,
-           ErrorContainer &error)
+           Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -540,7 +538,7 @@ getDataset(std::string &result,
  */
 bool
 listDatasets(std::string &result,
-             ErrorContainer &error)
+             Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -569,7 +567,7 @@ listDatasets(std::string &result,
 bool
 deleteDataset(std::string &result,
               const std::string &dataUuid,
-              ErrorContainer &error)
+              Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -599,7 +597,7 @@ deleteDataset(std::string &result,
 bool
 getDatasetProgress(std::string &result,
                    const std::string &dataUuid,
-                   ErrorContainer &error)
+                   Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -617,5 +615,4 @@ getDatasetProgress(std::string &result,
     return true;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

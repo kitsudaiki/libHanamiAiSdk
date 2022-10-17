@@ -42,9 +42,7 @@ namespace net = boost::asio;            // from <boost/asio.hpp>
 namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 class WebsocketClient
@@ -61,17 +59,16 @@ public:
                     Kitsunemimi::ErrorContainer &error);
     bool sendMessage(const void* data,
                      const uint64_t dataSize,
-                     ErrorContainer &error);
+                     Kitsunemimi::ErrorContainer &error);
 
     uint8_t* readMessage(uint64_t &numberOfByes,
-                         ErrorContainer &error);
+                         Kitsunemimi::ErrorContainer &error);
 
 private:
     websocket::stream<beast::ssl_stream<tcp::socket>>* m_websocket = nullptr;
     bool loadCertificates(boost::asio::ssl::context &ctx);
 };
 
-}  // namespace Hanami
-}  // namespace Kitsunemimi
+}  // namespace HanamiAI
 
 #endif // WEBSOCKETCLIENT_H

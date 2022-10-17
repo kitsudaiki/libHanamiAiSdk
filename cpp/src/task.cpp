@@ -23,9 +23,7 @@
 #include <libHanamiAiSdk/task.h>
 #include <common/http_client.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -43,7 +41,7 @@ createImageLearnTask(std::string &result,
                      const std::string &name,
                      const std::string &clusterUuid,
                      const std::string &dataSetUuid,
-                     ErrorContainer &error)
+                     Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -87,7 +85,7 @@ createImageRequestTask(std::string &result,
                        const std::string &name,
                        const std::string &clusterUuid,
                        const std::string &dataSetUuid,
-                       ErrorContainer &error)
+                       Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -127,12 +125,11 @@ createImageRequestTask(std::string &result,
  * @return true, if successful, else false
  */
 bool
-createGraphLearnTask(std::string &result,
+createTableLearnTask(std::string &result,
                      const std::string &name,
                      const std::string &clusterUuid,
                      const std::string &dataSetUuid,
-                     const std::string &columnName,
-                     ErrorContainer &error)
+                     Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -144,8 +141,6 @@ createGraphLearnTask(std::string &result,
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
                                  + dataSetUuid
-                                 + "\",\"column_name\":\""
-                                 + columnName
                                  + "\"}";
 
     // send request
@@ -174,12 +169,11 @@ createGraphLearnTask(std::string &result,
  * @return true, if successful, else false
  */
 bool
-createGraphRequestTask(std::string &result,
+createTableRequestTask(std::string &result,
                        const std::string &name,
                        const std::string &clusterUuid,
                        const std::string &dataSetUuid,
-                       const std::string &columnName,
-                       ErrorContainer &error)
+                       Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -191,8 +185,6 @@ createGraphRequestTask(std::string &result,
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
                                  + dataSetUuid
-                                 + "\",\"column_name\":\""
-                                 + columnName
                                  + "\"}";
 
     // send request
@@ -224,7 +216,7 @@ bool
 getTask(std::string &result,
         const std::string &taskUuid,
         const std::string &clusterUuid,
-        ErrorContainer &error)
+        Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -250,17 +242,19 @@ getTask(std::string &result,
  * @brief list all visible tasks on kyouko
  *
  * @param result reference for response-message
+ * @param clusterUuid uuid of the cluster, which tasks should be listed
  * @param error reference for error-output
  *
  * @return true, if successful, else false
  */
 bool
 listTask(std::string &result,
-         ErrorContainer &error)
+         const std::string &clusterUuid,
+         Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/task/all";
+    const std::string path = "/control/kyouko/v1/task/all?cluster_uuid=" + clusterUuid;
 
     // send request
     if(request->sendGetRequest(result, path, "", error) == false)
@@ -278,6 +272,7 @@ listTask(std::string &result,
  *
  * @param result reference for response-message
  * @param taskUuid uuid of the task, which should be deleted
+ * @param clusterUuid uuid of the cluster, where the task belongs to
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -285,12 +280,13 @@ listTask(std::string &result,
 bool
 deleteTask(std::string &result,
            const std::string &taskUuid,
-           ErrorContainer &error)
+           const std::string &clusterUuid,
+           Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/task";
-    const std::string vars = "uuid=" + taskUuid;
+    const std::string vars = "uuid=" + taskUuid + "&clusterUuid=" + clusterUuid;
 
     // send request
     if(request->sendDeleteRequest(result, path, vars, error) == false)
@@ -303,5 +299,4 @@ deleteTask(std::string &result,
     return true;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

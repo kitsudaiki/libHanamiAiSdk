@@ -25,33 +25,25 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
-bool generateTemplate(std::string &result,
-                      const std::string &templateName,
-                      const std::string &dataSetUuid,
-                      const std::string &type,
-                      ErrorContainer &error);
 bool uploadTemplate(std::string &result,
                     const std::string &templateName,
                     const std::string &data,
-                    ErrorContainer &error);
+                    Kitsunemimi::ErrorContainer &error);
 
 bool getTemplate(std::string &result,
                  const std::string &templateUuid,
-                 ErrorContainer &error);
+                 Kitsunemimi::ErrorContainer &error);
 
 bool listTemplate(std::string &result,
-                  ErrorContainer &error);
+                  Kitsunemimi::ErrorContainer &error);
 
 bool deleteTemplate(std::string &result,
                     const std::string &templateUuid,
-                    ErrorContainer &error);
+                    Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_TEMPLATE_H

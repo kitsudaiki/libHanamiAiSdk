@@ -25,9 +25,7 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 bool createUser(std::string &result,
@@ -35,20 +33,38 @@ bool createUser(std::string &result,
                 const std::string &userName,
                 const std::string &password,
                 const bool isAdmin,
-                ErrorContainer &error);
+                Kitsunemimi::ErrorContainer &error);
 
 bool getUser(std::string &result,
              const std::string &userId,
-             ErrorContainer &error);
+             Kitsunemimi::ErrorContainer &error);
 
 bool listUser(std::string &result,
-              ErrorContainer &error);
+              Kitsunemimi::ErrorContainer &error);
 
 bool deleteUser(std::string &result,
                 const std::string &userId,
-                ErrorContainer &error);
+                Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+bool addProjectToUser(std::string &result,
+                      const std::string &userId,
+                      const std::string &projectId,
+                      const std::string &role,
+                      const bool isProjectAdmin,
+                      Kitsunemimi::ErrorContainer &error);
+
+bool removeProjectFromUser(std::string &result,
+                           const std::string &userId,
+                           const std::string &projectId,
+                           Kitsunemimi::ErrorContainer &error);
+
+bool listProjectsOfUser(std::string &result,
+                        Kitsunemimi::ErrorContainer &error);
+
+bool switchProject(std::string &result,
+                   const std::string &projectId,
+                   Kitsunemimi::ErrorContainer &error);
+
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_USER_H

@@ -1,6 +1,6 @@
 QT -= qt core gui
 
-TARGET = KitsumiAiSdk
+TARGET = HanamiAiSdk
 CONFIG += c++17
 TEMPLATE = lib
 VERSION = 0.3.1

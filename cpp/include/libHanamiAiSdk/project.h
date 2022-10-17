@@ -25,28 +25,25 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 bool createProject(std::string &result,
                    const std::string &projectId,
                    const std::string &projectName,
-                   ErrorContainer &error);
+                   Kitsunemimi::ErrorContainer &error);
 
 bool getProject(std::string &result,
                 const std::string &projectId,
-                ErrorContainer &error);
+                Kitsunemimi::ErrorContainer &error);
 
 bool listProject(std::string &result,
-                 ErrorContainer &error);
+                 Kitsunemimi::ErrorContainer &error);
 
 bool deleteProject(std::string &result,
                    const std::string &projectId,
-                   ErrorContainer &error);
+                   Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_PROJECT_H

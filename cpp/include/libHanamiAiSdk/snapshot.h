@@ -25,23 +25,20 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 bool getSnapshot(std::string &result,
                  const std::string &snapshotUuid,
-                 ErrorContainer &error);
+                 Kitsunemimi::ErrorContainer &error);
 
 bool listSnapshot(std::string &result,
-                  ErrorContainer &error);
+                  Kitsunemimi::ErrorContainer &error);
 
 bool deleteSnapshot(std::string &result,
                     const std::string &snapshotUuid,
-                    ErrorContainer &error);
+                    Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_SNAPSHOT_H

@@ -22,10 +22,9 @@
 
 #include <libHanamiAiSdk/user.h>
 #include <common/http_client.h>
+#include <libKitsunemimiJson/json_item.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -46,7 +45,7 @@ createUser(std::string &result,
            const std::string &userName,
            const std::string &password,
            const bool isAdmin,
-           ErrorContainer &error)
+           Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -85,7 +84,7 @@ createUser(std::string &result,
 bool
 getUser(std::string &result,
         const std::string &userId,
-        ErrorContainer &error)
+        Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -112,7 +111,7 @@ getUser(std::string &result,
  */
 bool
 listUser(std::string &result,
-         ErrorContainer &error)
+         Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -141,7 +140,7 @@ listUser(std::string &result,
 bool
 deleteUser(std::string &result,
            const std::string &userId,
-           ErrorContainer &error)
+           Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -159,5 +158,164 @@ deleteUser(std::string &result,
     return true;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+/**
+ * @brief assign an already existing project to a user.
+ *
+ * @param result reference for response-message
+ * @param userId id of the user, who should be assigned to another projects
+ * @param projectId id of the project, which should be assigned to the user
+ * @param role role of the user, while signed-in in the project
+ * @param isProjectAdmin true, if user should be admin within the new added project
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+addProjectToUser(std::string &result,
+                 const std::string &userId,
+                 const std::string &projectId,
+                 const std::string &role,
+                 const bool isProjectAdmin,
+                 Kitsunemimi::ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/misaki/v1/user/project";
+    const std::string vars = "";
+    const std::string jsonBody = "{id:\"" + userId;
+                                 + "\",project_id:\"" + projectId
+                                 + "\",role:\"" + role
+                                 + "\",is_project_admin:" + (isProjectAdmin ? "true" : "false")
+                                 + "}";
+
+    // send request
+    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to add project with id '"
+                         + projectId
+                         + "' to user with id '"
+                         + userId
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * @brief unassign project from a user
+ *
+ * @param result reference for response-message
+ * @param userId id of the user, who should be unassigned
+ * @param projectId id of the project, which should be removed from the user
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+removeProjectFromUser(std::string &result,
+                      const std::string &userId,
+                      const std::string &projectId,
+                      Kitsunemimi::ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/misaki/v1/user/project";
+    const std::string vars = "id=" + userId + "&project_id=" + projectId;
+
+    // send request
+    if(request->sendDeleteRequest(result, path, vars, error) == false)
+    {
+        error.addMeesage("Failed to remove project with id '"
+                         + projectId
+                         + "' from user with id '"
+                         + userId
+                         + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * @brief list all projects where the current user is assigned to
+ *
+ * @param result reference for response-message
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+listProjectsOfUser(std::string &result,
+                   Kitsunemimi::ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/misaki/v1/user/project";
+
+    // send request
+    if(request->sendGetRequest(result, path, "", error) == false)
+    {
+        error.addMeesage("Failed to list project of user");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * @brief switch to another project by requesting a new token for the selected project. The project
+ *        must be in the list of assigned projects of the user.
+ *
+ * @param result reference for response-message
+ * @param projectId id of the project, where to switch to
+ * @param error reference for error-output
+ *
+ * @return true, if successful, else false
+ */
+bool
+switchProject(std::string &result,
+              const std::string &projectId,
+              Kitsunemimi::ErrorContainer &error)
+{
+    // create request
+    HanamiRequest* request = HanamiRequest::getInstance();
+    const std::string path = "/control/misaki/v1/user/project";
+    const std::string vars = "";
+    const std::string jsonBody = "{\"project_id\":\"" + projectId + "\"}";
+
+    // send request
+    if(request->sendPutRequest(result, path, vars, jsonBody, error) == false)
+    {
+        error.addMeesage("Failed to swtich to project with id '" + projectId + "'");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    // try to parse response
+    Kitsunemimi::Json::JsonItem item;
+    if(item.parse(result, error) == false)
+    {
+        error.addMeesage("Failed to parse token-response");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    // get token from parsed item
+    const std::string newToken = item["token"].getString();
+    if(newToken == "")
+    {
+        error.addMeesage("Can not find token in token-response");
+        LOG_ERROR(error);
+        return false;
+    }
+
+    request->updateToken(newToken);
+
+    return true;
+}
+
+} // namespace HanamiAI

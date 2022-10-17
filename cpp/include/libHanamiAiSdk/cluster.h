@@ -25,46 +25,45 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
+namespace HanamiAI
 {
-namespace Hanami
-{
+
 class WebsocketClient;
 
 bool createCluster(std::string &result,
                    const std::string &clusterName,
                    const std::string &templateUuid,
-                   ErrorContainer &error);
+                   Kitsunemimi::ErrorContainer &error);
 
 bool getCluster(std::string &result,
                 const std::string &clusterUuid,
-                ErrorContainer &error);
+                Kitsunemimi::ErrorContainer &error);
 
 bool listCluster(std::string &result,
-                 ErrorContainer &error);
+                 Kitsunemimi::ErrorContainer &error);
 
 bool deleteCluster(std::string &result,
                    const std::string &clusterUuid,
-                   ErrorContainer &error);
+                   Kitsunemimi::ErrorContainer &error);
 
 bool saveCluster(std::string &result,
                  const std::string &clusterUuid,
                  const std::string &snapshotName,
-                 ErrorContainer &error);
+                 Kitsunemimi::ErrorContainer &error);
 
 bool restoreCluster(std::string &result,
                     const std::string &clusterUuid,
                     const std::string &snapshotUuid,
-                    ErrorContainer &error);
+                    Kitsunemimi::ErrorContainer &error);
 
 bool switchToTaskMode(std::string &result,
                       const std::string &clusterUuid,
-                      ErrorContainer &error);
+                      Kitsunemimi::ErrorContainer &error);
 
 WebsocketClient* switchToDirectMode(std::string &result,
                                     const std::string &clusterUuid,
-                                    ErrorContainer &error);
-} // namespace Hanami
-} // namespace Kitsunemimi
+                                    Kitsunemimi::ErrorContainer &error);
+
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_CLUSTER_H

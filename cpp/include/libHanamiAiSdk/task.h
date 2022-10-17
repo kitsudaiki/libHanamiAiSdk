@@ -25,50 +25,47 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 bool createImageLearnTask(std::string &result,
                           const std::string &name,
                           const std::string &clusterUuid,
                           const std::string &dataSetUuid,
-                          ErrorContainer &error);
+                          Kitsunemimi::ErrorContainer &error);
 
 bool createImageRequestTask(std::string &result,
                             const std::string &name,
                             const std::string &clusterUuid,
                             const std::string &dataSetUuid,
-                            ErrorContainer &error);
+                            Kitsunemimi::ErrorContainer &error);
 
-bool createGraphLearnTask(std::string &result,
+bool createTableLearnTask(std::string &result,
                           const std::string &name,
                           const std::string &clusterUuid,
                           const std::string &dataSetUuid,
-                          const std::string &columnName,
-                          ErrorContainer &error);
+                          Kitsunemimi::ErrorContainer &error);
 
-bool createGraphRequestTask(std::string &result,
+bool createTableRequestTask(std::string &result,
                             const std::string &name,
                             const std::string &clusterUuid,
                             const std::string &dataSetUuid,
-                            const std::string &columnName,
-                            ErrorContainer &error);
+                            Kitsunemimi::ErrorContainer &error);
 
 bool getTask(std::string &result,
              const std::string &taskUuid,
              const std::string &clusterUuid,
-             ErrorContainer &error);
+             Kitsunemimi::ErrorContainer &error);
 
 bool listTask(std::string &result,
-              ErrorContainer &error);
+              const std::string &clusterUuid,
+              Kitsunemimi::ErrorContainer &error);
 
 bool deleteTask(std::string &result,
                 const std::string &taskUuid,
-                ErrorContainer &error);
+                const std::string &clusterUuid,
+                Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_TASK_H

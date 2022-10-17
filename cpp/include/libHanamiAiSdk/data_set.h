@@ -25,43 +25,40 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 bool uploadCsvData(std::string &result,
                    const std::string &dataSetName,
                    const std::string &inputFilePath,
-                   ErrorContainer &error);
+                   Kitsunemimi::ErrorContainer &error);
 
 bool uploadMnistData(std::string &result,
                      const std::string &dataSetName,
                      const std::string &inputFilePath,
                      const std::string &labelFilePath,
-                     ErrorContainer &error);
+                     Kitsunemimi::ErrorContainer &error);
 
 bool checkDataset(std::string &result,
                   const std::string &dataUuid,
                   const std::string &resultUuid,
-                  ErrorContainer &error);
+                  Kitsunemimi::ErrorContainer &error);
 
 bool getDataset(std::string &result,
                 const std::string &dataUuid,
-                ErrorContainer &error);
+                Kitsunemimi::ErrorContainer &error);
 
 bool listDatasets(std::string &result,
-                  ErrorContainer &error);
+                  Kitsunemimi::ErrorContainer &error);
 
 bool deleteDataset(std::string &result,
                    const std::string &dataUuid,
-                   ErrorContainer &error);
+                   Kitsunemimi::ErrorContainer &error);
 
 bool getDatasetProgress(std::string &result,
                    const std::string &dataUuid,
-                   ErrorContainer &error);
+                   Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_DATA_SET_H

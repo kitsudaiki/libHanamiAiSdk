@@ -24,9 +24,7 @@
 
 #include <libKitsunemimiJson/json_item.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -63,7 +61,7 @@ WebsocketClient::initClient(std::string &socketUuid,
                             const std::string &target,
                             const std::string &host,
                             const std::string &port,
-                            ErrorContainer &error)
+                            Kitsunemimi::ErrorContainer &error)
 {
     try
     {
@@ -158,7 +156,7 @@ WebsocketClient::initClient(std::string &socketUuid,
 bool
 WebsocketClient::sendMessage(const void* data,
                              const uint64_t dataSize,
-                             ErrorContainer &error)
+                             Kitsunemimi::ErrorContainer &error)
 {
     try
     {
@@ -187,7 +185,7 @@ WebsocketClient::sendMessage(const void* data,
  */
 uint8_t*
 WebsocketClient::readMessage(uint64_t &numberOfByes,
-                             ErrorContainer &error)
+                             Kitsunemimi::ErrorContainer &error)
 {
     try
     {
@@ -246,5 +244,4 @@ WebsocketClient::loadCertificates(boost::asio::ssl::context& ctx)
     return true;
 }
 
-}  // namespace Hanami
-}  // namespace Kitsunemimi
+}  // namespace HanamiAI

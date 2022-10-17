@@ -23,9 +23,7 @@
 #include <libHanamiAiSdk/init.h>
 #include <common/http_client.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -44,9 +42,9 @@ initClient(const std::string &host,
            const std::string &port,
            const std::string &user,
            const std::string &password,
-           ErrorContainer &error)
+           Kitsunemimi::ErrorContainer &error)
 {
-    Kitsunemimi::Hanami::HanamiRequest* request = Kitsunemimi::Hanami::HanamiRequest::getInstance();
+    HanamiRequest* request = HanamiRequest::getInstance();
     if(request->init(host, port, user, password) == false)
     {
         error.addMeesage("Failed to initialize hanami-client");
@@ -57,5 +55,4 @@ initClient(const std::string &host,
     return true;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

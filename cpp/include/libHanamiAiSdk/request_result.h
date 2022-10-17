@@ -25,23 +25,20 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 bool getRequestResult(std::string &result,
                       const std::string &userId,
-                      ErrorContainer &error);
+                      Kitsunemimi::ErrorContainer &error);
 
 bool listRequestResult(std::string &result,
-                       ErrorContainer &error);
+                       Kitsunemimi::ErrorContainer &error);
 
 bool deleteRequestResult(std::string &result,
                          const std::string &userId,
-                         ErrorContainer &error);
+                         Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_REQUEST_RESULT_H

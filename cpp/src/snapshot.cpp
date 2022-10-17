@@ -23,9 +23,7 @@
 #include <libHanamiAiSdk/snapshot.h>
 #include <common/http_client.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -40,7 +38,7 @@ namespace Hanami
 bool
 getSnapshot(std::string &result,
             const std::string &snapshotUuid,
-            ErrorContainer &error)
+            Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -68,7 +66,7 @@ getSnapshot(std::string &result,
  */
 bool
 listSnapshot(std::string &result,
-             ErrorContainer &error)
+             Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -97,7 +95,7 @@ listSnapshot(std::string &result,
 bool
 deleteSnapshot(std::string &result,
                const std::string &snapshotUuid,
-               ErrorContainer &error)
+               Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -115,5 +113,4 @@ deleteSnapshot(std::string &result,
     return true;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

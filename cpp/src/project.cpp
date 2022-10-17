@@ -23,9 +23,7 @@
 #include <libHanamiAiSdk/project.h>
 #include <common/http_client.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -42,7 +40,7 @@ bool
 createProject(std::string &result,
               const std::string &projectId,
               const std::string &projectName,
-              ErrorContainer &error)
+              Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -77,7 +75,7 @@ createProject(std::string &result,
 bool
 getProject(std::string &result,
            const std::string &projectId,
-           ErrorContainer &error)
+           Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -104,7 +102,7 @@ getProject(std::string &result,
  */
 bool
 listProject(std::string &result,
-           ErrorContainer &error)
+            Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -133,7 +131,7 @@ listProject(std::string &result,
 bool
 deleteProject(std::string &result,
               const std::string &projectId,
-              ErrorContainer &error)
+              Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -151,5 +149,4 @@ deleteProject(std::string &result,
     return true;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

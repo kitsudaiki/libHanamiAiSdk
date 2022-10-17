@@ -25,18 +25,15 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 bool initClient(const std::string &host,
                 const std::string &port,
                 const std::string &user,
                 const std::string &password,
-                ErrorContainer &error);
+                Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_INIT_H

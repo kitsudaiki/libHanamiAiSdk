@@ -45,9 +45,7 @@ using tcp = net::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 class HanamiRequest
@@ -65,28 +63,30 @@ public:
     bool sendGetRequest(std::string &response,
                         const std::string &path,
                         const std::string &vars,
-                        ErrorContainer &error);
+                        Kitsunemimi::ErrorContainer &error);
 
     bool sendPostRequest(std::string &response,
                          const std::string &path,
                          const std::string &vars,
                          const std::string &body,
-                         ErrorContainer &error);
+                         Kitsunemimi::ErrorContainer &error);
 
     bool sendPutRequest(std::string &response,
                         const std::string &path,
                         const std::string &vars,
                         const std::string &body,
-                        ErrorContainer &error);
+                        Kitsunemimi::ErrorContainer &error);
 
     bool sendDeleteRequest(std::string &response,
                            const std::string &path,
                            const std::string &vars,
-                           ErrorContainer &error);
+                           Kitsunemimi::ErrorContainer &error);
 
     const std::string& getToken() const;
     const std::string& getPort() const;
     const std::string& getHost() const;
+
+    void updateToken(const std::string &newToken);
 
 private:
     HanamiRequest();
@@ -99,23 +99,22 @@ private:
     std::string m_userId = "";
     std::string m_password = "";
 
-    bool requestToken(ErrorContainer &error);
+    bool requestToken(Kitsunemimi::ErrorContainer &error);
     bool makeRequest(std::string &response,
                      const http::verb type,
                      const std::string &path,
                      const std::string &vars,
                      const std::string &jsonBody,
-                     ErrorContainer &error);
+                     Kitsunemimi::ErrorContainer &error);
     uint16_t makeSingleRequest(std::string &response,
                                const http::verb type,
                                const std::string &target,
                                const std::string &jsonBody,
-                               ErrorContainer &error);
+                               Kitsunemimi::ErrorContainer &error);
     bool getEnvVar(std::string &content,
                    const std::string &key) const;
 };
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // KITSUNEMIMI_HANAMISDK_HANAMI_REQUEST_H

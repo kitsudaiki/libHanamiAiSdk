@@ -26,9 +26,7 @@
 
 #include <../../libKitsunemimiHanamiMessages/hanami_messages/kyouko_messages.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -45,7 +43,7 @@ bool
 learn(WebsocketClient* wsClient,
       std::vector<float> &inputValues,
       std::vector<float> &shouldValues,
-      ErrorContainer &error)
+      Kitsunemimi::ErrorContainer &error)
 {
     return learn(wsClient,
                  &inputValues[0],
@@ -69,7 +67,7 @@ float*
 request(WebsocketClient* wsClient,
         std::vector<float> &inputValues,
         uint64_t &numberOfOutputValues,
-        ErrorContainer &error)
+        Kitsunemimi::ErrorContainer &error)
 {
     return request(wsClient,
                    &inputValues[0],
@@ -91,7 +89,7 @@ request(WebsocketClient* wsClient,
  * @return true, if successful, else false
  */
 bool
-learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+learn(WebsocketClient* wsClient,
       float* inputValues,
       const uint64_t numberOfInputValues,
       float* shouldValues,
@@ -178,7 +176,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
 
     // check end-message
     bool success = true;
-    ClusterIO_Message response;
+    Kitsunemimi::Hanami::ClusterIO_Message response;
     if(response.read(recvData, numberOfBytes) == false)
     {
         success = false;
@@ -203,7 +201,7 @@ learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
  * @return true, if successful, else false
  */
 float*
-request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+request(WebsocketClient* wsClient,
         float* inputData,
         const uint64_t numberOfInputValues,
         uint64_t &numberOfOutputValues,
@@ -250,7 +248,7 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     }
 
     // read message from response
-    ClusterIO_Message response;
+    Kitsunemimi::Hanami::ClusterIO_Message response;
     if(response.read(recvData, numberOfBytes) == false)
     {
         delete[] recvData;
@@ -269,5 +267,4 @@ request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
     return result;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

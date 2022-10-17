@@ -23,49 +23,8 @@
 #include <libHanamiAiSdk/template.h>
 #include <common/http_client.h>
 
-namespace Kitsunemimi
+namespace HanamiAI
 {
-namespace Hanami
-{
-
-/**
- * @brief generate a new template on kyouko
- *
- * @param result reference for response-message
- * @param templateName name of the new template
- * @param dataSetUuid uuid of the data-set, which should work as base to get init-information
- * @param type to the template to create
- * @param error reference for error-output
- *
- * @return true, if successful, else false
- */
-bool
-generateTemplate(std::string &result,
-                 const std::string &templateName,
-                 const std::string &dataSetUuid,
-                 const std::string &type,
-                 ErrorContainer &error)
-{
-    // create request
-    HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/template/generate";
-    const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""          + templateName + "\","
-                                 " \"type\":\""          + type + "\","
-                                 " \"data_set_uuid\":\"" + dataSetUuid  + "\"}";
-
-    // send request
-    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
-    {
-        error.addMeesage("Failed to generate new template based on dataset with UUID '"
-                         + dataSetUuid
-                         + "'");
-        LOG_ERROR(error);
-        return false;
-    }
-
-    return true;
-}
 
 /**
  * @brief upload a template to the kyouko
@@ -82,7 +41,7 @@ bool
 uploadTemplate(std::string &result,
                const std::string &templateName,
                const std::string &data,
-               ErrorContainer &error)
+               Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -117,7 +76,7 @@ uploadTemplate(std::string &result,
 bool
 getTemplate(std::string &result,
             const std::string &templateUuid,
-            ErrorContainer &error)
+            Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -145,7 +104,7 @@ getTemplate(std::string &result,
  */
 bool
 listTemplate(std::string &result,
-             ErrorContainer &error)
+             Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -174,7 +133,7 @@ listTemplate(std::string &result,
 bool
 deleteTemplate(std::string &result,
                const std::string &templateUuid,
-               ErrorContainer &error)
+               Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -192,5 +151,4 @@ deleteTemplate(std::string &result,
     return true;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI

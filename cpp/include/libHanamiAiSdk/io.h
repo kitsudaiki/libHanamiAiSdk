@@ -30,36 +30,33 @@
 
 #include <libKitsunemimiCommon/logger.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 class WebsocketClient;
 
-bool learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+bool learn(WebsocketClient* wsClient,
            std::vector<float> &inputValues,
            std::vector<float> &shouldValues,
            Kitsunemimi::ErrorContainer &error);
 
-float* request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+float* request(WebsocketClient* wsClient,
                std::vector<float> &inputValues,
                uint64_t &numberOfOutputValues,
                Kitsunemimi::ErrorContainer &error);
 
-bool learn(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+bool learn(WebsocketClient* wsClient,
            float* inputValues,
            const uint64_t numberOfInputValues,
            float* shouldValues,
            const uint64_t numberOfShouldValues,
            Kitsunemimi::ErrorContainer &error);
 
-float* request(Kitsunemimi::Hanami::WebsocketClient* wsClient,
+float* request(WebsocketClient* wsClient,
                float* inputData,
                const uint64_t numberOfInputValues,
                uint64_t &numberOfOutputValues,
                Kitsunemimi::ErrorContainer &error);
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
 
 #endif // IO_H

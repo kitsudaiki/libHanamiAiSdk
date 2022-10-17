@@ -24,9 +24,7 @@
 #include <common/http_client.h>
 #include <libHanamiAiSdk/common/websocket_client.h>
 
-namespace Kitsunemimi
-{
-namespace Hanami
+namespace HanamiAI
 {
 
 /**
@@ -43,10 +41,10 @@ bool
 createCluster(std::string &result,
               const std::string &clusterName,
               const std::string &clusterDefinition,
-              ErrorContainer &error)
+              Kitsunemimi::ErrorContainer &error)
 {
     // create request
-    HanamiRequest* request = HanamiRequest::getInstance();
+    HanamiRequest* request = HanamiAI::HanamiRequest::getInstance();
     const std::string path = "/control/kyouko/v1/cluster";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""
@@ -78,7 +76,7 @@ createCluster(std::string &result,
 bool
 getCluster(std::string &result,
            const std::string &clusterUuid,
-           ErrorContainer &error)
+           Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -106,7 +104,7 @@ getCluster(std::string &result,
  */
 bool
 listCluster(std::string &result,
-            ErrorContainer &error)
+            Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -135,7 +133,7 @@ listCluster(std::string &result,
 bool
 deleteCluster(std::string &result,
               const std::string &clusterUuid,
-              ErrorContainer &error)
+              Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -167,7 +165,7 @@ bool
 saveCluster(std::string &result,
             const std::string &clusterUuid,
             const std::string &snapshotName,
-            ErrorContainer &error)
+            Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -204,7 +202,7 @@ bool
 restoreCluster(std::string &result,
                const std::string &clusterUuid,
                const std::string &snapshotUuid,
-               ErrorContainer &error)
+               Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -239,7 +237,7 @@ restoreCluster(std::string &result,
 bool
 switchToTaskMode(std::string &result,
                  const std::string &clusterUuid,
-                 ErrorContainer &error)
+                 Kitsunemimi::ErrorContainer &error)
 {
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
@@ -273,7 +271,7 @@ switchToTaskMode(std::string &result,
 WebsocketClient*
 switchToDirectMode(std::string &result,
                    const std::string &clusterUuid,
-                   ErrorContainer &error)
+                   Kitsunemimi::ErrorContainer &error)
 {
     // init websocket-client
     WebsocketClient* wsClient = new WebsocketClient();
@@ -315,5 +313,4 @@ switchToDirectMode(std::string &result,
     return wsClient;
 }
 
-} // namespace Hanami
-} // namespace Kitsunemimi
+} // namespace HanamiAI
