@@ -8,7 +8,7 @@
 
 ## Description
 
-SDK-library to provide functions for all supported actions to interact with the REST-API and automatic handling of the token-exchange.
+SDK-library for Hanami-AI: https://github.com/kitsudaiki/Hanami-AI
 
 ## Build
 
@@ -34,10 +34,14 @@ boost-library | libboost1.71-dev | >= 1.71 | provides boost beast library for HT
 
 Repository-Name | Version-Tag | Download-Path
 --- | --- | ---
-libKitsunemimiCommon | v0.26.0 |  https://github.com/kitsudaiki/libKitsunemimiCommon.git
-libKitsunemimiJson | v0.11.3 |  https://github.com/kitsudaiki/libKitsunemimiJson.git
-libKitsunemimiCrypto | v0.2.0 |  -
-libKitsunemimiHanamiCommon | v0.2.0 | -
+libKitsunemimiCommon | develop | https://github.com/kitsudaiki/libKitsunemimiCommon.git
+libKitsunemimiJson | develop | https://github.com/kitsudaiki/libKitsunemimiJson.git
+libKitsunemimiIni | develop | https://github.com/kitsudaiki/libKitsunemimiIni.git
+ibKitsunemimiArgs | develop | https://github.com/kitsudaiki/ibKitsunemimiArgs.git
+libKitsunemimiConfig | develop | https://github.com/kitsudaiki/libKitsunemimiConfig.git
+libKitsunemimiCrypto | develop | https://github.com/kitsudaiki/libKitsunemimiCrypto.git
+libKitsunemimiHanamiCommon | develop | https://github.com/kitsudaiki/libKitsunemimiHanamiCommon.git
+libKitsunemimiHanamiMessages | develop | https://github.com/kitsudaiki/libKitsunemimiHanamiMessages.git
 
 #### Required build tools for go-part
 
@@ -62,10 +66,6 @@ cd ../result
 It create automatic a `build` and `result` directory in the directory, where you have cloned the project. At first it build all into the `build`-directory and after all build-steps are finished, it copy the include directory from the cloned repository and the build library into the `result`-directory. So you have all in one single place.
 
 Tested on Debian and Ubuntu. If you use Centos, Arch, etc and the build-script fails on your machine, then please write me a mail and I will try to fix the script.
-
-## Usage
-
-(sorry, docu comes later)
 
 
 ## Contributing
