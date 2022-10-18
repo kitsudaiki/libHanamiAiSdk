@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.0] - 2022-10-18
+
+### Changed
+- update cpp-library for the actual state
+
+### Added
+- basic sdk-functions for javascript-version
+
+
 ## [0.3.1] - 2022-07-02
 
 ### Changed

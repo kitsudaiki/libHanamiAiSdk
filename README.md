@@ -34,14 +34,14 @@ boost-library | libboost1.71-dev | >= 1.71 | provides boost beast library for HT
 
 Repository-Name | Version-Tag | Download-Path
 --- | --- | ---
-libKitsunemimiCommon | develop | https://github.com/kitsudaiki/libKitsunemimiCommon.git
-libKitsunemimiJson | develop | https://github.com/kitsudaiki/libKitsunemimiJson.git
-libKitsunemimiIni | develop | https://github.com/kitsudaiki/libKitsunemimiIni.git
-ibKitsunemimiArgs | develop | https://github.com/kitsudaiki/ibKitsunemimiArgs.git
-libKitsunemimiConfig | develop | https://github.com/kitsudaiki/libKitsunemimiConfig.git
-libKitsunemimiCrypto | develop | https://github.com/kitsudaiki/libKitsunemimiCrypto.git
-libKitsunemimiHanamiCommon | develop | https://github.com/kitsudaiki/libKitsunemimiHanamiCommon.git
-libKitsunemimiHanamiMessages | develop | https://github.com/kitsudaiki/libKitsunemimiHanamiMessages.git
+libKitsunemimiCommon | v0.27.1 | https://github.com/kitsudaiki/libKitsunemimiCommon.git
+libKitsunemimiJson | v0.12.0 | https://github.com/kitsudaiki/libKitsunemimiJson.git
+libKitsunemimiIni | v0.6.0 | https://github.com/kitsudaiki/libKitsunemimiIni.git
+ibKitsunemimiArgs | v0.5.0 | https://github.com/kitsudaiki/ibKitsunemimiArgs.git
+libKitsunemimiConfig | v0.5.0 | https://github.com/kitsudaiki/libKitsunemimiConfig.git
+libKitsunemimiCrypto | v0.3.0 | https://github.com/kitsudaiki/libKitsunemimiCrypto.git
+libKitsunemimiHanamiCommon | v0.3.0 | https://github.com/kitsudaiki/libKitsunemimiHanamiCommon.git
+libKitsunemimiHanamiMessages | v0.1.0 | https://github.com/kitsudaiki/libKitsunemimiHanamiMessages.git
 
 #### Required build tools for go-part
 
