@@ -29,7 +29,7 @@
 #include <libKitsunemimiCommon/items/data_items.h>
 #include <libKitsunemimiCommon/files/binary_file.h>
 
-#include <../../libKitsunemimiHanamiMessages/hanami_messages/shiori_messages.h>
+#include <../../libKitsunemimiHanamiMessages/protobuffers/shiori_messages.proto3.pb.h>
 
 namespace HanamiAI
 {
@@ -182,8 +182,8 @@ finalizeMnistDataSet(std::string &result,
  * @brief send data to shiori
  *
  * @param session session over which the data should be send
- * @param datasetId uuid of the dataset where the file belongs to
- * @param fileId uuid of the file for identification in shiori
+ * @param datasetUuid uuid of the dataset where the file belongs to
+ * @param fileUuid uuid of the file for identification in shiori
  * @param filePath path to file, which should be send
  * @param error reference for error-output
  *
@@ -191,8 +191,8 @@ finalizeMnistDataSet(std::string &result,
  */
 bool
 sendFile(WebsocketClient* client,
-         const std::string &datasetId,
-         const std::string &fileId,
+         const std::string &datasetUuid,
+         const std::string &fileUuid,
          const std::string &filePath,
          Kitsunemimi::ErrorContainer &error)
 {
@@ -206,12 +206,6 @@ sendFile(WebsocketClient* client,
     // prepare buffer
     uint64_t segmentSize = 96 * 1024;
 
-    Kitsunemimi::Hanami::FileUpload_Message message;
-    message.fileUuid = fileId;
-    message.datasetUuid = datasetId;
-    message.type = Kitsunemimi::Hanami::FileUpload_Message::UploadDataType::DATASET_TYPE;
-    message.isLast = false;
-
 
     uint8_t readBuffer[96*1024];
     uint8_t sendBuffer[128*1024];
@@ -224,8 +218,13 @@ sendFile(WebsocketClient* client,
             segmentSize = dataSize - pos;
         }
 
+        FileUpload_Message message;
+        message.set_fileuuid(fileUuid);
+        message.set_datasetuuid(datasetUuid);
+        message.set_type(UploadDataType::DATASET_TYPE);
+        message.set_islast(false);
         if(pos + segmentSize >= dataSize) {
-            message.isLast = true;
+            message.set_islast(true);
         }
 
         // read segment of the local file
@@ -236,12 +235,11 @@ sendFile(WebsocketClient* client,
             break;
         }
 
-        message.position = pos;
-        message.payload = readBuffer;
-        message.numberOfBytes = segmentSize;
+        message.set_position(pos);
+        message.set_data(readBuffer, segmentSize);
 
-        const uint64_t msgSize = message.createBlob(sendBuffer, 128*1024);
-        if(msgSize == 0)
+        const uint64_t msgSize = message.ByteSizeLong();
+        if(message.SerializeToArray(sendBuffer, msgSize) == false)
         {
             error.addMeesage("Failed to serialize learn-message");
             return false;
