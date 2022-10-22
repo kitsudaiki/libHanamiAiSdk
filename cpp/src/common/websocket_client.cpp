@@ -194,6 +194,9 @@ WebsocketClient::readMessage(uint64_t &numberOfByes,
         m_websocket->read(buffer);
 
         numberOfByes = buffer.data().size();
+        if(numberOfByes == 0) {
+            return nullptr;
+        }
         uint8_t* data = new uint8_t[numberOfByes];
         memcpy(data, buffer.data().data(), numberOfByes);
 
