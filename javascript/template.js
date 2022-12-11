@@ -17,7 +17,7 @@
 function createSegmentTemplaete_request(outputFunc, name, templateContent, token)
 {
     const path = "/control/kyouko/v1/template/upload";
-    const reqContent = "{\"name\":\"" + name + "\",\"template\":" + templateContent + "}";
+    const reqContent = "{\"name\":\"" + name + "\",\"template\":\"" + btoa(templateContent) + "\"}";
     createObject_request(outputFunc, path, reqContent, token);
 }
 

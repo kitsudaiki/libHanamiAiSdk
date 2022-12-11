@@ -30,7 +30,7 @@ namespace HanamiAI
 
 bool uploadTemplate(std::string &result,
                     const std::string &templateName,
-                    const std::string &data,
+                    const std::string &segmentTemplate,
                     Kitsunemimi::ErrorContainer &error);
 
 bool getTemplate(std::string &result,

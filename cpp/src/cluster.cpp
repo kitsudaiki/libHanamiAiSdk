@@ -23,6 +23,7 @@
 #include <libHanamiAiSdk/cluster.h>
 #include <common/http_client.h>
 #include <libHanamiAiSdk/common/websocket_client.h>
+#include <libKitsunemimiCrypto/common.h>
 
 namespace HanamiAI
 {
@@ -32,7 +33,7 @@ namespace HanamiAI
  *
  * @param result reference for response-message
  * @param clusterName name of the new cluster
- * @param clusterDefinition information to build the new cluster
+ * @param clusterTemplate information to build the new cluster
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -40,18 +41,25 @@ namespace HanamiAI
 bool
 createCluster(std::string &result,
               const std::string &clusterName,
-              const std::string &clusterDefinition,
+              const std::string &clusterTemplate,
               Kitsunemimi::ErrorContainer &error)
 {
-    // create request
     HanamiRequest* request = HanamiAI::HanamiRequest::getInstance();
+
+    // convert template into base64-string
+    std::string clusterTemplateB64;
+    Kitsunemimi::Crypto::encodeBase64(clusterTemplateB64,
+                                      clusterTemplate.c_str(),
+                                      clusterTemplate.size());
+
+    // create request
     const std::string path = "/control/kyouko/v1/cluster";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""
                                  + clusterName
-                                 + "\",\"cluster_definition\":"
-                                 + clusterDefinition
-                                 + "}";
+                                 + "\",\"template\":\""
+                                 + clusterTemplateB64
+                                 + "\"}";
 
     // send request
     if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
