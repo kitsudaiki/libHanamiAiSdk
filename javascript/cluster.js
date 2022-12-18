@@ -18,7 +18,7 @@ function createCluster_request(outputFunc, name, templateStr, token)
 {
     const path = "/control/kyouko/v1/cluster";
     let reqContent = "{\"name\":\"" + name;
-    reqContent += "\",\"cluster_definition\":" + templateStr + "}";
+    reqContent += "\",\"template\":\"" + btoa(templateStr) + "\"}";
     createObject_request(outputFunc, path, reqContent, token);
 }
 

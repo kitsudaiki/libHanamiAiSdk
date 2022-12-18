@@ -206,7 +206,6 @@ sendFile(WebsocketClient* client,
     // prepare buffer
     uint64_t segmentSize = 96 * 1024;
 
-
     uint8_t readBuffer[96*1024];
     uint8_t sendBuffer[128*1024];
 

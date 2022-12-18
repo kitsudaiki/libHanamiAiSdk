@@ -22,6 +22,7 @@
 
 #include <libHanamiAiSdk/template.h>
 #include <common/http_client.h>
+#include <libKitsunemimiCrypto/common.h>
 
 namespace HanamiAI
 {
@@ -32,7 +33,7 @@ namespace HanamiAI
  * @param result reference for response-message
  * @param templateName name of the new template
  * @param type type of the new template (cluster or segment)
- * @param data template to upload.
+ * @param segmentTemplate template to upload.
  * @param error reference for error-output
  *
  * @return true, if successful, else false
@@ -40,18 +41,25 @@ namespace HanamiAI
 bool
 uploadTemplate(std::string &result,
                const std::string &templateName,
-               const std::string &data,
+               const std::string &segmentTemplate,
                Kitsunemimi::ErrorContainer &error)
 {
-    // create request
     HanamiRequest* request = HanamiRequest::getInstance();
+
+    // convert template into base64-string
+    std::string segmentTemplateB64;
+    Kitsunemimi::Crypto::encodeBase64(segmentTemplateB64,
+                                      segmentTemplate.c_str(),
+                                      segmentTemplate.size());
+
+    // create request
     const std::string path = "/control/kyouko/v1/template/upload";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""
                                  + templateName
-                                 + "\",\"template\":"
-                                 + data
-                                 + "}";
+                                 + "\",\"template\":\""
+                                 + segmentTemplateB64
+                                 + "\"}";
 
     // send request
     if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)

@@ -32,7 +32,7 @@ class WebsocketClient;
 
 bool createCluster(std::string &result,
                    const std::string &clusterName,
-                   const std::string &templateUuid,
+                   const std::string &clusterTemplate,
                    Kitsunemimi::ErrorContainer &error);
 
 bool getCluster(std::string &result,
