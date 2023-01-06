@@ -14,17 +14,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function listAuditLogs_request(outputFunc, userId, token)
+function listAuditLogs_request(outputFunc, userId, page, token)
 {
-    let request = "/control/shiori/v1/audit_log";
+    let request = "/control/shiori/v1/audit_log?";
     if(userId !== "") {
-        request += "?user_id=" + userId;
+        request += "user_id=" + userId + "&";
     }
+    request += "page=" + page;
     getObject_request(outputFunc, request, token);
 }
  
-function listErrorLogs_request(outputFunc, userId, token)
+function listErrorLogs_request(outputFunc, userId, page, token)
 {
-    const request = "/control/shiori/v1/error_log?user_id=" + userId;
+    const request = "/control/shiori/v1/error_log?user_id=" + userId + "&page=" + page;
     getObject_request(outputFunc, request, token);
 }
