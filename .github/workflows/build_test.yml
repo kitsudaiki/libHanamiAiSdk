@@ -24,4 +24,5 @@ jobs:
           CLONE_TOKEN: ${{ secrets.CLONE_TOKEN }}
         run:  |
           cd ${GITHUB_REPOSITORY#*/}
-          ./build.sh test
+          ls -l
+          ./cpp/build.sh test
