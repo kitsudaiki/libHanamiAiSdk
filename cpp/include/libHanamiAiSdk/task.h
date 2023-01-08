@@ -28,29 +28,12 @@
 namespace HanamiAI
 {
 
-bool createImageLearnTask(std::string &result,
-                          const std::string &name,
-                          const std::string &clusterUuid,
-                          const std::string &dataSetUuid,
-                          Kitsunemimi::ErrorContainer &error);
-
-bool createImageRequestTask(std::string &result,
-                            const std::string &name,
-                            const std::string &clusterUuid,
-                            const std::string &dataSetUuid,
-                            Kitsunemimi::ErrorContainer &error);
-
-bool createTableLearnTask(std::string &result,
-                          const std::string &name,
-                          const std::string &clusterUuid,
-                          const std::string &dataSetUuid,
-                          Kitsunemimi::ErrorContainer &error);
-
-bool createTableRequestTask(std::string &result,
-                            const std::string &name,
-                            const std::string &clusterUuid,
-                            const std::string &dataSetUuid,
-                            Kitsunemimi::ErrorContainer &error);
+bool createTask(std::string &result,
+                const std::string &name,
+                const std::string &type,
+                const std::string &clusterUuid,
+                const std::string &dataSetUuid,
+                Kitsunemimi::ErrorContainer &error);
 
 bool getTask(std::string &result,
              const std::string &taskUuid,
