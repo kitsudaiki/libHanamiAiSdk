@@ -282,7 +282,7 @@ HanamiRequest::requestToken(Kitsunemimi::ErrorContainer &error)
     }
 
     // try to parse response
-    Kitsunemimi::Json::JsonItem item;
+    Kitsunemimi::JsonItem item;
     if(item.parse(response, error) == false)
     {
         error.addMeesage("Failed to parse token-response");

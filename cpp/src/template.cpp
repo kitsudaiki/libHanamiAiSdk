@@ -48,7 +48,7 @@ uploadTemplate(std::string &result,
 
     // convert template into base64-string
     std::string segmentTemplateB64;
-    Kitsunemimi::Crypto::encodeBase64(segmentTemplateB64,
+    Kitsunemimi::encodeBase64(segmentTemplateB64,
                                       segmentTemplate.c_str(),
                                       segmentTemplate.size());
 

@@ -48,9 +48,9 @@ createCluster(std::string &result,
 
     // convert template into base64-string
     std::string clusterTemplateB64;
-    Kitsunemimi::Crypto::encodeBase64(clusterTemplateB64,
-                                      clusterTemplate.c_str(),
-                                      clusterTemplate.size());
+    Kitsunemimi::encodeBase64(clusterTemplateB64,
+                              clusterTemplate.c_str(),
+                              clusterTemplate.size());
 
     // create request
     const std::string path = "/control/kyouko/v1/cluster";
