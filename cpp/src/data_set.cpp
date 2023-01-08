@@ -284,7 +284,7 @@ waitUntilFullyUploaded(const std::string &uuid,
             return false;
         }
 
-        Kitsunemimi::Json::JsonItem progress;
+        Kitsunemimi::JsonItem progress;
         if(progress.parse(progressStr, error) == false)
         {
             LOG_ERROR(error);
@@ -323,7 +323,7 @@ uploadCsvData(std::string &result,
     }
 
     // parse output to get the uuid
-    Kitsunemimi::Json::JsonItem jsonItem;
+    Kitsunemimi::JsonItem jsonItem;
     if(jsonItem.parse(result, error) == false)
     {
         LOG_ERROR(error);
@@ -402,7 +402,7 @@ uploadMnistData(std::string &result,
     }
 
     // parse output to get the uuid
-    Kitsunemimi::Json::JsonItem jsonItem;
+    Kitsunemimi::JsonItem jsonItem;
     if(jsonItem.parse(result, error) == false)
     {
         LOG_ERROR(error);

@@ -123,7 +123,7 @@ WebsocketClient::initClient(std::string &socketUuid,
                                       buffer.data().size());
 
         // parse response
-        Kitsunemimi::Json::JsonItem response;
+        Kitsunemimi::JsonItem response;
         if(response.parse(responseMsg, error) == false)
         {
             error.addMeesage("Failed to parse response-message from Websocket-init");
