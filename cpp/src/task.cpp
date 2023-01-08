@@ -30,6 +30,8 @@ namespace HanamiAI
  * @brief create a new learn-task
  *
  * @param result reference for response-message
+ * @param name name of the new task
+ * @param type type of the new task (learn or request)
  * @param clusterUuid uuid of the cluster, which should execute the task
  * @param dataSetUuid uuid of the data-set-file on server
  * @param error reference for error-output
@@ -37,62 +39,29 @@ namespace HanamiAI
  * @return true, if successful, else false
  */
 bool
-createImageLearnTask(std::string &result,
-                     const std::string &name,
-                     const std::string &clusterUuid,
-                     const std::string &dataSetUuid,
-                     Kitsunemimi::ErrorContainer &error)
+createTask(std::string &result,
+           const std::string &name,
+           const std::string &type,
+           const std::string &clusterUuid,
+           const std::string &dataSetUuid,
+           Kitsunemimi::ErrorContainer &error)
 {
-    // create request
-    HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/task/image/learn";
-    const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""
-                                 + name
-                                 + "\",\"cluster_uuid\":\""
-                                 + clusterUuid
-                                 + "\",\"data_set_uuid\":\""
-                                 + dataSetUuid
-                                 + "\"}";
-
-    // send request
-    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
+    // precheck task-type
+    if(type != "learn"
+            && type != "request")
     {
-        error.addMeesage("Failed to start image-learn-task on cluster with UUID '"
-                         + clusterUuid
-                         + "' and dataset with UUID '"
-                         + dataSetUuid
-                         + "'");
-        LOG_ERROR(error);
+        error.addMeesage("Unknow task-type '" + type + "'");
         return false;
     }
 
-    return true;
-}
-
-/**
- * @brief create a new request-task
- *
- * @param result reference for response-message
- * @param clusterUuid uuid of the cluster, which should execute the task
- * @param dataSetUuid uuid of the data-set-file on server
- * @param error reference for error-output
- *
- * @return true, if successful, else false
- */
-bool
-createImageRequestTask(std::string &result,
-                       const std::string &name,
-                       const std::string &clusterUuid,
-                       const std::string &dataSetUuid,
-                       Kitsunemimi::ErrorContainer &error)
-{
     // create request
     HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/task/image/request";
+    const std::string path = "/control/kyouko/v1/task";
     const std::string vars = "";
     const std::string jsonBody = "{\"name\":\""
                                  + name
+                                 + "\",\"type\":\""
+                                 + type
                                  + "\",\"cluster_uuid\":\""
                                  + clusterUuid
                                  + "\",\"data_set_uuid\":\""
@@ -102,95 +71,7 @@ createImageRequestTask(std::string &result,
     // send request
     if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
     {
-        error.addMeesage("Failed to start image-request-task on cluster with UUID '"
-                         + clusterUuid
-                         + "' and dataset with UUID '"
-                         + dataSetUuid
-                         + "'");
-        LOG_ERROR(error);
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * @brief create a new learn-task
- *
- * @param result reference for response-message
- * @param clusterUuid uuid of the cluster, which should execute the task
- * @param dataSetUuid uuid of the data-set-file on server
- * @param error reference for error-output
- *
- * @return true, if successful, else false
- */
-bool
-createTableLearnTask(std::string &result,
-                     const std::string &name,
-                     const std::string &clusterUuid,
-                     const std::string &dataSetUuid,
-                     Kitsunemimi::ErrorContainer &error)
-{
-    // create request
-    HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/task/graph/learn";
-    const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""
-                                 + name
-                                 + "\",\"cluster_uuid\":\""
-                                 + clusterUuid
-                                 + "\",\"data_set_uuid\":\""
-                                 + dataSetUuid
-                                 + "\"}";
-
-    // send request
-    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
-    {
-        error.addMeesage("Failed to start graph-learn-task on cluster with UUID '"
-                         + clusterUuid
-                         + "' and dataset with UUID '"
-                         + dataSetUuid
-                         + "'");
-        LOG_ERROR(error);
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * @brief create a new request-task
- *
- * @param result reference for response-message
- * @param clusterUuid uuid of the cluster, which should execute the task
- * @param dataSetUuid uuid of the data-set-file on server
- * @param error reference for error-output
- *
- * @return true, if successful, else false
- */
-bool
-createTableRequestTask(std::string &result,
-                       const std::string &name,
-                       const std::string &clusterUuid,
-                       const std::string &dataSetUuid,
-                       Kitsunemimi::ErrorContainer &error)
-{
-    // create request
-    HanamiRequest* request = HanamiRequest::getInstance();
-    const std::string path = "/control/kyouko/v1/task/graph/request";
-    const std::string vars = "";
-    const std::string jsonBody = "{\"name\":\""
-                                 + name
-                                 + "\",\"cluster_uuid\":\""
-                                 + clusterUuid
-                                 + "\",\"data_set_uuid\":\""
-                                 + dataSetUuid
-                                 + "\"}";
-
-    // send request
-    if(request->sendPostRequest(result, path, vars, jsonBody, error) == false)
-    {
-        error.addMeesage("Failed to start graph-request-task on cluster with UUID '"
+        error.addMeesage("Failed to start task on cluster with UUID '"
                          + clusterUuid
                          + "' and dataset with UUID '"
                          + dataSetUuid

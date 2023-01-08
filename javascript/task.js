@@ -14,14 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function createTask_request(outputFunc, name, clusterUuid, datasetUuid, datasetType, taskType, token)
+function createTask_request(outputFunc, name, type, clusterUuid, datasetUuid, token)
 {
     let path = "/control/kyouko/v1/task";
-    path += "/" + datasetType;
-    path += "/" + taskType;
 
     // create request-content
     var reqContent = "{\"name\":\"" + name
+                     + "\",\"type\":\"" + type
                      + "\",\"cluster_uuid\":\"" + clusterUuid
                      + "\",\"data_set_uuid\":\"" + datasetUuid + "\"}";
 
