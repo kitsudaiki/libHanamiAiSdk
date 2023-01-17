@@ -5,24 +5,24 @@ CONFIG += c++17
 TEMPLATE = lib
 VERSION = 0.3.1
 
-LIBS += -L../../libKitsunemimiCommon/src -lKitsunemimiCommon
-LIBS += -L../../libKitsunemimiCommon/src/debug -lKitsunemimiCommon
-LIBS += -L../../libKitsunemimiCommon/src/release -lKitsunemimiCommon
+LIBS += -L../../../libKitsunemimiCommon/src -lKitsunemimiCommon
+LIBS += -L../../../libKitsunemimiCommon/src/debug -lKitsunemimiCommon
+LIBS += -L../../../libKitsunemimiCommon/src/release -lKitsunemimiCommon
 INCLUDEPATH += ../../../libKitsunemimiCommon/include
 
-LIBS += -L../../libKitsunemimiJson/src -lKitsunemimiJson
-LIBS += -L../../libKitsunemimiJson/src/debug -lKitsunemimiJson
-LIBS += -L../../libKitsunemimiJson/src/release -lKitsunemimiJson
+LIBS += -L../../../libKitsunemimiJson/src -lKitsunemimiJson
+LIBS += -L../../../libKitsunemimiJson/src/debug -lKitsunemimiJson
+LIBS += -L../../../libKitsunemimiJson/src/release -lKitsunemimiJson
 INCLUDEPATH += ../../../libKitsunemimiJson/include
 
-LIBS += -L../../libKitsunemimiCrypto/src -lKitsunemimiCrypto
-LIBS += -L../../libKitsunemimiCrypto/src/debug -lKitsunemimiCrypto
-LIBS += -L../../libKitsunemimiCrypto/src/release -lKitsunemimiCrypto
+LIBS += -L../../../libKitsunemimiCrypto/src -lKitsunemimiCrypto
+LIBS += -L../../../libKitsunemimiCrypto/src/debug -lKitsunemimiCrypto
+LIBS += -L../../../libKitsunemimiCrypto/src/release -lKitsunemimiCrypto
 INCLUDEPATH += ../../../libKitsunemimiCrypto/include
 
-LIBS += -L../../libKitsunemimiHanamiCommon/src -lKitsunemimiHanamiCommon
-LIBS += -L../../libKitsunemimiHanamiCommon/src/debug -lKitsunemimiHanamiCommon
-LIBS += -L../../libKitsunemimiHanamiCommon/src/release -lKitsunemimiHanamiCommon
+LIBS += -L../../../libKitsunemimiHanamiCommon/src -lKitsunemimiHanamiCommon
+LIBS += -L../../../libKitsunemimiHanamiCommon/src/debug -lKitsunemimiHanamiCommon
+LIBS += -L../../../libKitsunemimiHanamiCommon/src/release -lKitsunemimiHanamiCommon
 INCLUDEPATH += ../../../libKitsunemimiHanamiCommon/include
 
 LIBS += -lssl -lcryptopp -lcrypt
